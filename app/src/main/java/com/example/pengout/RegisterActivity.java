@@ -38,18 +38,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
-    DatabaseReference reference;
+    private DatabaseReference rootRef;
 
     FirebaseUser firebaseUser;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+    protected void onStart() {
+        super.onStart();
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
+
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
         firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -58,6 +58,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intent);
             finish();
         }
+        else {
+            Log.d("Firebasejan", "FirebaseUser is null");
+        }
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+
+//        firebaseUser = firebaseAuth.getCurrentUser();
 
 
         //initializing views
@@ -92,11 +106,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 buttonLogin.setText("Login");
                 isLogin = true;
 
-
-
-                //                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-//                startActivity(i);
-//                progressBar.dismiss();
                 return false;
             }
         });
@@ -139,20 +148,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("createUserWithEmail", "createUserWithEmail:success");
-//                            Log.d("createUserWithEmail:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+//                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-//                            String userid = user.getUid();
-//
-//                            reference = FirebaseDatabase.getInstance().getReference("users").child(userid);
-//
-//                            HashMap<String, String> hashMap = new HashMap<>();
-//                            hashMap.put("id", userid);
+                            String currentUserID = firebaseAuth.getCurrentUser().getUid();
+                            rootRef.child("users").child(currentUserID).setValue("");
 
                             Toast.makeText(RegisterActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(RegisterActivity.this, InformationActivity.class);
+
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                             startActivity(intent);
+
                             progressDialog.dismiss();
                             return;
                         } else {
@@ -196,11 +203,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("signInWithEmail", "signInWithEmail:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                            Log.d("signInWithEmail", "signInWithEmail:success");
+//                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            Log.d("afterStartActivity", "afterStartActivity:success");
+//                            Log.d("afterStartActivity", "afterStartActivity:success");
                             progressDialog.dismiss();
                             return;
                         } else {

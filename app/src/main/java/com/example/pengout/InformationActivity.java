@@ -73,7 +73,7 @@ public class InformationActivity extends AppCompatActivity {
         //getting the values to save
         String name = editTextName.getText().toString().trim();
         String interest = spinnerGenre.getSelectedItem().toString();
-
+        String imageURL = "sampleURL";
         //checking if the value is provided
         if (!TextUtils.isEmpty(name)) {
 
@@ -82,7 +82,7 @@ public class InformationActivity extends AppCompatActivity {
             String id = databaseUsers.push().getKey();
 
             //creating an Artist Object
-            User user = new User(id, name, interest);
+            User user = new User(id, name, interest, imageURL);
 
             //Saving the Artist
             assert id != null;
