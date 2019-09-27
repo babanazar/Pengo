@@ -137,6 +137,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
@@ -149,6 +150,9 @@ public class ChatActivity extends AppCompatActivity {
 
             case R.id.chat_create_group:
                 requestNewGroup();
+
+            case R.id.find_friends:
+                sendUserToFindFriendsActivity();
         }
         return false;
     }
@@ -202,6 +206,12 @@ public class ChatActivity extends AppCompatActivity {
         Intent settingsIntent = new Intent(ChatActivity.this, SettingsActivity.class);
         settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
+        finish();
+    }
+
+    private void sendUserToFindFriendsActivity() {
+        Intent findFriendsIntent = new Intent(ChatActivity.this, FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
         finish();
     }
 }
