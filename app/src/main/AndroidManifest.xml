@@ -15,12 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".PrivateChatActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".FindFriendsActivity"
             android:parentActivityName=".ChatActivity" />
         <activity android:name=".GroupChatActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".ChatActivity"></activity>
         <activity android:name=".InformationActivity" />
         <activity
             android:name=".ChatActivity"

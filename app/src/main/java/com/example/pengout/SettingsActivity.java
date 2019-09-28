@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private ProgressDialog loadingBar;
 
+    private Toolbar settingsToolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        userName.setVisibility(View.INVISIBLE);
+//        userName.setVisibility(View.INVISIBLE);
 
         updateAccountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +97,11 @@ public class SettingsActivity extends AppCompatActivity {
         userProfileImage = findViewById(R.id.set_profile_image);
         updateAccountSettings = findViewById(R.id.update_settings_button);
         loadingBar = new ProgressDialog(this);
+        settingsToolBar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(settingsToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Settings");
     }
 
     @Override
@@ -175,12 +183,12 @@ public class SettingsActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(setStatus)) {
             Toast.makeText(this, "Please write your status...", Toast.LENGTH_SHORT).show();
         } else {
-            HashMap<String, String> profileMap = new HashMap<>();
+            HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid", currentUserID);
             profileMap.put("name", setUserName);
             profileMap.put("status", setStatus);
 
-            rootRef.child("users").child(currentUserID).setValue(profileMap)
+            rootRef.child("users").child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -211,23 +219,23 @@ public class SettingsActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("image")))) {
-                        if ((dataSnapshot.exists() && (dataSnapshot.hasChild("image")))) {
-//                            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
-//                            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
+                        if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("image")))) {
+//                        if ((dataSnapshot.exists() && (dataSnapshot.hasChild("image")))) {
+                            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
                             String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
 
-//                            userName.setText(retrieveUserName);
-//                            userStatus.setText(retrieveStatus);
+                            userName.setText(retrieveUserName);
+                            userStatus.setText(retrieveStatus);
                             Picasso.get().load(retrieveProfileImage).into(userProfileImage);
                         }
-//                        else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
-//                            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                        else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
+                            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
 //                            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
 //
-//                            userName.setText(retrieveUserName);
+                            userName.setText(retrieveUserName);
 //                            userStatus.setText(retrieveStatus);
-//                        }
+                        }
                         else {
                             userName.setVisibility(View.VISIBLE);
                             Toast.makeText(SettingsActivity.this, "Please set & update your profile information", Toast.LENGTH_SHORT).show();

@@ -55,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("inHomeActivity", "inHomeActivity:success");
+        Log.d("inHomeActivity", "success");
         setContentView(R.layout.activity_chat);
 
 
@@ -204,9 +204,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendUserToSettingsActivity() {
         Intent settingsIntent = new Intent(ChatActivity.this, SettingsActivity.class);
-        settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
-        finish();
     }
 
     private void sendUserToFindFriendsActivity() {
