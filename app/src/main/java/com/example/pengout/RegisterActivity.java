@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference rootRef;
+    private DatabaseReference rootRef, usersRef;
 
     FirebaseUser firebaseUser;
 
@@ -50,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         firebaseAuth = FirebaseAuth.getInstance();
 
         rootRef = FirebaseDatabase.getInstance().getReference();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
         firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -71,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
 
-//        firebaseUser = firebaseAuth.getCurrentUser();
 
 
         //initializing views
@@ -147,11 +148,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-//                            FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
 
                             String currentUserID = firebaseAuth.getCurrentUser().getUid();
                             rootRef.child("users").child(currentUserID).setValue("");
+
+                            rootRef.child("users").child(currentUserID).child("device_token")
+                                    .setValue(deviceToken);
 
                             Toast.makeText(RegisterActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(RegisterActivity.this, InformationActivity.class);
@@ -202,23 +207,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d("signInWithEmail", "signInWithEmail:success");
-//                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-//                            Log.d("afterStartActivity", "afterStartActivity:success");
-                            progressDialog.dismiss();
-                            return;
+
+                            String currentUserID = firebaseAuth.getCurrentUser().getUid();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                            usersRef.child(currentUserID).child("device_token")
+                                    .setValue(deviceToken)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                progressDialog.dismiss();
+
+                                            }
+                                        }
+                                    });
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signInWithEmail", "signInWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }
-
-                        // ...
                     }
                 });
     }
