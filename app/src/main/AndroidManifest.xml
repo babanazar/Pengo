@@ -15,21 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PrivateChatActivity"></activity>
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".view.activity.PrivateChatActivity"></activity>
+        <activity android:name=".view.activity.ProfileActivity" />
         <activity
-            android:name=".FindFriendsActivity"
-            android:parentActivityName=".ChatActivity" />
-        <activity android:name=".GroupChatActivity" />
+            android:name=".view.activity.FindFriendsActivity"
+            android:parentActivityName=".view.activity.ChatActivity" />
+        <activity android:name=".view.activity.GroupChatActivity" />
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".ChatActivity"></activity>
-        <activity android:name=".InformationActivity" />
+            android:name=".view.activity.SettingsActivity"
+            android:parentActivityName=".view.activity.ChatActivity"></activity>
+        <activity android:name=".view.activity.InformationActivity" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".view.activity.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".view.activity.HomeActivity" />
+        <activity android:name=".view.activity.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

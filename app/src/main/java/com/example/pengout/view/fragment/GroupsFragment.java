@@ -1,4 +1,4 @@
-package com.example.pengout;
+package com.example.pengout.view.fragment;
 
 
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.pengout.R;
+import com.example.pengout.view.activity.GroupChatActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

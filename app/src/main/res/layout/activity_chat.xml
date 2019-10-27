@@ -6,7 +6,7 @@
     android:background="#ffffff"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ChatActivity">
+    tools:context=".view.activity.ChatActivity">
 
     <!--android:paddingBottom="@dimen/acitivity_vertical_margin"-->
     <!--android:paddingLeft="@dimen/acitivity_horizontal_margin"-->

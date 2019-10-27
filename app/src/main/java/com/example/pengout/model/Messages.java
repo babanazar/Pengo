@@ -1,4 +1,4 @@
-package com.example.pengout;
+package com.example.pengout.model;
 
 public class Messages {
 

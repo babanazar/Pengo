@@ -6,7 +6,7 @@
     android:paddingBottom="@dimen/acitivity_vertical_margin"
     android:paddingLeft="@dimen/acitivity_horizontal_margin"
     android:paddingRight="@dimen/acitivity_horizontal_margin"
-    tools:context="Users"
+    tools:context=".model.Users"
     android:orientation="vertical">
 
 

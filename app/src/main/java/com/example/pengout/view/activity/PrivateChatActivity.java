@@ -1,4 +1,4 @@
-package com.example.pengout;
+package com.example.pengout.view.activity;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,6 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pengout.R;
+import com.example.pengout.model.Messages;
+import com.example.pengout.view.adapter.MessageAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

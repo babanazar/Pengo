@@ -1,4 +1,4 @@
-package com.example.pengout;
+package com.example.pengout.view.fragment;
 
 
 import android.app.AlertDialog;
@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pengout.R;
+import com.example.pengout.model.Contacts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
