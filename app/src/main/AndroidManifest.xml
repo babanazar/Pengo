@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.PrivateChatActivity"></activity>
+        <activity
+            android:name=".view.activity.BottomNavigationActivity"
+            android:label="@string/title_activity_bottom_navigation"></activity>
+        <activity android:name=".view.activity.PrivateChatActivity" />
         <activity android:name=".view.activity.ProfileActivity" />
         <activity
             android:name=".view.activity.FindFriendsActivity"
@@ -23,7 +26,7 @@
         <activity android:name=".view.activity.GroupChatActivity" />
         <activity
             android:name=".view.activity.SettingsActivity"
-            android:parentActivityName=".view.activity.ChatActivity"></activity>
+            android:parentActivityName=".view.activity.ChatActivity" />
         <activity android:name=".view.activity.InformationActivity" />
         <activity
             android:name=".view.activity.ChatActivity"

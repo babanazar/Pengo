@@ -89,7 +89,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     public void onStart(){
         super.onStart();
 
-
+/*
         eventsRef.child("-LqrTF2-n_wzJSmKX7v6").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,7 +108,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-
+*/
     }
 
     @Override

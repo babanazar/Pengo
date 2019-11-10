@@ -1,5 +1,6 @@
 package com.example.pengout.view.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +21,14 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.pengout.R;
+import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.TabsAccessorAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -34,7 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     private TabLayout myTabLayout;
     private TabsAccessorAdapter myTabsAccessorAdapter;
     private DatabaseReference rootRef;
-
+    private Context mContext = ChatActivity.this;
 //    FirebaseUser currentUser;
 //
 //    CircleImageView profile_image;
@@ -45,6 +48,8 @@ public class ChatActivity extends AppCompatActivity {
     EditText messageArea;
     ScrollView scrollView;
 //    Firebase reference1, reference2;
+
+    private static final int ACTIVITY_NUM = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,7 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Pengout");
 
+        setupBottomNavigationView();
 
         myViewPager = findViewById(R.id.main_tabs_pager);
         myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
@@ -105,6 +111,15 @@ public class ChatActivity extends AppCompatActivity {
 //
 //            }
 //        });
+    }
+    private void setupBottomNavigationView(){
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
+        BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 //
 //    @Override
