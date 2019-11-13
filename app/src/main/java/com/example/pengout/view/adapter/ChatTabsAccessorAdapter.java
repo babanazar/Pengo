@@ -10,8 +10,8 @@ import com.example.pengout.view.fragment.ContactsFragment;
 import com.example.pengout.view.fragment.GroupsFragment;
 import com.example.pengout.view.fragment.RequestsFragment;
 
-public class TabsAccessorAdapter extends FragmentPagerAdapter {
-    public TabsAccessorAdapter(FragmentManager fm) {
+public class ChatTabsAccessorAdapter extends FragmentPagerAdapter {
+    public ChatTabsAccessorAdapter(FragmentManager fm) {
         super(fm);
     }
 
