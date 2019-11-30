@@ -124,7 +124,6 @@ public class ContactsFragment extends Fragment {
 
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
-
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
