@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.example.pengout.R;
 import com.example.pengout.utils.BottomNavigationViewHelper;
-import com.example.pengout.view.adapter.TabsAccessorAdapter;
+import com.example.pengout.view.adapter.ChatTabsAccessorAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +35,7 @@ public class ChatActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
-    private TabsAccessorAdapter myTabsAccessorAdapter;
+    private ChatTabsAccessorAdapter myChatTabsAccessorAdapter;
     private DatabaseReference rootRef;
     private Context mContext = ChatActivity.this;
 //    FirebaseUser currentUser;
@@ -71,46 +71,13 @@ public class ChatActivity extends AppCompatActivity {
         setupBottomNavigationView();
 
         myViewPager = findViewById(R.id.main_tabs_pager);
-        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
-        myViewPager.setAdapter(myTabsAccessorAdapter);
+        myChatTabsAccessorAdapter = new ChatTabsAccessorAdapter(getSupportFragmentManager());
+        myViewPager.setAdapter(myChatTabsAccessorAdapter);
 
 
         myTabLayout = findViewById(R.id.main_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
-//        profile_image = findViewById(R.id.profile_image);
-//        username = findViewById(R.id.username);
 
-        //getting the reference of artists node
-//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        reference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
-
-//        username.setText(firebaseUser.getUsername());
-
-
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = null;
-//                System.out.println("user.class 1 => " + User.class);
-//                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-//                    user = childSnapshot.getValue(User.class);
-//                }
-//                System.out.println("datasnapshot.getvalue => " + dataSnapshot.getValue(User.class));
-//                User user = dataSnapshot.getValue(User.class);
-//                System.out.println("kull -> " + user);
-//                username.setText(user.getUsername());
-//                if(user.getImageURL().equals("default")){
-//                    profile_image.setImageResource(R.mipmap.ic_launcher);
-//                }else{
-//                    Glide.with(ChatActivity.this).load(user.getImageURL()).into(profile_image);
-//                }
-//            }
-
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
     }
     private void setupBottomNavigationView(){
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
@@ -121,15 +88,7 @@ public class ChatActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        if(currentUser != null){
-//            SendUserToRegisterActivity();
-//        }
-//    }
+
 
     private void SendUserToRegisterActivity() {
         Intent registerIntent = new Intent(ChatActivity.this, RegisterActivity.class);
