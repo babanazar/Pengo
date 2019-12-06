@@ -15,6 +15,7 @@ import com.example.pengout.R;
 import com.example.pengout.model.User;
 import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.ChatTabsAccessorAdapter;
+import com.example.pengout.view.adapter.EtkinlikTabsAccessorAdapter;
 import com.example.pengout.view.adapter.HomeTabsAccessorAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
     private HomeTabsAccessorAdapter myTabsAccessorAdapter;
+    private EtkinlikTabsAccessorAdapter myEtkinlikTabsAccessorAdapter;
 
 //    Button buttonGoChat;
 
@@ -53,12 +55,14 @@ public class HomeActivity extends AppCompatActivity {
 
         setupBottomNavigationView();
 
-        myViewPager = findViewById(R.id.main_tabs_pager);
-        myTabsAccessorAdapter = new HomeTabsAccessorAdapter(getSupportFragmentManager());
-        myViewPager.setAdapter(myTabsAccessorAdapter);
+        myViewPager = findViewById(R.id.home_tabs_pager);
+        myEtkinlikTabsAccessorAdapter = new EtkinlikTabsAccessorAdapter(getSupportFragmentManager());
+        myViewPager.setAdapter(myEtkinlikTabsAccessorAdapter);
+//        myTabsAccessorAdapter = new HomeTabsAccessorAdapter(getSupportFragmentManager());
+//        myViewPager.setAdapter(myTabsAccessorAdapter);
 
 
-        myTabLayout = findViewById(R.id.main_tabs);
+        myTabLayout = findViewById(R.id.home_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
 
         firebaseAuth = FirebaseAuth.getInstance();

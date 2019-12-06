@@ -2,63 +2,53 @@ package com.example.pengout.model;
 
 public class Event {
 
-    private String eventName;
-    private String eventImage;
-    private String eventDate;
-    private String eventPlace;
-    private String eventTime;
+    private String name;
+    private String date;
+    private String place;
+    private String time;
 
 
     public Event(){
 
     }
 
-    public Event(String eventName, String eventImage, String eventDate, String eventPlace, String eventTime) {
-        this.eventName = eventName;
-        this.eventImage = eventImage;
-        this.eventDate = eventDate;
-        this.eventPlace = eventPlace;
-        this.eventTime = eventTime;
+    public Event(String name, String date, String place, String time) {
+        this.name = name;
+        this.date = date;
+        this.place = place;
+        this.time = time;
     }
 
-    public void setEventName(String name) {
-        this.eventName = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public void setEventPlace(String eventPlace) {
-        this.eventPlace = eventPlace;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getName() {
+        return name;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public String getDate() {
+        return date;
     }
 
-    public String getEventPlace() {
-        return eventPlace;
+    public String getPlace() {
+        return place;
     }
 
-    public String getEventTime() {
-        return eventTime;
-    }
-
-    public String getEventImage() {
-        return eventImage;
-    }
-
-    public void setEventImage(String eventImage) {
-        this.eventImage = eventImage;
+    public String getTime() {
+        return time;
     }
 
 }
