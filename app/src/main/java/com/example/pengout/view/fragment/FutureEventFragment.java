@@ -21,9 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -37,6 +34,8 @@ public class FutureEventFragment extends Fragment {
     private DatabaseReference eventsRef, usersRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
+
+    private String retImage = "default_image";
 
     public FutureEventFragment() {
     }
@@ -71,16 +70,17 @@ public class FutureEventFragment extends Fragment {
         FirebaseRecyclerAdapter<Event, EventViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Event, EventViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull EventViewHolder holder, final int position, @NonNull Event model) {
+                    protected void onBindViewHolder(@NonNull final EventViewHolder holder, int position, @NonNull Event model) {
 
-                        holder.eventName.setText(model.getEventName());
-                        holder.eventTime.setText(model.getEventName());
-                        holder.eventDate.setText(model.getEventName());
-                        holder.eventPlace.setText(model.getEventName());
+
+//                        holder.name.setText(model.getName());
+//                        holder.time.setText(model.getName());
+//                        holder.date.setText(model.getName());
+//                        holder.place.setText(model.getName());
 //                        Picasso.get().load(model.getImage()).placeholder(R.drawable.profile_image).into(holder.eventImage);
-                        /*String userIDs = getRef(position).getKey();
+                        final String eventIDs = getRef(position).getKey();
 
-                        eventsRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+                        eventsRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -89,21 +89,21 @@ public class FutureEventFragment extends Fragment {
                                     String profileName = dataSnapshot.child("name").getValue().toString();
                                     String profileStatus = dataSnapshot.child("status").getValue().toString();
 
-                                    holder.eventName.setText(profileName);
-                                    holder.eventPlace.setText(profileName);
-                                    holder.eventDate.setText(profileName);
-                                    holder.eventTime.setText(profileName);
-                                    Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(holder.eventImage);
+                                    holder.name.setText(profileName);
+                                    holder.place.setText(profileName);
+                                    holder.date.setText(profileName);
+                                    holder.time.setText(profileName);
+//                                    Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(holder.eventImage);
                                 } else {
                                     String eventDate = dataSnapshot.child("date").getValue().toString();
                                     String eventName = dataSnapshot.child("name").getValue().toString();
                                     String eventPlace = dataSnapshot.child("place").getValue().toString();
                                     String eventTime = dataSnapshot.child("time").getValue().toString();
 
-                                    holder.eventName.setText(eventName);
-                                    holder.eventPlace.setText(eventPlace);
-                                    holder.eventDate.setText(eventDate);
-                                    holder.eventTime.setText(eventTime);
+                                    holder.name.setText(eventName);
+                                    holder.place.setText(eventPlace);
+                                    holder.date.setText(eventDate);
+                                    holder.time.setText(eventTime);
                                 }
                             }
 
@@ -112,15 +112,13 @@ public class FutureEventFragment extends Fragment {
 
                             }
                         });
-                        */
                     }
 
                     @NonNull
                     @Override
                     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.event_display_layout, viewGroup, false);
-                        EventViewHolder viewHolder = new EventViewHolder(view);
-                        return viewHolder;
+                        return new EventViewHolder(view);
                     }
 
                 };
@@ -130,18 +128,18 @@ public class FutureEventFragment extends Fragment {
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
 
-        TextView eventName, eventDate, eventPlace, eventTime;
-        CircleImageView eventImage;
+        TextView name, date, place, time;
+//        CircleImageView eventImage;
 
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            eventName = itemView.findViewById(R.id.event_name);
-            eventDate = itemView.findViewById(R.id.event_date);
-            eventPlace = itemView.findViewById(R.id.event_place);
-            eventTime = itemView.findViewById(R.id.event_time);
-            eventImage = itemView.findViewById(R.id.event_image);
+            name = itemView.findViewById(R.id.event_name);
+            date = itemView.findViewById(R.id.event_date);
+            place = itemView.findViewById(R.id.event_place);
+            time = itemView.findViewById(R.id.event_time);
+//            eventImage = itemView.findViewById(R.id.event_image);
         }
     }
 }

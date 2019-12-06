@@ -6,17 +6,17 @@
     tools:context=".view.fragment.FutureEventFragment">
 
 
-    <include
-        layout="@layout/app_bar_layout"
-        android:id="@+id/future_events_toolbar">
-    </include>
+    <!--<include-->
+        <!--layout="@layout/app_bar_layout"-->
+        <!--android:id="@+id/future_events_toolbar">-->
+    <!--</include>-->
+    <!--android:layout_below="@+id/future_events_toolbar"-->
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/future_events_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/future_events_toolbar"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"/>
 </RelativeLayout>
