@@ -1,6 +1,7 @@
 package com.example.pengout.view.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.pengout.R;
 import com.example.pengout.model.Event;
+import com.example.pengout.view.activity.EventActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,7 +78,7 @@ public class GelecekEtkinlikFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull final GelecekEtkinlikViewHolder holder, int position, @NonNull Event model) {
 
-                String eventIDs = getRef(position).getKey();
+                final String eventIDs = getRef(position).getKey();
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -104,6 +106,15 @@ public class GelecekEtkinlikFragment extends Fragment {
                             holder.time.setText(time);
                             holder.date.setText(date);
                         }
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent eventActivityIntent = new Intent(getContext(), EventActivity.class);
+
+                                eventActivityIntent.putExtra("visit_event_id", eventIDs);
+                                startActivity(eventActivityIntent);
+                            }
+                        });
                     }
 
                     @Override

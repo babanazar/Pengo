@@ -115,12 +115,14 @@ public class ChatActivity extends AppCompatActivity {
 
             case R.id.settings:
                 sendUserToSettingsActivity();
+                return true;
 
-            case R.id.chat_create_group:
-                requestNewGroup();
+//            case R.id.chat_create_group:
+//                requestNewGroup();
 
             case R.id.find_friends:
                 sendUserToFindFriendsActivity();
+                return true;
         }
         return false;
     }
@@ -178,6 +180,6 @@ public class ChatActivity extends AppCompatActivity {
     private void sendUserToFindFriendsActivity() {
         Intent findFriendsIntent = new Intent(ChatActivity.this, FindFriendsActivity.class);
         startActivity(findFriendsIntent);
-        finish();
+//        finish();
     }
 }

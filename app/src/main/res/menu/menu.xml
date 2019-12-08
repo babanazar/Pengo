@@ -8,8 +8,8 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/chat_create_group"
-        android:title="Create Group"
+        android:id="@+id/create_event"
+        android:title="Create Event"
         app:showAsAction="never"/>
 
 

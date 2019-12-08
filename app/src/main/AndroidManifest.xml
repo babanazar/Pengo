@@ -15,9 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.activity.CreateEventActivity"></activity>
+        <activity android:name=".view.activity.EventActivity" />
         <activity
             android:name=".view.activity.BottomNavigationActivity"
-            android:label="@string/title_activity_bottom_navigation"></activity>
+            android:label="@string/title_activity_bottom_navigation" />
         <activity android:name=".view.activity.PrivateChatActivity" />
         <activity android:name=".view.activity.ProfileActivity" />
         <activity
