@@ -109,11 +109,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (requestCode == GALLERYPICK && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
+            CropImage.activity(imageUri).start(this);
 
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .start(this);
         }
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {

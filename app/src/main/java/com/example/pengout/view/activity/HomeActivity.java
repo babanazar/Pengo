@@ -71,34 +71,10 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("emeyil", email);
 
 
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("");
-
-
         //getting the reference of artists node
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
 
-        //getting chat button
-//        buttonGoChat =  findViewById(R.id.buttonGoChat);
 
-
-
-//        TextView username = findViewById(R.id.username);
-//        username.setText("Email: " + email);
-
-        //adding an onclicklistener to button
-//        buttonGoChat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //calling the method addArtist()
-//                //the method is defined below
-//                //this method is actually performing the write operation
-//                Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     private void setupBottomNavigationView(){
@@ -122,31 +98,44 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId()){
+            case R.id.find_friends:
+                sendUserToFindFriendsActivity();
+                return true;
+
+            case R.id.create_event:
+                sendUserToCreateEventActivity();
+//                finish();
+                return true;
+
+            case R.id.settings:
+                sendUserToSettingsActivity();
+                return true;
+
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(HomeActivity.this, RegisterActivity.class));
                 finish();
                 return true;
-
-            case R.id.settings:
-                sendUserToSettingsActivity();
-
-
-            case R.id.find_friends:
-                sendUserToFindFriendsActivity();
         }
         return false;
+    }
+
+    private void sendUserToCreateEventActivity() {
+        Intent createEventIntent = new Intent(HomeActivity.this, CreateEventActivity.class);
+        startActivity(createEventIntent);
+//        finish();
     }
 
     private void sendUserToFindFriendsActivity() {
         Intent findFriendsIntent = new Intent(HomeActivity.this, FindFriendsActivity.class);
         startActivity(findFriendsIntent);
-        finish();
+//        finish();
     }
 
     private void sendUserToSettingsActivity() {
         Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
+//        finish();
     }
 
 }
