@@ -10,13 +10,50 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
-        </SearchView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <EditText
+                android:id="@+id/search_field"
+                android:layout_width="322dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_toStartOf="@+id/search_btn"
+                android:ems="10"
+                android:hint="Search here"
+                android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textColor="#999999"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/search_field"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/search_field"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/background_light"
+                app:srcCompat="@drawable/search_button" />
+
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_field"
+            android:layout_marginTop="50dp">
+        </android.support.v7.widget.RecyclerView>
+
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,6 +73,7 @@
             <include layout="@layout/category_4"/>
 
         </LinearLayout>
+        -->
 
 
     </LinearLayout>
