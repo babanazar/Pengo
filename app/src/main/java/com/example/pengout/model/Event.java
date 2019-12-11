@@ -6,6 +6,8 @@ public class Event {
     private String date;
     private String place;
     private String time;
+    private String category;
+    private String url;
 
 
     public Event(){

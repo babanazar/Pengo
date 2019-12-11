@@ -30,6 +30,7 @@
             android:name=".view.activity.SettingsActivity"
             android:parentActivityName=".view.activity.ChatActivity" />
         <activity android:name=".view.activity.InformationActivity" />
+
         <activity
             android:name=".view.activity.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -44,6 +45,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".view.activity.CategoryActivity" />
     </application>
 
 </manifest>
