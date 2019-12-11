@@ -14,11 +14,13 @@ public class Event {
 
     }
 
-    public Event(String name, String date, String place, String time) {
+    public Event(String name, String date, String place, String time, String category, String url) {
         this.name = name;
         this.date = date;
         this.place = place;
         this.time = time;
+        this.category = category;
+        this.url = url;
     }
 
     public void setName(String name) {
@@ -53,4 +55,19 @@ public class Event {
         return time;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
