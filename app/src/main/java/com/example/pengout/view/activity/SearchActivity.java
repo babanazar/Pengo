@@ -6,7 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,11 +19,13 @@ import android.widget.Toast;
 
 import com.example.pengout.R;
 import com.example.pengout.model.Event;
+import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.w3c.dom.Text;
 
@@ -31,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
     private EditText searchText;
     private RecyclerView results;
     private DatabaseReference mEventDatabase;
+    private Toolbar mToolbar;
 
     FirebaseRecyclerAdapter<Event, EventsViewHolder> adapter;
     Query firebaseSearchQuery;
@@ -39,6 +45,12 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_cards);
+
+        mToolbar = findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Pengout");
+
+        setupBottomNavigationView();
 
         mEventDatabase = FirebaseDatabase.getInstance().getReference("EventsTranslated");
 
@@ -88,6 +100,16 @@ public class SearchActivity extends AppCompatActivity {
         };
         results.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    private void setupBottomNavigationView(){
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
+        BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(CategoryActivity.this, bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
     }
 
     public static class EventsViewHolder extends RecyclerView.ViewHolder{

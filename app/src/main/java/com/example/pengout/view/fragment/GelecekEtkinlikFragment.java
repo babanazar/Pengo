@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pengout.R;
@@ -41,7 +42,6 @@ public class GelecekEtkinlikFragment extends Fragment {
     private String currentUserID;
 
     public GelecekEtkinlikFragment() {
-        // Required empty public constructor
     }
 
 
@@ -58,7 +58,7 @@ public class GelecekEtkinlikFragment extends Fragment {
         currentUserID = mAuth.getCurrentUser().getUid();
 
 
-        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("futureEvents"); // just add .child(currentUserID);
+        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("EventsWithCategory").child("art"); // just add .child(currentUserID);
 
         return gelecekEtkinlikView;
     }
@@ -82,8 +82,8 @@ public class GelecekEtkinlikFragment extends Fragment {
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild("image")) {
-//                            String image = dataSnapshot.child("image").getValue().toString();
+                        if (dataSnapshot.hasChild("url")) {
+                            String imageUrl = dataSnapshot.child("url").getValue().toString();
                             String name = dataSnapshot.child("name").getValue().toString();
                             String place = dataSnapshot.child("place").getValue().toString();
                             String time = dataSnapshot.child("time").getValue().toString();
@@ -93,7 +93,7 @@ public class GelecekEtkinlikFragment extends Fragment {
                             holder.place.setText(place);
                             holder.time.setText(time);
                             holder.date.setText(date);
-//                            Picasso.get().load(image).placeholder(R.drawable.profile_image).into(holder);
+                            Picasso.get().load(imageUrl).placeholder(R.drawable.profile_image).into(holder.image);
 
                         }else {
                             String name = dataSnapshot.child("name").getValue().toString();
@@ -139,7 +139,7 @@ public class GelecekEtkinlikFragment extends Fragment {
     public static class GelecekEtkinlikViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, place, time, date;
-//        CircleImageView eventImage;
+        ImageView image;
 
         public GelecekEtkinlikViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -148,6 +148,7 @@ public class GelecekEtkinlikFragment extends Fragment {
             place = itemView.findViewById(R.id.event_place);
             time = itemView.findViewById(R.id.event_time);
             date = itemView.findViewById(R.id.event_date);
+            image = itemView.findViewById(R.id.event_image);
         }
     }
 }

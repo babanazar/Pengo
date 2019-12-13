@@ -14,9 +14,7 @@ import android.view.MenuItem;
 import com.example.pengout.R;
 import com.example.pengout.model.User;
 import com.example.pengout.utils.BottomNavigationViewHelper;
-import com.example.pengout.view.adapter.ChatTabsAccessorAdapter;
 import com.example.pengout.view.adapter.EtkinlikTabsAccessorAdapter;
-import com.example.pengout.view.adapter.HomeTabsAccessorAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +28,6 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
-    private HomeTabsAccessorAdapter myTabsAccessorAdapter;
     private EtkinlikTabsAccessorAdapter myEtkinlikTabsAccessorAdapter;
 
 //    Button buttonGoChat;
