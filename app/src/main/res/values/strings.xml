@@ -18,5 +18,8 @@
     <string name="title_feed">Feed</string>
     <string name="title_events">Events</string>
     <string name="title_chat">Chats</string>
+    <string name="title">notification title</string>
+    <string name="content">notification content</string>
+    <string name="EVENT_CHANNEL_ID">1</string>
 
 </resources>

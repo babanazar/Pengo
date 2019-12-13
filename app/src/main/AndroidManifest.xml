@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.CreateEventActivity"></activity>
+        <activity android:name=".view.activity.NotificationDetailsActivity"></activity>
+        <activity android:name=".view.activity.CreateEventActivity" />
         <activity android:name=".view.activity.EventActivity" />
         <activity
             android:name=".view.activity.BottomNavigationActivity"
@@ -30,7 +31,6 @@
             android:name=".view.activity.SettingsActivity"
             android:parentActivityName=".view.activity.ChatActivity" />
         <activity android:name=".view.activity.InformationActivity" />
-
         <activity
             android:name=".view.activity.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -46,6 +46,10 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".view.activity.CategoryActivity" />
+
+        <!--<receiver android:name=".view.activity.NotificationDetailsActivity" />-->
+        <!--com.example.pengout.view.activity.NotificationDetailsActivity-->
+        <receiver android:name=".utils.MyNotificationPublisher" />
     </application>
 
 </manifest>

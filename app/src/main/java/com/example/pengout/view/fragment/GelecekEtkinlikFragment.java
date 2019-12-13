@@ -112,6 +112,8 @@ public class GelecekEtkinlikFragment extends Fragment {
                                 Intent eventActivityIntent = new Intent(getContext(), EventActivity.class);
 
                                 eventActivityIntent.putExtra("visit_event_id", eventIDs);
+                                eventActivityIntent.putExtra("current_user_id", currentUserID);
+
                                 startActivity(eventActivityIntent);
                             }
                         });

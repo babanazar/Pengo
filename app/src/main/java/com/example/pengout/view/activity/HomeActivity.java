@@ -30,8 +30,6 @@ public class HomeActivity extends AppCompatActivity {
     private TabLayout myTabLayout;
     private EtkinlikTabsAccessorAdapter myEtkinlikTabsAccessorAdapter;
 
-//    Button buttonGoChat;
-
     DatabaseReference databaseUsers;
     User currentUser;
     private FirebaseAuth firebaseAuth;
