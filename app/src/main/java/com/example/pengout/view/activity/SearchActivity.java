@@ -24,7 +24,7 @@ import com.google.firebase.database.Query;
 
 import org.w3c.dom.Text;
 
-public class CategoryActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     //private ImageView music,sport,edu,theatre;
     private ImageButton searchButton;

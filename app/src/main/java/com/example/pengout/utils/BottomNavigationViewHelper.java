@@ -7,7 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 import com.example.pengout.R;
-import com.example.pengout.view.activity.CategoryActivity;
+import com.example.pengout.view.activity.SearchActivity;
 import com.example.pengout.view.activity.ChatActivity;
 import com.example.pengout.view.activity.HomeActivity;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -35,7 +35,7 @@ public class BottomNavigationViewHelper {
                         break;
 
                     case R.id.navigation_events:
-                        Intent intent2 = new Intent(context, CategoryActivity.class); //ACTIVITY_NUM = 1
+                        Intent intent2 = new Intent(context, SearchActivity.class); //ACTIVITY_NUM = 1
                         context.startActivity(intent2);
                         break;
                     case R.id.navigation_chats:
