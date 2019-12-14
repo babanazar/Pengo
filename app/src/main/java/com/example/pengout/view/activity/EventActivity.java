@@ -19,12 +19,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.pengout.R;
 import com.example.pengout.utils.MyNotificationPublisher;
+import com.example.pengout.utils.ScheduleClient;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -35,8 +38,11 @@ public class EventActivity extends AppCompatActivity {
     private Button registerButton;
     private Context mContext;
 
+    private ScheduleClient scheduleClient;
+    private DatePicker picker;
+
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
-    private final static String default_notification_channel_id = "default";
+    public final static String default_notification_channel_id = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +52,34 @@ public class EventActivity extends AppCompatActivity {
         currentUserId = getIntent().getExtras().get("current_user_id").toString();
         registerButton = findViewById(R.id.registerButton);
 
-        createNotificationChannel();
+        scheduleClient = new ScheduleClient(this);
+        scheduleClient.doBindService();
+
+        picker = (DatePicker) findViewById(R.id.scheduleTimePicker);
+
+//        createNotificationChannel();
 
         mContext = this;
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get the date from our datepicker
+                int day = picker.getDayOfMonth();
+                int month = picker.getMonth();
+                int year = picker.getYear();
+                // Create a new calendar set to the date chosen
+                // we set the time to midnight (i.e. the first minute of that day)
+                Calendar c = Calendar.getInstance();
+                c.set(year, month, day);
+                c.set(Calendar.HOUR_OF_DAY, 0);
+                c.set(Calendar.MINUTE, 0);
+                c.set(Calendar.SECOND, 0);
+                // Ask our service to set an alarm for that date, this activity talks to the client that talks to the service
+                scheduleClient.setAlarmForNotification(mContext, c);
+                // Notify the user what they just did
 //                triggerNotification();
-                updateLabel();
+//                updateLabel();
 //                scheduleNotification(mContext, 500, 23);
                 Toast.makeText(mContext, "After Schedule Notification", Toast.LENGTH_SHORT).show();
             }
@@ -159,4 +184,13 @@ public class EventActivity extends AppCompatActivity {
 //        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
 //    }
+
+    @Override
+    protected void onStop() {
+        // When our activity is stopped ensure we also stop the connection to the service
+        // this stops us leaking our activity into the system *bad*
+        if(scheduleClient != null)
+            scheduleClient.doUnbindService();
+        super.onStop();
+    }
 }

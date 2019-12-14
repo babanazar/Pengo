@@ -49,7 +49,9 @@
 
         <!--<receiver android:name=".view.activity.NotificationDetailsActivity" />-->
         <!--com.example.pengout.view.activity.NotificationDetailsActivity-->
-        <receiver android:name=".utils.MyNotificationPublisher" />
+        <!--<receiver android:name=".utils.MyNotificationPublisher" />-->
+        <service android:name=".utils.ScheduleService" />
+        <service android:name=".utils.NotifyService" />
     </application>
 
 </manifest>
