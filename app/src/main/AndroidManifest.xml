@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+
+        <receiver android:name="com.allyants.notifyme.NotificationPublisher"/>
+        <receiver android:name="com.allyants.notifyme.BootNotifyMe">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+
+                <category android:name="android.intent.category.HOME"/>
+            </intent-filter>
+        </receiver>
+
+
+
         <activity android:name=".view.activity.NotificationDetailsActivity"></activity>
         <activity android:name=".view.activity.CreateEventActivity" />
         <activity android:name=".view.activity.EventActivity" />
@@ -47,11 +61,6 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".view.activity.CategoryActivity" />
 
-        <!--<receiver android:name=".view.activity.NotificationDetailsActivity" />-->
-        <!--com.example.pengout.view.activity.NotificationDetailsActivity-->
-        <!--<receiver android:name=".utils.MyNotificationPublisher" />-->
-        <service android:name=".utils.ScheduleService" />
-        <service android:name=".utils.NotifyService" />
     </application>
 
 </manifest>
