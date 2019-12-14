@@ -1,6 +1,8 @@
 package com.example.pengout.view.fragment;
 
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -82,8 +84,9 @@ public class GelecekEtkinlikFragment extends Fragment {
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String imageUrl="";
                         if (dataSnapshot.hasChild("url")) {
-                            String imageUrl = dataSnapshot.child("url").getValue().toString();
+                            imageUrl = dataSnapshot.child("url").getValue().toString();
                             String name = dataSnapshot.child("name").getValue().toString();
                             String place = dataSnapshot.child("place").getValue().toString();
                             String time = dataSnapshot.child("time").getValue().toString();
@@ -106,13 +109,15 @@ public class GelecekEtkinlikFragment extends Fragment {
                             holder.time.setText(time);
                             holder.date.setText(date);
                         }
+                        final String finalImageUrl = imageUrl;
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent eventActivityIntent = new Intent(getContext(), EventActivity.class);
 
                                 eventActivityIntent.putExtra("visit_event_id", eventIDs);
-                                startActivity(eventActivityIntent);
+                                eventActivityIntent.putExtra("event_image_url", finalImageUrl);
+                                startActivity(eventActivityIntent, ActivityOptions.makeSceneTransitionAnimation((Activity)getContext(),holder.image,"shareView").toBundle());
                             }
                         });
                     }
