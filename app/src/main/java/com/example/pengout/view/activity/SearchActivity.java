@@ -3,6 +3,7 @@ package com.example.pengout.view.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +25,20 @@ import com.example.pengout.model.Event;
 import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -37,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView results;
     private DatabaseReference mEventDatabase;
     private Toolbar mToolbar;
+    private LinearLayout emptyView;
 
     FirebaseRecyclerAdapter<Event, EventsViewHolder> adapter;
     Query firebaseSearchQuery;
@@ -44,19 +56,20 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_cards);
+        setContentView(R.layout.activity_search);
 
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Pengout");
+        //getSupportActionBar().setTitle("Search");
 
         setupBottomNavigationView();
 
-        mEventDatabase = FirebaseDatabase.getInstance().getReference("EventsTranslated");
+        mEventDatabase = FirebaseDatabase.getInstance().getReference("eventWithDesc");
 
         searchButton = findViewById(R.id.search_btn);
         searchText = findViewById(R.id.search_field);
         results = findViewById(R.id.results);
+        emptyView = findViewById(R.id.emptySearch);
         results.setLayoutManager(new LinearLayoutManager(this));
 
         //Glide.with(getApplicationContext()).load("https://cdn2.allevents.in/thumbs/thumb5dbb7cb95ea77.jpg").override(200,200).centerCrop().into(edu);
@@ -76,11 +89,12 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        firebaseEventSearch("G");
+        firebaseEventSearch("");
     }
 
-    void firebaseEventSearch(String searchText){
-        Toast.makeText(this,"Search",Toast.LENGTH_SHORT).show();
+    void firebaseEventSearch(final String searchText){
+        final List<String> resList = new ArrayList<>();
+
         firebaseSearchQuery = mEventDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Event>().setQuery(firebaseSearchQuery,Event.class).build();
         adapter = new FirebaseRecyclerAdapter<Event, EventsViewHolder>(options) {
@@ -96,8 +110,12 @@ public class SearchActivity extends AppCompatActivity {
                 holder.n.setText(model.getName());
                 holder.d.setText(model.getDate());
                 holder.p.setText(model.getPlace());
+                Picasso.get().load(model.getUrl()).placeholder(R.drawable.profile_image).into(holder.imageView);
             }
+
+
         };
+
         results.setAdapter(adapter);
         adapter.startListening();
     }
@@ -115,11 +133,13 @@ public class SearchActivity extends AppCompatActivity {
     public static class EventsViewHolder extends RecyclerView.ViewHolder{
 
         TextView n,d,p;
+        ImageView imageView;
         public EventsViewHolder(View itemView){
             super(itemView);
             n = itemView.findViewById(R.id.name_text);
             d = itemView.findViewById(R.id.date_text);
             p = itemView.findViewById(R.id.place_text);
+            imageView = itemView.findViewById(R.id.search_im);
 
         }
     }
