@@ -1,6 +1,7 @@
 package com.example.pengout.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -93,8 +94,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     void firebaseEventSearch(final String searchText){
-        final List<String> resList = new ArrayList<>();
-
         firebaseSearchQuery = mEventDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Event>().setQuery(firebaseSearchQuery,Event.class).build();
         adapter = new FirebaseRecyclerAdapter<Event, EventsViewHolder>(options) {
@@ -106,11 +105,42 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull Event model) {
+            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull final Event model) {
                 holder.n.setText(model.getName());
                 holder.d.setText(model.getDate());
                 holder.p.setText(model.getPlace());
                 Picasso.get().load(model.getUrl()).placeholder(R.drawable.profile_image).into(holder.imageView);
+                final String[] eventIDs = new String[1];
+                firebaseSearchQuery.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot data:dataSnapshot.getChildren()){
+                            if(data.child("name").getValue().toString().equals(model.getName())){
+                                eventIDs[0] = data.getKey();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                holder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(),eventIDs[0],Toast.LENGTH_SHORT).show();
+                        //Intent eventActivityIntent = new Intent(getApplicationContext(), EventActivity.class);
+                        //eventActivityIntent.putExtra("event_id", eventIDs);
+                        //eventActivityIntent.putExtra("event_name", model.getName());
+                        //eventActivityIntent.putExtra("event_date", model.getDate());
+                        //eventActivityIntent.putExtra("event_place", model.getPlace());
+                        //eventActivityIntent.putExtra("event_desc", model.getDesc());
+                        //eventActivityIntent.putExtra("event_loc", model.getLoc());
+                        //eventActivityIntent.putExtra("event_image_url", model.getUrl());
+                        //startActivity(eventActivityIntent);
+                    }
+                });
             }
 
 

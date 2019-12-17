@@ -24,6 +24,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIanLPsJjxWO9DRbGgBFMIKOGOELnJAT8" />
         <activity android:name=".view.activity.EventActivity" />
+        <activity android:name=".view.activity.SearchActivity" />
         <activity
             android:name=".view.activity.BottomNavigationActivity"
             android:label="@string/title_activity_bottom_navigation" />
