@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/chat_create_group"
-        android:title="Create Group"
+        android:id="@+id/find_friends"
+        android:title="Find Friends"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/create_event"
+        android:title="Create Event"
         app:showAsAction="never"/>
 
 

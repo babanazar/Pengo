@@ -4,8 +4,9 @@
     package="com.example.pengout">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -15,20 +16,49 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".GroupChatActivity"></activity>
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".InformationActivity" />
+        <activity android:name=".view.activity.EditProfileActivity"></activity>
+        <activity android:name=".view.activity.MyProfileActivity" />
+
+        <receiver android:name="com.allyants.notifyme.NotificationPublisher" />
+        <receiver android:name="com.allyants.notifyme.BootNotifyMe">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".view.activity.NotificationDetailsActivity" />
+        <activity android:name=".view.activity.CreateEventActivity" />
+        <activity android:name=".view.activity.EventActivity" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".view.activity.BottomNavigationActivity"
+            android:label="@string/title_activity_bottom_navigation" />
+        <activity android:name=".view.activity.PrivateChatActivity" />
+        <activity android:name=".view.activity.ProfileActivity" />
+        <activity
+            android:name=".view.activity.FindFriendsActivity"
+            android:parentActivityName=".view.activity.ChatActivity" />
+        <activity android:name=".view.activity.GroupChatActivity" />
+        <activity
+            android:name=".view.activity.SettingsActivity"
+            android:parentActivityName=".view.activity.ChatActivity" />
+        <activity android:name=".view.activity.InformationActivity" />
+        <activity
+            android:name=".view.activity.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".view.activity.HomeActivity" />
+        <activity android:name=".view.activity.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".view.activity.CategoryActivity" />
     </application>
 
 </manifest>
