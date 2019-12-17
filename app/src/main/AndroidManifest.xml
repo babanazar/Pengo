@@ -30,7 +30,16 @@
 
         <activity android:name=".view.activity.NotificationDetailsActivity" />
         <activity android:name=".view.activity.CreateEventActivity" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <activity android:name=".view.activity.CreateEventActivity"></activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBIanLPsJjxWO9DRbGgBFMIKOGOELnJAT8" />
         <activity android:name=".view.activity.EventActivity" />
+        <activity android:name=".view.activity.SearchActivity" />
         <activity
             android:name=".view.activity.BottomNavigationActivity"
             android:label="@string/title_activity_bottom_navigation" />
@@ -58,7 +67,8 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".view.activity.CategoryActivity" />
+        <activity android:name=".view.activity.SearchActivity" />
+        <activity android:name=".view.activity.CalendarActivity" />
     </application>
 
 </manifest>

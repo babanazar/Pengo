@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.example.pengout.R;
 
-import static com.example.pengout.view.activity.EventActivity.NOTIFICATION_CHANNEL_ID;
+//import static com.example.pengout.view.activity.EventActivity.NOTIFICATION_CHANNEL_ID;
 
 public class NotificationDetailsActivity extends AppCompatActivity {
 
@@ -28,9 +28,9 @@ public class NotificationDetailsActivity extends AppCompatActivity {
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            //NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
             assert notificationManager != null;
-            notificationManager.createNotificationChannel(notificationChannel);
+            //notificationManager.createNotificationChannel(notificationChannel);
         }
         int id = intent.getIntExtra(NOTIFICATION_ID, 0);
         assert notificationManager != null;

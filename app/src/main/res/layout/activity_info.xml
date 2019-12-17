@@ -1,52 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.pengout.view.activity.InformationActivity">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-    <EditText
-        android:id="@+id/editTextName"
+    <LinearLayout
+        android:id="@+id/container_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter name" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"></LinearLayout>
 
-    <Spinner
-        android:id="@+id/spinnerInterests"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextName"
-        android:entries="@array/interests"></Spinner>
-
-    <Button
-        android:id="@+id/buttonGoChat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerInterests"
-        android:text="Add" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/buttonGoChat"
-        android:text="Artists"
-        android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
-        android:textAlignment="center" />
-
-    <ListView
-        android:id="@+id/listViewUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"></ListView>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
