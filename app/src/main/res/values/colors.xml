@@ -5,4 +5,14 @@
     <color name="colorAccent">#D81B60</color>
     <color name="grey">#BFBFBF</color>
     <color name="white">#FFF</color>
+    <color name="accent">#0D5D98</color>
+    <color name="address">#2F7092</color>
+    <color name="followers">#0D5D98</color>
+    <color name="headings">#E8FF5722</color>
+    <color name="solidCircle">#AAFFFFFF</color>
+    <color name="circleBorder">#30FFFFFF</color>
+    <color name="gradEnd">#FF9800</color>
+    <color name="gradStart">#FFC107</color>
+    <color name="followersBg">#D5FF5722</color>
+    <color name="followingBg">#FA6839</color>
 </resources>

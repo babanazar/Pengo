@@ -10,6 +10,7 @@ import com.example.pengout.R;
 import com.example.pengout.view.activity.CategoryActivity;
 import com.example.pengout.view.activity.ChatActivity;
 import com.example.pengout.view.activity.HomeActivity;
+import com.example.pengout.view.activity.MyProfileActivity;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationViewHelper {
@@ -41,6 +42,11 @@ public class BottomNavigationViewHelper {
                     case R.id.navigation_chats:
                         Intent intent3 = new Intent(context, ChatActivity.class);   //ACTIVITY_NUM = 2
                         context.startActivity(intent3);
+                        break;
+
+                    case R.id.navigation_my_profile:
+                        Intent intent4 = new Intent(context, MyProfileActivity.class);
+                        context.startActivity(intent4);
                         break;
                 }
                 return false;

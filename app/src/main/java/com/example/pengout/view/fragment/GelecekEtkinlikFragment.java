@@ -82,12 +82,17 @@ public class GelecekEtkinlikFragment extends Fragment {
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final String imageUrl;
+                        final String name;
+                        final String place;
+                        final String time;
+                        final String date;
                         if (dataSnapshot.hasChild("url")) {
-                            String imageUrl = dataSnapshot.child("url").getValue().toString();
-                            String name = dataSnapshot.child("name").getValue().toString();
-                            String place = dataSnapshot.child("place").getValue().toString();
-                            String time = dataSnapshot.child("time").getValue().toString();
-                            String date = dataSnapshot.child("date").getValue().toString();
+                            imageUrl = dataSnapshot.child("url").getValue().toString();
+                            name = dataSnapshot.child("name").getValue().toString();
+                            place = dataSnapshot.child("place").getValue().toString();
+                            time = dataSnapshot.child("time").getValue().toString();
+                            date = dataSnapshot.child("date").getValue().toString();
 
                             holder.name.setText(name);
                             holder.place.setText(place);
@@ -96,10 +101,10 @@ public class GelecekEtkinlikFragment extends Fragment {
                             Picasso.get().load(imageUrl).placeholder(R.drawable.profile_image).into(holder.image);
 
                         }else {
-                            String name = dataSnapshot.child("name").getValue().toString();
-                            String place = dataSnapshot.child("place").getValue().toString();
-                            String time = dataSnapshot.child("time").getValue().toString();
-                            String date = dataSnapshot.child("date").getValue().toString();
+                            name = dataSnapshot.child("name").getValue().toString();
+                            place = dataSnapshot.child("place").getValue().toString();
+                            time = dataSnapshot.child("time").getValue().toString();
+                            date = dataSnapshot.child("date").getValue().toString();
 
                             holder.name.setText(name);
                             holder.place.setText(place);
@@ -113,6 +118,13 @@ public class GelecekEtkinlikFragment extends Fragment {
 
                                 eventActivityIntent.putExtra("visit_event_id", eventIDs);
                                 eventActivityIntent.putExtra("current_user_id", currentUserID);
+
+
+                                eventActivityIntent.putExtra("visit_event_name", name);
+                                eventActivityIntent.putExtra("visit_event_place", place);
+                                eventActivityIntent.putExtra("visit_event_time", time);
+                                eventActivityIntent.putExtra("visit_event_date", date);
+
 
                                 startActivity(eventActivityIntent);
                             }
