@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.activity.EditProfileActivity"></activity>
+        <activity android:name=".view.activity.MyProfileActivity" />
+
+        <receiver android:name="com.allyants.notifyme.NotificationPublisher" />
+        <receiver android:name="com.allyants.notifyme.BootNotifyMe">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".view.activity.NotificationDetailsActivity" />
+        <activity android:name=".view.activity.CreateEventActivity" />
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity android:name=".view.activity.CreateEventActivity"></activity>
         <meta-data
@@ -38,7 +53,6 @@
             android:name=".view.activity.SettingsActivity"
             android:parentActivityName=".view.activity.ChatActivity" />
         <activity android:name=".view.activity.InformationActivity" />
-
         <activity
             android:name=".view.activity.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />

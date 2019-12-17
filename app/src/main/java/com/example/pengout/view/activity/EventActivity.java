@@ -1,5 +1,7 @@
 package com.example.pengout.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,11 +13,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +32,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allyants.notifyme.NotifyMe;
 import com.example.pengout.R;
+
+import java.util.Calendar;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +57,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -205,5 +223,21 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         else
             menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void setNotification(Calendar date) {
+
+        NotifyMe notifyMe = new NotifyMe.Builder(this)
+                .title(eventName)
+                .content(eventName + " is approaching! It's on ")  //+ eventTime+ " tomorrow.")
+                .color(0, 255, 255, 255)
+                .led_color(255, 255, 255, 255)
+                .time(date)
+//                .addAction(new Intent(EventActivity.this, NotificationDetailsActivity.class), "Snooze", false)
+                .key("text")
+                .addAction(new Intent(EventActivity.this, NotificationDetailsActivity.class), "Details", true, false)
+//                .addAction(new Intent(EventActivity.this, NotificationDetailsActivity.class), "Done")
+                .large_icon(R.mipmap.ic_launcher_round)
+                .build();
     }
 }
