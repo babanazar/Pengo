@@ -91,12 +91,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initializeFields() {
         updateAccountSettings = findViewById(R.id.update_settings_button);
-        userName = findViewById(R.id.set_user_name);
-        userStatus = findViewById(R.id.set_profile_status);
+//        userName = findViewById(R.id.set_user_name);
+//        userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
         updateAccountSettings = findViewById(R.id.update_settings_button);
         loadingBar = new ProgressDialog(this);
-        settingsToolBar = findViewById(R.id.settings_toolbar);
+        settingsToolBar = findViewById(R.id.my_profile_settings_toolbar);
         setSupportActionBar(settingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);

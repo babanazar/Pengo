@@ -1,6 +1,7 @@
 package com.example.pengout.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -128,6 +129,9 @@ public class MyProfileActivity extends AppCompatActivity {
 
         if (id == R.id.edit_profile_button) {
             // do something here
+            Intent settingsIntent = new Intent(MyProfileActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
+
             Toast.makeText(mContext, "Wanna edit?", Toast.LENGTH_SHORT).show();
 
         }
