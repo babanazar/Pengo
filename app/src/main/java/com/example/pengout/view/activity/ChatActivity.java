@@ -21,14 +21,11 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.pengout.R;
-import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.ChatTabsAccessorAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -68,7 +65,6 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Pengout");
 
-        setupBottomNavigationView();
 
         myViewPager = findViewById(R.id.main_tabs_pager);
         myChatTabsAccessorAdapter = new ChatTabsAccessorAdapter(getSupportFragmentManager());
@@ -79,15 +75,7 @@ public class ChatActivity extends AppCompatActivity {
         myTabLayout.setupWithViewPager(myViewPager);
 
     }
-    private void setupBottomNavigationView(){
-        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
-        BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
 
-        Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
-        menuItem.setChecked(true);
-    }
 
 
     private void SendUserToRegisterActivity() {
@@ -95,37 +83,7 @@ public class ChatActivity extends AppCompatActivity {
         startActivity(registerIntent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        super.onOptionsItemSelected(item);
-        switch (item.getItemId()){
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(ChatActivity.this, RegisterActivity.class));
-                finish();
-                return true;
-
-            case R.id.settings:
-                sendUserToSettingsActivity();
-                return true;
-
-//            case R.id.chat_create_group:
-//                requestNewGroup();
-
-            case R.id.find_friends:
-                sendUserToFindFriendsActivity();
-                return true;
-        }
-        return false;
-    }
 
     private void requestNewGroup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this, R.style.AlertDialog);
@@ -181,5 +139,29 @@ public class ChatActivity extends AppCompatActivity {
         Intent findFriendsIntent = new Intent(ChatActivity.this, FindFriendsActivity.class);
         startActivity(findFriendsIntent);
 //        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_to_chat_button) {
+            // do something here
+            Intent chatIntent = new Intent(ChatActivity.this, ChatActivity.class);
+            startActivity(chatIntent );
+
+            Toast.makeText(mContext, "Wanna edit?", Toast.LENGTH_SHORT).show();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

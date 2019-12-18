@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.pengout.R;
@@ -37,8 +40,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Button updateAccountSettings;
-    private EditText userName, userStatus;
+    private Button updateAccountSettings, logoutButton;
+    private EditText name, email, age, address;
+    private String[] genderSelection = {"Male", "Female"};
+    private Spinner genderSpinner;
     private CircleImageView userProfileImage;
 
 
@@ -50,6 +55,8 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageReference userProfileImagesRef;
 
     private ProgressDialog loadingBar;
+
+    String spinVal;
 
     private Toolbar settingsToolBar;
 
@@ -90,12 +97,35 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void initializeFields() {
+
+        genderSpinner = findViewById(R.id.gender_spinner);
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinVal = genderSelection[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> spinAdapter = new ArrayAdapter<>(SettingsActivity.this, R.layout.support_simple_spinner_dropdown_item, genderSelection);
+        genderSpinner.setAdapter(spinAdapter);
+
         updateAccountSettings = findViewById(R.id.update_settings_button);
-//        userName = findViewById(R.id.set_user_name);
-//        userStatus = findViewById(R.id.set_profile_status);
+        logoutButton = findViewById(R.id.logout_settings_button);
+
+        name = findViewById(R.id.my_name_edittext);
+        email = findViewById(R.id.my_email_edittext);
+        age = findViewById(R.id.my_age_edittext);
+        address = findViewById(R.id.my_address_edittext);
+
         userProfileImage = findViewById(R.id.set_profile_image);
-        updateAccountSettings = findViewById(R.id.update_settings_button);
+
         loadingBar = new ProgressDialog(this);
+
         settingsToolBar = findViewById(R.id.my_profile_settings_toolbar);
         setSupportActionBar(settingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -169,27 +199,41 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateSettings() {
 
-        String setUserName = userName.getText().toString();
-        String setStatus = userStatus.getText().toString();
-
-        if (TextUtils.isEmpty(setUserName)) {
-            Toast.makeText(this, "Please write your user name first...", Toast.LENGTH_SHORT).show();
+        String setName = name.getText().toString();
+        String setEmail = email.getText().toString();
+        int setAge = Integer.parseInt(age.getText().toString());
+        String setAddress = address.getText().toString();
+        String setGender = genderSpinner.getSelectedItem().toString();
+        if (TextUtils.isEmpty(setName)) {
+            Toast.makeText(this, "Please enter your name first...", Toast.LENGTH_SHORT).show();
         }
 
-        if (TextUtils.isEmpty(setStatus)) {
-            Toast.makeText(this, "Please write your status...", Toast.LENGTH_SHORT).show();
-        } else {
+        if (TextUtils.isEmpty(setEmail)) {
+            Toast.makeText(this, "Please enter your email...", Toast.LENGTH_SHORT).show();
+        }
+
+        if (TextUtils.isEmpty(setAddress)) {
+            Toast.makeText(this, "Please enter your address...", Toast.LENGTH_SHORT).show();
+        }
+
+        if (TextUtils.isEmpty(setGender)) {
+            Toast.makeText(this, "Please select your gender...", Toast.LENGTH_SHORT).show();
+        }
+        else {
             HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid", currentUserID);
-            profileMap.put("name", setUserName);
-            profileMap.put("status", setStatus);
+            profileMap.put("name", setName);
+            profileMap.put("email", setEmail);
+            profileMap.put("age", setAge);
+            profileMap.put("address", setAddress);
+            profileMap.put("gender", setGender);
 
             rootRef.child("users").child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                sendUserToChatActivity();
+//                                sendUserToMyProfileActivity();
                                 Toast.makeText(SettingsActivity.this, "Profile Updated Successfully...", Toast.LENGTH_SHORT).show();
                             } else {
                                 String message = task.getException().toString();
@@ -202,8 +246,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    private void sendUserToChatActivity() {
-        Intent chatIntent = new Intent(SettingsActivity.this, ChatActivity.class);
+    private void sendUserToMyProfileActivity() {
+        Intent chatIntent = new Intent(SettingsActivity.this, MyProfileActivity.class);
         chatIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(chatIntent);
         finish();
@@ -221,19 +265,19 @@ public class SettingsActivity extends AppCompatActivity {
                             String retrieveStatus = dataSnapshot.child("status").getValue().toString();
                             String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
 
-                            userName.setText(retrieveUserName);
-                            userStatus.setText(retrieveStatus);
+                            name.setText(retrieveUserName);
+                            email.setText(retrieveStatus);
                             Picasso.get().load(retrieveProfileImage).into(userProfileImage);
                         }
                         else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
 //                            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
 //
-                            userName.setText(retrieveUserName);
+                            name.setText(retrieveUserName);
 //                            userStatus.setText(retrieveStatus);
                         }
                         else {
-                            userName.setVisibility(View.VISIBLE);
+                            name.setVisibility(View.VISIBLE);
                             Toast.makeText(SettingsActivity.this, "Please set & update your profile information", Toast.LENGTH_SHORT).show();
                         }
                     }

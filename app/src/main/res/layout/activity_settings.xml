@@ -17,11 +17,12 @@
     <ScrollView
         android:id="@+id/my_profile_scroll_view"
         android:layout_width="match_parent"
+        android:layout_below="@id/my_profile_settings_toolbar"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/rellayout"
@@ -50,9 +51,10 @@
 
 
             <RelativeLayout
+                android:id="@+id/informationlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linlayout">
+                android:layout_below="@+id/rellayout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -139,7 +141,8 @@
                             android:textColor="@color/headings"
                             android:textSize="13sp" />
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/my_age_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
@@ -234,16 +237,36 @@
 
             <Button
                 android:id="@+id/update_settings_button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
-
+                android:layout_below="@id/informationlayout"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/buttons"
                 android:inputType="textMultiLine"
                 android:padding="6dp"
-                android:text="Update"
+                android:text="Save"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/background_light"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/logout_settings_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_below="@id/update_settings_button"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/buttons"
+                android:inputType="textMultiLine"
+                android:padding="6dp"
+                android:text="Logout"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/background_light"

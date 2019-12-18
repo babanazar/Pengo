@@ -38,7 +38,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private String currentUserId;
 
-    private static final int ACTIVITY_NUM = 0;
+    private static final int ACTIVITY_NUM = 3;
     private Context mContext = MyProfileActivity.this;
     private Toolbar mToolbar;
 
@@ -80,7 +80,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 if (dataSnapshot.exists() && (dataSnapshot.hasChild("image"))) {
                     String userImage = dataSnapshot.child("image").getValue().toString();
                     String nameFromDb = dataSnapshot.child("name").getValue().toString();
-                    String addressFromDb = dataSnapshot.child("status").getValue().toString();
+                    String addressFromDb = dataSnapshot.child("address").getValue().toString();
 
                     name.setText(nameFromDb);
                     address.setText(addressFromDb);
@@ -89,7 +89,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 } else {
                     String nameFromDb = dataSnapshot.child("name").getValue().toString();
-                    String addressFromDb = dataSnapshot.child("status").getValue().toString();
+                    String addressFromDb = dataSnapshot.child("address").getValue().toString();
 
                     name.setText(nameFromDb);
                     address.setText(addressFromDb);

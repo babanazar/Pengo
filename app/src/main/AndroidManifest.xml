@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.EditProfileActivity"></activity>
+        <activity android:name=".view.activity.StalkActivity"></activity>
+        <activity android:name=".view.activity.EditProfileActivity" />
         <activity android:name=".view.activity.MyProfileActivity" />
 
         <receiver android:name="com.allyants.notifyme.NotificationPublisher" />
@@ -30,14 +31,20 @@
 
         <activity android:name=".view.activity.NotificationDetailsActivity" />
         <activity android:name=".view.activity.CreateEventActivity" />
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
-        <activity android:name=".view.activity.CreateEventActivity"></activity>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".view.activity.CreateEventActivity" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIanLPsJjxWO9DRbGgBFMIKOGOELnJAT8" />
+
         <activity android:name=".view.activity.EventActivity" />
         <activity android:name=".view.activity.SearchActivity" />
         <activity

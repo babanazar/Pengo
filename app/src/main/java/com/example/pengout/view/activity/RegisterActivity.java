@@ -87,9 +87,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //attaching listener to button
         buttonSignup.setOnClickListener(this);
-        already.setOnTouchListener(new View.OnTouchListener() {
+        already.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
+            public void onClick(View arg0) {
 
 //                TextView already = findViewById(R.id.reg_text);
                 if (!isLogin) {
@@ -106,7 +106,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     isLogin = false;
 //                    return false;
                 }
-                return true;
             }
         });
     }

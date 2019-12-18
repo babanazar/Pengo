@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
+    private static final int ACTIVITY_NUM = 2;
 
     private static final int GALLERYPICK = 1;
     private StorageReference eventImageRef;
@@ -140,11 +142,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onBackPressed();
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -322,6 +319,30 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         finish();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_to_chat_button) {
+            // do something here
+            Intent chatIntent = new Intent(CreateEventActivity.this, ChatActivity.class);
+            startActivity(chatIntent );
+
+            Toast.makeText(this, "Wanna chat?", Toast.LENGTH_SHORT).show();
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -337,4 +358,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         now.set(Calendar.MINUTE, minute);
         eventTime.setText(now.getTime().toString());
     }
+
+
 }
