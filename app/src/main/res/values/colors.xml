@@ -3,8 +3,8 @@
     <color name="colorPrimary">#FF5722</color>
     <color name="colorPrimaryDark">#FF5722</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="grey">#BFBFBF</color>
-    <color name="white">#FFF</color>
+    <color name="grey">#4DBFBFBF</color>
+    <color name="white">#00000000</color>
     <color name="accent">#0D5D98</color>
     <color name="address">#2F7092</color>
     <color name="followers">#0D5D98</color>

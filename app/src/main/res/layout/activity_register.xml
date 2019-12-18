@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/reg_photo"
     android:orientation="vertical"
     tools:context="com.example.pengout.view.activity.RegisterActivity">
 
@@ -15,27 +17,30 @@
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
             android:layout_margin="15dp"
-            android:hint="Enter email"
+            android:background="@drawable/rounded_edittext"
             android:gravity="center"
+            android:hint="Enter email"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
             android:layout_margin="15dp"
-            android:hint="Enter password"
+            android:background="@drawable/rounded_edittext"
             android:gravity="center"
+            android:hint="Enter password"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/buttonSignup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_margin="15dp"
-            android:text="Register" />
+            android:background="@drawable/rounded_edittext"
+            android:text="Sign Up" />
 
         <TextView
             android:id="@+id/reg_text"
@@ -45,6 +50,7 @@
             android:focusable="true"
             android:gravity="center"
             android:text="Already have an account?"
+            android:textColor="#CCFAF8F8"
             android:textSize="15sp" />
 
     </LinearLayout>

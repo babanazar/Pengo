@@ -1,5 +1,9 @@
 package com.example.pengout.model;
 
+import com.google.firebase.database.core.utilities.Pair;
+
+import java.util.HashMap;
+
 public class Event {
 
     private String name;
@@ -8,19 +12,22 @@ public class Event {
     private String time;
     private String category;
     private String url;
-
+    private String desc;
+    private Location location;
 
     public Event(){
 
     }
 
-    public Event(String name, String date, String place, String time, String category, String url) {
+    public Event(String name, String date, String place, String time, String category, String url,String desc,Location location) {
         this.name = name;
         this.date = date;
         this.place = place;
         this.time = time;
         this.category = category;
         this.url = url;
+        this.desc = desc;
+        this.location = location;
     }
 
     public void setName(String name) {
@@ -70,4 +77,37 @@ public class Event {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    class Location{
+
+
+        private String lat;
+        private String lon;
+
+        public String getLat() {
+            return lat;
+        }
+
+        public String getLon() {
+            return lon;
+        }
+
+        public void setLat(String lat) {
+            this.lat = lat;
+        }
+
+        public void setLon(String lon) {
+            this.lon = lon;
+        }
+    }
+
+
 }

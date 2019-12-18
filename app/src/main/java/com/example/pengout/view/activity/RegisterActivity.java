@@ -165,7 +165,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             startActivity(intent);
 
                             progressDialog.dismiss();
-                            return;
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("createUserWithEmail", task.getException());
