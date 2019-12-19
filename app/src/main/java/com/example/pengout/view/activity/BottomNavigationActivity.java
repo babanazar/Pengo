@@ -25,9 +25,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 case R.id.navigation_events:
                     mTextMessage.setText(R.string.title_events);
                     return true;
-                case R.id.navigation_chats:
+                case R.id.navigation_create:
                     mTextMessage.setText(R.string.title_chat);
-                    Intent intent = new Intent(BottomNavigationActivity.this, ChatActivity.class);
+                    Intent intent = new Intent(BottomNavigationActivity.this, CreateEventActivity.class);
                     startActivity(intent);
                     return true;
             }
