@@ -7,10 +7,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 import com.example.pengout.R;
+import com.example.pengout.view.activity.CreateEventActivity;
 import com.example.pengout.view.activity.SearchActivity;
 import com.example.pengout.view.activity.ChatActivity;
 import com.example.pengout.view.activity.HomeActivity;
 import com.example.pengout.view.activity.MyProfileActivity;
+import com.example.pengout.view.activity.StalkActivity;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationViewHelper {
@@ -39,13 +41,20 @@ public class BottomNavigationViewHelper {
                         Intent intent2 = new Intent(context, SearchActivity.class); //ACTIVITY_NUM = 1
                         context.startActivity(intent2);
                         break;
-                    case R.id.navigation_chats:
-                        Intent intent3 = new Intent(context, ChatActivity.class);   //ACTIVITY_NUM = 2
-                        context.startActivity(intent3);
+
+                    case R.id.navigation_create:
+                        Intent createEventIntent = new Intent(context, CreateEventActivity.class); //ACTIVITY_NUM = 2
+                        context.startActivity(createEventIntent);
                         break;
 
+                    case R.id.navigation_activity:
+                        Intent stalkIntent = new Intent(context, StalkActivity.class); //ACTIVITY_NUM = 3
+                        context.startActivity(stalkIntent);
+                        break;
+
+
                     case R.id.navigation_my_profile:
-                        Intent intent4 = new Intent(context, MyProfileActivity.class);
+                        Intent intent4 = new Intent(context, MyProfileActivity.class); //ACTIVITY_NUM = 4
                         context.startActivity(intent4);
                         break;
                 }

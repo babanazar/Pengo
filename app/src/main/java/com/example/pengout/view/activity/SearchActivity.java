@@ -50,6 +50,7 @@ public class SearchActivity extends AppCompatActivity {
     private DatabaseReference mEventDatabase;
     private Toolbar mToolbar;
     private LinearLayout emptyView;
+    private static final int ACTIVITY_NUM = 1;
 
     FirebaseRecyclerAdapter<Event, EventsViewHolder> adapter;
     Query firebaseSearchQuery;
@@ -156,7 +157,7 @@ public class SearchActivity extends AppCompatActivity {
         BottomNavigationViewHelper.enableNavigation(SearchActivity.this, bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(1);
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
 

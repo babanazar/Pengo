@@ -45,10 +45,10 @@ public class EtkinlikTabsAccessorAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "Gelecek Etkinlik";
+                return "Upcomings";
 
             case 1:
-                return "Gecmis Etkinlik";
+                return " ";
 
             default:
                 return null;

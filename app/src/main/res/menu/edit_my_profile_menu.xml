@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/go_to_chat_button"
-        android:icon="@drawable/ic_chat_pengout"
+        android:id="@+id/edit_profile_button"
         android:title=""
-        app:showAsAction="always" />
-
+        app:showAsAction="always"
+        android:icon="@drawable/ic_settings_black_24dp"
+        />
 </menu>
