@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -108,7 +109,11 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         ctl.setTitle(eventName);
         ctl.setExpandedTitleColor(Color.argb(0,0,0,0));
         ctl.setCollapsedTitleTextColor(Color.rgb(0,0,0));
+        //ctl.setExpandedTitleTextAppearance(R.style.TextAppearance_MyApp_Title_Expanded);
+        //ctl.setCollapsedTitleTextAppearance(R.style.TextAppearance_MyApp_Title_Collapsed);
         ctl.setCollapsedTitleGravity(Gravity.FILL_HORIZONTAL);
+
+
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

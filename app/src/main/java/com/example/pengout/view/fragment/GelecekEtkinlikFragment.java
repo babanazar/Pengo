@@ -218,7 +218,6 @@ public class GelecekEtkinlikFragment extends Fragment {
                                 }
                             }
                         });
-
                         holder.image.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -21,11 +21,13 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.pengout.R;
+import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.ChatTabsAccessorAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -55,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
 
+
 //        mToolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
 //        mToolbar.setTitle("Chats");
@@ -73,6 +76,8 @@ public class ChatActivity extends AppCompatActivity {
 
         myTabLayout = findViewById(R.id.main_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
+
+        setupBottomNavigationView();
 
     }
 
@@ -163,5 +168,15 @@ public class ChatActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupBottomNavigationView(){
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
+        BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 }
