@@ -15,6 +15,8 @@ import com.example.pengout.R;
 import com.example.pengout.model.User;
 import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.EtkinlikTabsAccessorAdapter;
+import com.example.pengout.view.fragment.GecmisEtkinlikFragment;
+import com.example.pengout.view.fragment.GelecekEtkinlikFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -52,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
 
         myViewPager = findViewById(R.id.home_tabs_pager);
         myEtkinlikTabsAccessorAdapter = new EtkinlikTabsAccessorAdapter(getSupportFragmentManager());
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GelecekEtkinlikFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GecmisEtkinlikFragment()).commit();
         myViewPager.setAdapter(myEtkinlikTabsAccessorAdapter);
 //        myTabsAccessorAdapter = new HomeTabsAccessorAdapter(getSupportFragmentManager());
 //        myViewPager.setAdapter(myTabsAccessorAdapter);
@@ -99,7 +103,6 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.create_event:
                 sendUserToCreateEventActivity();
-//                finish();
                 return true;
 
             case R.id.settings:
