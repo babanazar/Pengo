@@ -88,8 +88,13 @@ public class ContactsFragment extends Fragment {
                                     holder.userStatus.setText(profileStatus);
                                     Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
                                 }else{
-                                    String profileName= dataSnapshot.child("name").getValue().toString();
-                                    String profileStatus= dataSnapshot.child("status").getValue().toString();
+                                    String profileName = "unknown";
+                                    if(dataSnapshot.hasChild("name"))
+                                        profileName= dataSnapshot.child("name").getValue().toString();
+
+                                    String profileStatus= "no status";
+                                    if(dataSnapshot.hasChild("name"))
+                                        profileStatus = dataSnapshot.child("status").getValue().toString();
 
                                     holder.userName.setText(profileName);
                                     holder.userStatus.setText(profileStatus);

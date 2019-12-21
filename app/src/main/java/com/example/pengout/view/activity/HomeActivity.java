@@ -10,11 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.pengout.R;
 import com.example.pengout.model.User;
 import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.EtkinlikTabsAccessorAdapter;
+import com.example.pengout.view.fragment.GecmisEtkinlikFragment;
+import com.example.pengout.view.fragment.GelecekEtkinlikFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -29,8 +32,6 @@ public class HomeActivity extends AppCompatActivity {
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
     private EtkinlikTabsAccessorAdapter myEtkinlikTabsAccessorAdapter;
-
-//    Button buttonGoChat;
 
     DatabaseReference databaseUsers;
     User currentUser;
@@ -54,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
 
         myViewPager = findViewById(R.id.home_tabs_pager);
         myEtkinlikTabsAccessorAdapter = new EtkinlikTabsAccessorAdapter(getSupportFragmentManager());
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GelecekEtkinlikFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GecmisEtkinlikFragment()).commit();
         myViewPager.setAdapter(myEtkinlikTabsAccessorAdapter);
 //        myTabsAccessorAdapter = new HomeTabsAccessorAdapter(getSupportFragmentManager());
 //        myViewPager.setAdapter(myTabsAccessorAdapter);
@@ -84,55 +87,28 @@ public class HomeActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
         getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
-
+    // handle button activities
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()){
-            case R.id.find_friends:
-                sendUserToFindFriendsActivity();
-                return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-            case R.id.create_event:
-                sendUserToCreateEventActivity();
-//                finish();
-                return true;
+        if (id == R.id.go_to_chat_button){
+            // do something here
+            Intent chatIntent = new Intent(HomeActivity.this, ChatActivity.class);
+            startActivity(chatIntent );
 
-            case R.id.settings:
-                sendUserToSettingsActivity();
-                return true;
+            Toast.makeText(mContext, "Wanna edit?", Toast.LENGTH_SHORT).show();
 
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(HomeActivity.this, RegisterActivity.class));
-                finish();
-                return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
-
-    private void sendUserToCreateEventActivity() {
-        Intent createEventIntent = new Intent(HomeActivity.this, CreateEventActivity.class);
-        startActivity(createEventIntent);
-//        finish();
-    }
-
-    private void sendUserToFindFriendsActivity() {
-        Intent findFriendsIntent = new Intent(HomeActivity.this, FindFriendsActivity.class);
-        startActivity(findFriendsIntent);
-//        finish();
-    }
-
-    private void sendUserToSettingsActivity() {
-        Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
-        startActivity(settingsIntent);
-//        finish();
-    }
-
 }

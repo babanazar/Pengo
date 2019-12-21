@@ -1,0 +1,26 @@
+[33mffd85e8[m[33m ([m[1;36mHEAD -> [m[1;32mbabanazar[m[33m)[m HEAD@{0}: checkout: moving from 67db1081bdf48b009d79197ad687b04b311328d0 to babanazar
+[33m67db108[m HEAD@{1}: commit: Profile page
+[33md28206c[m HEAD@{2}: commit: Profile page
+[33mea35182[m HEAD@{3}: commit (merge): Save to registered table in firbase
+[33mffd85e8[m[33m ([m[1;36mHEAD -> [m[1;32mbabanazar[m[33m)[m HEAD@{4}: checkout: moving from babanazar to ffd85e862b27f339a8ad7823684b9da896b886a5
+[33mffd85e8[m[33m ([m[1;36mHEAD -> [m[1;32mbabanazar[m[33m)[m HEAD@{5}: commit: Notification final
+[33m785fb1d[m HEAD@{6}: commit: Notification v2
+[33m12f4eba[m HEAD@{7}: commit: Notification v1
+[33ma17b4bd[m[33m ([m[1;31morigin/babanazar[m[33m)[m HEAD@{8}: commit: CategoryActivity slight touches and Photo loading
+[33mf8706f2[m HEAD@{9}: pull --progress --no-stat -v --progress origin hasan: Merge made by the 'recursive' strategy.
+[33m8ff1063[m HEAD@{10}: commit: Gelecek Etkinlikler Scroll view design
+[33m3f17f8d[m HEAD@{11}: commit: Create Event Activity v1
+[33m2c9a727[m HEAD@{12}: commit: Gelecek etkinlikler is displayed in its fragment
+[33mdb12f83[m HEAD@{13}: commit: Just visible event fragments
+[33m766b1f0[m HEAD@{14}: pull --progress --no-stat -v --progress origin hasan: Merge made by the 'recursive' strategy.
+[33m4f2fa20[m HEAD@{15}: commit: Request added
+[33ma3abf93[m HEAD@{16}: commit: BottomNavigationView
+[33mad7dcff[m HEAD@{17}: pull --progress --no-stat -v --progress origin hasan: Fast-forward
+[33m145c854[m HEAD@{18}: commit: Chat Request Notifications is done
+[33me04d660[m HEAD@{19}: commit: Chat Feature is functional
+[33mc970f34[m HEAD@{20}: commit: Request Accept Cancel
+[33me74a801[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{21}: checkout: moving from master to babanazar
+[33me74a801[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{22}: commit: Sending message in groups added
+[33ma4619f5[m HEAD@{23}: commit: Auto-login, home page is added
+[33m57eec99[m HEAD@{24}: commit: Register corrected & Login entered
+[33m1c1140b[m HEAD@{25}: clone: from https://github.com/selimyagci/Pengo.git

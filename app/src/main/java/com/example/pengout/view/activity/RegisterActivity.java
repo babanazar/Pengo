@@ -42,6 +42,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     FirebaseUser firebaseUser;
 
+    TextView already;
+    Button buttonSignup;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -77,36 +80,32 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         //initializing views
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
-        TextView already = findViewById(R.id.reg_text);
-        Button buttonSignup = findViewById(R.id.buttonSignup);
+        already = findViewById(R.id.reg_text);
+        buttonSignup = findViewById(R.id.buttonSignup);
 
         progressDialog = new ProgressDialog(this);
 
         //attaching listener to button
         buttonSignup.setOnClickListener(this);
-        already.setOnTouchListener(new View.OnTouchListener() {
+        already.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                // TODO Auto-generated method stub
-//                ProgressDialog progressBar = ProgressDialog.show(RegisterActivity.this, "Title", "Directing to login screen ");
-//                progressBar.setCancelable(true);
+            public void onClick(View arg0) {
 
-                // buttonlarin yazilarini degsitiriyorum
+//                TextView already = findViewById(R.id.reg_text);
+                if (!isLogin) {
 
-//                //initializing views
-//                editTextEmail = findViewById(R.id.editTextEmail);
-//                editTextPassword = findViewById(R.id.editTextPassword);
+                    already.setText("First time? Welcome!");
+                    buttonSignup.setText("Login");
+                    isLogin = true;
+//                    return false;
+                }
+                else {
 
-                // disappear the already have account text
-                TextView already = findViewById(R.id.reg_text);
-                already.setVisibility(TextView.INVISIBLE);
-
-                // change button text
-                Button buttonLogin = findViewById(R.id.buttonSignup);
-                buttonLogin.setText("Login");
-                isLogin = true;
-
-                return false;
+                    already.setText("Already have an account?");
+                    buttonSignup.setText("Register");
+                    isLogin = false;
+//                    return false;
+                }
             }
         });
     }
@@ -237,10 +236,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         //calling register method on click
-        if(isLogin == false){
+        if(!isLogin){
             registerUser();
         }
-        if(isLogin == true){
+        if(isLogin){
             loginUser();
         }
 
