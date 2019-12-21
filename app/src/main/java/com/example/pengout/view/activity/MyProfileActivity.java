@@ -78,9 +78,9 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists() && (dataSnapshot.hasChild("image"))) {
-                    String userImage = dataSnapshot.child("image").getValue().toString();
-                    String nameFromDb = dataSnapshot.child("name").getValue().toString();
-                    String addressFromDb = dataSnapshot.child("address").getValue().toString();
+                    String userImage = (String) dataSnapshot.child("image").getValue();
+                    String nameFromDb = (String)dataSnapshot.child("name").getValue();
+                    String addressFromDb = (String) dataSnapshot.child("address").getValue();
 
                     name.setText(nameFromDb);
                     address.setText(addressFromDb);
@@ -88,8 +88,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
                 } else {
-                    String nameFromDb = dataSnapshot.child("name").getValue().toString();
-                    String addressFromDb = dataSnapshot.child("address").getValue().toString();
+                    String nameFromDb = (String)dataSnapshot.child("name").getValue();
+                    String addressFromDb = (String)dataSnapshot.child("address").getValue();
 
                     name.setText(nameFromDb);
                     address.setText(addressFromDb);

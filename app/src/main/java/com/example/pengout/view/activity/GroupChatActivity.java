@@ -133,7 +133,7 @@ public class GroupChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    currentUserName = dataSnapshot.child("name").getValue().toString();
+                    currentUserName = (String)dataSnapshot.child("name").getValue();
                     if (currentUserName.isEmpty()) {
                         currentUserName = "No Name";
                     }

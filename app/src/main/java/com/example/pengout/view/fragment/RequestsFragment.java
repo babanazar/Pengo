@@ -94,7 +94,7 @@ public class RequestsFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    String type = dataSnapshot.getValue().toString();
+                                    String type = (String)dataSnapshot.getValue();
 
                                     if (type.equals("received")) {
 
@@ -103,15 +103,15 @@ public class RequestsFragment extends Fragment {
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                                 if (dataSnapshot.hasChild("image")) {
-                                                    final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
+                                                    final String requestProfileImage = (String)dataSnapshot.child("image").getValue();
 
 
                                                     Picasso.get().load(requestProfileImage).into(holder.profileImage);
 
                                                 }
 
-                                                final String requestUserName = dataSnapshot.child("name").getValue().toString();
-                                                final String requestUserStatus = dataSnapshot.child("status").getValue().toString();
+                                                final String requestUserName = (String)dataSnapshot.child("name").getValue();
+                                                final String requestUserStatus = (String)dataSnapshot.child("status").getValue();
 
                                                 holder.userName.setText(requestUserName);
                                                 holder.userStatus.setText("wants to connect with you.");
@@ -215,15 +215,15 @@ public class RequestsFragment extends Fragment {
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                                 if (dataSnapshot.hasChild("image")) {
-                                                    final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
+                                                    final String requestProfileImage = (String)dataSnapshot.child("image").getValue();
 
 
                                                     Picasso.get().load(requestProfileImage).into(holder.profileImage);
 
                                                 }
 
-                                                final String requestUserName = dataSnapshot.child("name").getValue().toString();
-                                                final String requestUserStatus = dataSnapshot.child("status").getValue().toString();
+                                                final String requestUserName = (String)dataSnapshot.child("name").getValue();
+                                                final String requestUserStatus = (String)dataSnapshot.child("status").getValue();
 
                                                 holder.userName.setText(requestUserName);
                                                 holder.userStatus.setText("You have sent a request to " + requestUserName);

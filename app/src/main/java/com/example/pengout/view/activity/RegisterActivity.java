@@ -94,14 +94,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 //                TextView already = findViewById(R.id.reg_text);
                 if (!isLogin) {
 
-                    already.setText("First time? Welcome!");
+                    already.setText("First time? Click To Register!");
                     buttonSignup.setText("Login");
                     isLogin = true;
 //                    return false;
                 }
                 else {
 
-                    already.setText("Already have an account?");
+                    already.setText("Already have an account? Click to Login");
                     buttonSignup.setText("Register");
                     isLogin = false;
 //                    return false;
@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void registerUser(){
 
         //getting email and password from edit texts
-        String email = editTextEmail.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
         String password  = editTextPassword.getText().toString().trim();
 
         //checking if email and passwords are empty
@@ -155,6 +155,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                             rootRef.child("users").child(currentUserID).child("device_token")
                                     .setValue(deviceToken);
+
+                            rootRef.child("users").child(currentUserID).child("email").setValue(email);
 
                             Toast.makeText(RegisterActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(RegisterActivity.this, InformationActivity.class);

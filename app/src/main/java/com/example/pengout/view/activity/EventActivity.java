@@ -92,7 +92,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         eventDate = getIntent().getExtras().get("event_date").toString();
         eventDesc = getIntent().getExtras().get("event_desc").toString();
         eventLoc = (ArrayList<String>) getIntent().getExtras().get("event_loc");
-        Toast.makeText(this, eventLoc.toString(), Toast.LENGTH_SHORT).show();
         imageView = findViewById(R.id.eventIm);
         date = findViewById(R.id.date);
         date.setText(eventDate);

@@ -64,9 +64,9 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists() && (dataSnapshot.hasChild("image"))) {
-                    String userImage = dataSnapshot.child("image").getValue().toString();
-                    String userName = dataSnapshot.child("name").getValue().toString();
-                    String userStatus = dataSnapshot.child("status").getValue().toString();
+                    String userImage = (String) dataSnapshot.child("image").getValue();
+                    String userName = (String) dataSnapshot.child("name").getValue();
+                    String userStatus = (String) dataSnapshot.child("status").getValue();
 
                     Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(userProfileImage);
                     userProfileName.setText(userName);
@@ -76,8 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
                     manageChatRequests();
 
                 } else {
-                    String userName = dataSnapshot.child("name").getValue().toString();
-                    String userStatus = dataSnapshot.child("status").getValue().toString();
+                    String userName = (String) dataSnapshot.child("name").getValue();
+                    String userStatus = (String) dataSnapshot.child("status").getValue();
 
                     userProfileName.setText(userName);
                     userProfileStatus.setText(userStatus);
