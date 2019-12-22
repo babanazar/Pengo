@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.StalkActivity"></activity>
+        <activity android:name=".view.activity.PostedAndJoinedActivity"></activity>
+        <activity android:name=".view.activity.StalkActivity" />
         <activity android:name=".view.activity.EditProfileActivity" />
         <activity android:name=".view.activity.MyProfileActivity" />
 
@@ -31,9 +32,10 @@
 
         <activity android:name=".view.activity.NotificationDetailsActivity" />
         <activity android:name=".view.activity.CreateEventActivity" />
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
-
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <meta-data
             android:name="com.google.android.gms.version"
