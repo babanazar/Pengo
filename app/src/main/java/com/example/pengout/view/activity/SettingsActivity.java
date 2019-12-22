@@ -34,7 +34,9 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button updateAccountSettings, logoutButton;
     private EditText name, email, age, address;
-    private String[] genderSelection = {"Male", "Female"};
+    private String[] genderSelection = {"Male", "Female","Other"};
     private Spinner genderSpinner;
     private CircleImageView userProfileImage;
 
@@ -116,6 +118,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         updateAccountSettings = findViewById(R.id.update_settings_button);
         logoutButton = findViewById(R.id.logout_settings_button);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(SettingsActivity.this, RegisterActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+        });
 
         name = findViewById(R.id.my_name_edittext);
         email = findViewById(R.id.my_email_edittext);
@@ -261,20 +274,32 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("image")))) {
 //                        if ((dataSnapshot.exists() && (dataSnapshot.hasChild("image")))) {
-                            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
-                            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
-                            String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
+                            String retrieveUserName = (String) dataSnapshot.child("name").getValue();
+                            String retrieveStatus = (String) dataSnapshot.child("email").getValue();
+                            String retrieveProfileImage = (String) dataSnapshot.child("image").getValue();
+                            String retreiveAge = dataSnapshot.child("age").getValue().toString();
+                            String retreiveGender = (String) dataSnapshot.child("gender").getValue();
+                            String retrieveAddress = (String) dataSnapshot.child("address").getValue();
 
                             name.setText(retrieveUserName);
                             email.setText(retrieveStatus);
+                            age.setText(retreiveAge);
+                            genderSpinner.setPrompt(retreiveGender);
+                            address.setText(retrieveAddress);
                             Picasso.get().load(retrieveProfileImage).into(userProfileImage);
                         }
                         else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
-                            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
-//                            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
-//
+                            String retrieveUserName = (String) dataSnapshot.child("name").getValue();
+                            String retrieveStatus = (String) dataSnapshot.child("email").getValue();
+                            String retrieveAge = (String) dataSnapshot.child("age").getValue();
+                            String retrieveGender = (String) dataSnapshot.child("gender").getValue();
+                            String retrieveAddress = (String) dataSnapshot.child("address").getValue();
+
                             name.setText(retrieveUserName);
-//                            userStatus.setText(retrieveStatus);
+                            email.setText(retrieveStatus);
+                            age.setText(retrieveAge);
+                            genderSpinner.setSelection(Arrays.asList(genderSelection).indexOf(retrieveGender));
+                            address.setText(retrieveAddress);
                         }
                         else {
                             name.setVisibility(View.VISIBLE);

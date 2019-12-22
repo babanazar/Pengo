@@ -3,6 +3,7 @@ package com.example.pengout.view.fragment;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -83,7 +84,7 @@ public class JoinedFragment extends Fragment {
 
         adapter = new FirebaseRecyclerAdapter<Event, JoinedEventViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final JoinedEventViewHolder holder, int position, @NonNull Event model) {
+            protected void onBindViewHolder(@NonNull final JoinedEventViewHolder holder, int position, @NonNull final Event model) {
                 final String eventId = getRef(position).getKey();
 
                 joinedEventsRef.child(eventId).addValueEventListener(new ValueEventListener() {
@@ -95,6 +96,7 @@ public class JoinedFragment extends Fragment {
                         String date = "";
                         String desc = "";
 
+//                        Event.Location loc ;
                         final ArrayList<String> loc = new ArrayList<>();
 
                         if (dataSnapshot.hasChild("url")) {
@@ -104,8 +106,12 @@ public class JoinedFragment extends Fragment {
                             String time = (String)dataSnapshot.child("time").getValue();
                             date = (String)dataSnapshot.child("date").getValue();
                             desc = (String)dataSnapshot.child("desc").getValue();
+//                            loc = dataSnapshot.child("loc").getValue(Event.Location.class);
+
+
+
                             for(DataSnapshot child : dataSnapshot.child("loc").getChildren()){
-                                loc.add((String)child.getValue());
+                                loc.add((String)child.getValue().toString());
                             }
 
                             holder.name.setText(name);
@@ -120,8 +126,9 @@ public class JoinedFragment extends Fragment {
                             String time = (String)dataSnapshot.child("time").getValue();
                             date = (String)dataSnapshot.child("date").getValue();
                             desc = (String)dataSnapshot.child("desc").getValue();
+//                            loc = dataSnapshot.child("loc").getValue();
                             for(DataSnapshot child : dataSnapshot.child("loc").getChildren()){
-                                loc.add((String)child.getValue());
+                                loc.add(child.getValue().toString());
                             }
 
                             holder.name.setText(name);
@@ -134,6 +141,11 @@ public class JoinedFragment extends Fragment {
                         final String finalDate = date;
                         final String finalPlace = place;
                         final String finalDesc = desc;
+//                        final Event.Location finalLoc = loc;
+                        for(DataSnapshot child : dataSnapshot.child("loc").getChildren()){
+                            loc.add(child.getValue().toString());
+                        }
+
                         holder.image.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -144,7 +156,7 @@ public class JoinedFragment extends Fragment {
                                 eventActivityIntent.putExtra("event_date", finalDate);
                                 eventActivityIntent.putExtra("event_place", finalPlace);
                                 eventActivityIntent.putExtra("event_desc", finalDesc);
-                                eventActivityIntent.putExtra("event_loc", loc);
+                                eventActivityIntent.putExtra("event_loc",  loc);
                                 eventActivityIntent.putExtra("event_image_url", finalImageUrl);
                                 startActivity(eventActivityIntent,
                                         ActivityOptions.makeSceneTransitionAnimation((Activity)getContext(),holder.image,"shareView").toBundle());

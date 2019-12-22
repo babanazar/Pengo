@@ -95,6 +95,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
+
         currentUserId = mAuth.getCurrentUser().getUid();
         createdEventsRef = FirebaseDatabase.getInstance().getReference().child("createdEvents").child(currentUserId);
         registeredEventsRef = userRef.child(currentUserId).child("joined");
@@ -164,9 +165,7 @@ public class MyProfileActivity extends AppCompatActivity {
         });
     }
 
-
-
-    private void setupBottomNavigationView() {
+    private void setupBottomNavigationView(){
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
         BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);

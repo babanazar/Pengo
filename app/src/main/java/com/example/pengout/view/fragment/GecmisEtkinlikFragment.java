@@ -145,14 +145,14 @@ public class GecmisEtkinlikFragment extends Fragment {
                         //    holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
                         final ArrayList<String> loc = new ArrayList<>();
                         if (dataSnapshot.hasChild("url")) {
-                            imageUrl = dataSnapshot.child("url").getValue().toString();
-                            name = dataSnapshot.child("name").getValue().toString();
-                            place = dataSnapshot.child("place").getValue().toString();
-                            String time = dataSnapshot.child("time").getValue().toString();
-                            date = dataSnapshot.child("date").getValue().toString();
-                            desc = dataSnapshot.child("desc").getValue().toString();
+                            imageUrl = (String) dataSnapshot.child("url").getValue();
+                            name = (String) dataSnapshot.child("name").getValue();
+                            place = (String) dataSnapshot.child("place").getValue();
+                            String time = (String) dataSnapshot.child("time").getValue();
+                            date = (String) dataSnapshot.child("date").getValue();
+                            desc = (String) dataSnapshot.child("desc").getValue();
                             for(DataSnapshot child : dataSnapshot.child("loc").getChildren()){
-                                loc.add(child.getValue().toString());
+                                loc.add((String)child.getValue());
                             }
 
                             holder.name.setText(name);
@@ -162,13 +162,13 @@ public class GecmisEtkinlikFragment extends Fragment {
                             Picasso.get().load(imageUrl).placeholder(R.drawable.profile_image).into(holder.image);
 
                         }else {
-                            name = dataSnapshot.child("name").getValue().toString();
-                            place = dataSnapshot.child("place").getValue().toString();
-                            String time = dataSnapshot.child("time").getValue().toString();
-                            date = dataSnapshot.child("date").getValue().toString();
-                            desc = dataSnapshot.child("desc").getValue().toString();
+                            name = (String)dataSnapshot.child("name").getValue();
+                            place = (String)dataSnapshot.child("place").getValue();
+                            String time = (String)dataSnapshot.child("time").getValue();
+                            date = (String)dataSnapshot.child("date").getValue();
+                            desc = (String)dataSnapshot.child("desc").getValue();
                             for(DataSnapshot child : dataSnapshot.child("loc").getChildren()){
-                                loc.add(child.getValue().toString());
+                                loc.add((String)child.getValue());
                             }
 
                             holder.name.setText(name);
