@@ -88,8 +88,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
                 } else {
-                    String nameFromDb = dataSnapshot.child("name").getValue().toString();
-                    String addressFromDb = dataSnapshot.child("address").getValue().toString();
+                    String nameFromDb = (String)dataSnapshot.child("name").getValue();
+                    String addressFromDb = (String)dataSnapshot.child("address").getValue();
 
                     name.setText(nameFromDb);
                     address.setText(addressFromDb);

@@ -11,12 +11,12 @@ public class User {
     private String userId;
     private String username;
     private String imageURL;
-    private String userInterest;
+    private String[] userInterest;
 
     public User(){
     }
 
-    public User(String userId, String userName, String userInterest, String imageURL) {
+    public User(String userId, String userName, String[] userInterest, String imageURL) {
         this.userId = userId;
         this.username = userName;
         this.userInterest = userInterest;
@@ -47,11 +47,11 @@ public class User {
         this.imageURL = imageURL;
     }
 
-    public String getUserInterest() {
+    public String[] getUserInterest() {
         return userInterest;
     }
 
-    public void setUserInterest(String userInterest) {
+    public void setUserInterest(String[] userInterest) {
         this.userInterest = userInterest;
     }
 
