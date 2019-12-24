@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,9 @@ import android.widget.Toast;
 import com.example.pengout.R;
 import com.example.pengout.model.Event;
 import com.example.pengout.utils.BottomNavigationViewHelper;
+import com.example.pengout.view.adapter.SearchTabsAdapter;
+import com.example.pengout.view.fragment.EventResultsFragment;
+import com.example.pengout.view.fragment.UserResultsFragment;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.ChildEventListener;
@@ -52,8 +58,13 @@ public class SearchActivity extends AppCompatActivity {
     private LinearLayout emptyView;
     private static final int ACTIVITY_NUM = 1;
 
-    FirebaseRecyclerAdapter<Event, EventsViewHolder> adapter;
     Query firebaseSearchQuery;
+
+    private ViewPager viewPager;
+    SearchTabsAdapter searchTabsAdapter;
+    EventResultsFragment eventResultsFragment;
+    UserResultsFragment userResultsFragment;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,86 +81,29 @@ public class SearchActivity extends AppCompatActivity {
 
         searchButton = findViewById(R.id.search_btn);
         searchText = findViewById(R.id.search_field);
-        results = findViewById(R.id.results);
-        emptyView = findViewById(R.id.emptySearch);
-        results.setLayoutManager(new LinearLayoutManager(this));
+        //results = findViewById(R.id.results);
+        //results.setLayoutManager(new LinearLayoutManager(this));
+
+        viewPager = findViewById(R.id.search_tabs_pager);
+        searchTabsAdapter = new SearchTabsAdapter(getSupportFragmentManager());
+        eventResultsFragment = new EventResultsFragment();
+        userResultsFragment = new UserResultsFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.search_tabs_pager,eventResultsFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.search_tabs_pager,userResultsFragment).commit();
+        viewPager.setAdapter(searchTabsAdapter);
+
+        tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         //Glide.with(getApplicationContext()).load("https://cdn2.allevents.in/thumbs/thumb5dbb7cb95ea77.jpg").override(200,200).centerCrop().into(edu);
         //Glide.with(getApplicationContext()).load(R.drawable.theatre).override(200,200).into(theatre);
         //Glide.with(getApplicationContext()).load(R.drawable.sport_logo).override(200,200).into(sport);
         //Glide.with(getApplicationContext()).load(R.drawable.music).override(200,200).into(music);
 
-        searchButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String st = searchText.getText().toString();
-                firebaseEventSearch(st);
-            }
-        });
+
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        firebaseEventSearch("");
-    }
 
-    void firebaseEventSearch(final String searchText){
-        firebaseSearchQuery = mEventDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Event>().setQuery(firebaseSearchQuery,Event.class).build();
-        adapter = new FirebaseRecyclerAdapter<Event, EventsViewHolder>(options) {
-            @NonNull
-            @Override
-            public EventsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searchlist_layout,viewGroup,false);
-                return new EventsViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull final Event model) {
-                holder.n.setText(model.getName());
-                holder.d.setText(model.getDate());
-                holder.p.setText(model.getPlace());
-                Picasso.get().load(model.getUrl()).placeholder(R.drawable.profile_image).into(holder.imageView);
-                final String[] eventIDs = new String[1];
-                firebaseSearchQuery.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot data:dataSnapshot.getChildren()){
-                            if(data.child("name").getValue().toString().equals(model.getName())){
-                                eventIDs[0] = data.getKey();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-                holder.imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(),eventIDs[0],Toast.LENGTH_SHORT).show();
-                        //Intent eventActivityIntent = new Intent(getApplicationContext(), EventActivity.class);
-                        //eventActivityIntent.putExtra("event_id", eventIDs);
-                        //eventActivityIntent.putExtra("event_name", model.getName());
-                        //eventActivityIntent.putExtra("event_date", model.getDate());
-                        //eventActivityIntent.putExtra("event_place", model.getPlace());
-                        //eventActivityIntent.putExtra("event_desc", model.getDesc());
-                        //eventActivityIntent.putExtra("event_loc", model.getLoc());
-                        //eventActivityIntent.putExtra("event_image_url", model.getUrl());
-                        //startActivity(eventActivityIntent);
-                    }
-                });
-            }
-
-
-        };
-
-        results.setAdapter(adapter);
-        adapter.startListening();
-    }
 
     private void setupBottomNavigationView(){
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
@@ -161,18 +115,7 @@ public class SearchActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
-    public static class EventsViewHolder extends RecyclerView.ViewHolder{
 
-        TextView n,d,p;
-        ImageView imageView;
-        public EventsViewHolder(View itemView){
-            super(itemView);
-            n = itemView.findViewById(R.id.name_text);
-            d = itemView.findViewById(R.id.date_text);
-            p = itemView.findViewById(R.id.place_text);
-            imageView = itemView.findViewById(R.id.search_im);
 
-        }
-    }
 
 }

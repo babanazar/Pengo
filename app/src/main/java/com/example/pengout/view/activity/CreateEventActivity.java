@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,16 +28,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 
-public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private Button createEventButton;
     private EditText eventTitle, eventCategory, eventLocation;
@@ -47,7 +45,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
-    private static final int ACTIVITY_NUM = 2;
 
     private static final int GALLERYPICK = 1;
     private StorageReference eventImageRef;
@@ -56,24 +53,28 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private Toolbar settingsToolbar;
 
+    private Uri resultUri;
 
+    private CheckBox isPrivate;
 
     Calendar now = Calendar.getInstance();
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
-
+    private String currentEventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
+        currentEventId = String.valueOf(System.currentTimeMillis());
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
         eventImageRef = FirebaseStorage.getInstance().getReference().child("Event Images");
 
-        datePickerDialog =  DatePickerDialog.newInstance(
+        isPrivate = findViewById(R.id.isPrivateCheckBox);
+
+        datePickerDialog = DatePickerDialog.newInstance(
                 CreateEventActivity.this,
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
@@ -81,7 +82,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         );
 
 
-        timePickerDialog =  TimePickerDialog.newInstance(
+        timePickerDialog = TimePickerDialog.newInstance(
                 CreateEventActivity.this,
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
@@ -118,8 +119,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
 
-
-
     private void initializeFields() {
 
         createEventButton = findViewById(R.id.create_event_button);
@@ -137,7 +136,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         setSupportActionBar(settingsToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setTitle("Create Event");
 
     }
@@ -163,9 +161,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 loadingBar.setCanceledOnTouchOutside(false);
                 loadingBar.show();
 
-                Uri resultUri = result.getUri();
-                String timestamp = getCurrentTimestamp();
-                final StorageReference filePath = eventImageRef.child(currentUserID + "_" + timestamp);
+                resultUri = result.getUri();
+                final StorageReference filePath = eventImageRef.child(currentUserID + "_" + currentEventId);
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -177,13 +174,14 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     final String downloadUri = uri.toString();
-                                    rootRef.child("createdEvents").child(currentUserID).child("image")
+                                    rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("url")
                                             .setValue(downloadUri)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         Toast.makeText(CreateEventActivity.this, "Image Save Successful", Toast.LENGTH_SHORT).show();
+                                                        Picasso.get().load(resultUri).into(eventImage);
                                                         loadingBar.dismiss();
                                                     } else {
                                                         String message = task.getException().toString();
@@ -205,14 +203,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }
     }
 
-    String getCurrentTimestamp() {
-        Date date = new Date();
-        long time = date.getTime();
-
-        Timestamp timestamp = new Timestamp(time);
-
-        return timestamp.toString();
-    }
 
     private void createEvent() {
         String setEventTitle = eventTitle.getText().toString();
@@ -220,64 +210,59 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         final String setEventTime = eventTime.getText().toString();
         final String setEventLocation = eventLocation.getText().toString();
 
-        if (TextUtils.isEmpty(setEventTitle)){
+        if (TextUtils.isEmpty(setEventTitle)) {
             Toast.makeText(this, "Please, enter title of the event", Toast.LENGTH_SHORT).show();
         }
 
-        if (TextUtils.isEmpty(setEventCategory)){
+        if (TextUtils.isEmpty(setEventCategory)) {
             Toast.makeText(this, "Please, enter category of the event", Toast.LENGTH_SHORT).show();
         }
 
-        if (TextUtils.isEmpty(setEventTime)){
+        if (TextUtils.isEmpty(setEventTime)) {
             Toast.makeText(this, "Please, enter time of the event", Toast.LENGTH_SHORT).show();
         }
 
-        if (TextUtils.isEmpty(setEventLocation)){
+        if (TextUtils.isEmpty(setEventLocation)) {
             Toast.makeText(this, "Please, enter location of the event", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            HashMap<String, Object> eventMap = new HashMap<>();
-            eventMap.put("uid", currentUserID);
-            eventMap.put("name", currentUserID);
-            eventMap.put("category", currentUserID);
-            eventMap.put("time", currentUserID);
-            eventMap.put("location", currentUserID);
+        } else {
 
-//            rootRef.child("eventHashmap").setValue(eventMap)
 
-            rootRef.child("createdEvents").child(currentUserID).child("name")
+            rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("name")
                     .setValue(setEventTitle)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-//                                Toast.makeText(CreateEventActivity.this, "Image Save Successful", Toast.LENGTH_SHORT).show();
-//                                loadingBar.dismiss();
-                                rootRef.child("createdEvents").child(currentUserID).child("category")
+                                rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("category")
                                         .setValue(setEventCategory)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-//                                                    Toast.makeText(CreateEventActivity.this, "Image Save Successful", Toast.LENGTH_SHORT).show();
-//                                                    loadingBar.dismiss();
-                                                    rootRef.child("createdEvents").child(currentUserID).child("time")
+
+
+                                                    rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("time")
                                                             .setValue(setEventTime)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     if (task.isSuccessful()) {
-//                                                                        Toast.makeText(CreateEventActivity.this, "Image Save Successful", Toast.LENGTH_SHORT).show();
-//                                                                        loadingBar.dismiss();
-                                                                        rootRef.child("createdEvents").child(currentUserID).child("location")
+                                                                        rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("location")
                                                                                 .setValue(setEventLocation)
                                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                                         if (task.isSuccessful()) {
-                                                                                            sendUserToHomeActivity();
-                                                                                            Toast.makeText(CreateEventActivity.this, "Event Save Successful", Toast.LENGTH_SHORT).show();
-                                                                                            loadingBar.dismiss();
+                                                                                            rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("isPrivate")
+                                                                                                    .setValue(isPrivate.isChecked())
+                                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                            sendUserToHomeActivity();
+                                                                                                            Toast.makeText(CreateEventActivity.this, "Event Save Successful", Toast.LENGTH_SHORT).show();
+                                                                                                            loadingBar.dismiss();
+                                                                                                        }
+                                                                                                    });
                                                                                         } else {
                                                                                             String message = task.getException().toString();
                                                                                             Toast.makeText(CreateEventActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
@@ -306,40 +291,20 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                             }
                         }
                     });
-
-
         }
 
     }
 
     private void sendUserToHomeActivity() {
-        Intent homeIntent = new Intent(CreateEventActivity.this,HomeActivity.class);
+        Intent homeIntent = new Intent(CreateEventActivity.this, HomeActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
         finish();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
-        // If you don't have res/menu, just create a directory named "menu" inside res
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // handle button activities
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.go_to_chat_button) {
-            // do something here
-            Intent chatIntent = new Intent(CreateEventActivity.this, ChatActivity.class);
-            startActivity(chatIntent );
-
-            Toast.makeText(this, "Wanna chat?", Toast.LENGTH_SHORT).show();
-
-        }
+        super.onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 

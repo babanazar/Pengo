@@ -1,6 +1,7 @@
 package com.example.pengout.view.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.pengout.R;
 import com.example.pengout.model.Contacts;
+import com.example.pengout.model.User;
+import com.example.pengout.view.activity.ProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +38,7 @@ public class ContactsFragment extends Fragment {
     private View contactsView;
     private RecyclerView myContactsList;
 
-    private DatabaseReference contactsRef, usersRef;
+    private DatabaseReference contactsRef, usersRef, friendsRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
 
@@ -45,7 +49,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        contactsView =  inflater.inflate(R.layout.fragment_contacts, container, false);
+        contactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
         myContactsList = contactsView.findViewById(R.id.contacts_list);
         myContactsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -56,6 +60,8 @@ public class ContactsFragment extends Fragment {
         contactsRef = FirebaseDatabase.getInstance().getReference().child("contacts").child(currentUserID);
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
+        friendsRef = usersRef.child(currentUserID).child("friends");
+
         return contactsView;
     }
 
@@ -64,41 +70,79 @@ public class ContactsFragment extends Fragment {
         super.onStart();
 
         FirebaseRecyclerOptions options =
-                new FirebaseRecyclerOptions.Builder<Contacts>()
-                .setQuery(contactsRef, Contacts.class)
-                .build();
+                new FirebaseRecyclerOptions.Builder<User>()
+                        .setQuery(friendsRef, User.class)
+                        .build();
 
-        FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Contacts, ContactsViewHolder>(options) {
+        FirebaseRecyclerAdapter<User, ContactsViewHolder> adapter =
+                new FirebaseRecyclerAdapter<User, ContactsViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, int position, @NonNull Contacts model) {
+                    protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, int position, @NonNull User model) {
 
-                        String userIDs = getRef(position).getKey();
+                        final String userIDs = getRef(position).getKey();
 
-                        usersRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+
+
+                        friendsRef.child(userIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                if (dataSnapshot.hasChild("image")){
-                                    String userImage = dataSnapshot.child("image").getValue().toString();
-                                    String profileName= dataSnapshot.child("name").getValue().toString();
-                                    String profileStatus= dataSnapshot.child("status").getValue().toString();
+                                usersRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                    holder.userName.setText(profileName);
-                                    holder.userStatus.setText(profileStatus);
-                                    Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
-                                }else{
-                                    String profileName = "unknown";
-                                    if(dataSnapshot.hasChild("name"))
-                                        profileName= dataSnapshot.child("name").getValue().toString();
+                                        String userImage = "https://github.com/selimyagci/Pengo/blob/master/app/src/main/res/drawable-xhdpi/ic_user.png";
+                                        String profileName;
+                                        String profileAddress;
 
-                                    String profileStatus= "no status";
-                                    if(dataSnapshot.hasChild("name"))
-                                        profileStatus = dataSnapshot.child("status").getValue().toString();
+                                        if (dataSnapshot.hasChild("image")) {
+                                            userImage = (String) dataSnapshot.child("image").getValue();
+                                            profileName = (String) dataSnapshot.child("name").getValue();
+                                            profileAddress = (String) dataSnapshot.child("address").getValue();
 
-                                    holder.userName.setText(profileName);
-                                    holder.userStatus.setText(profileStatus);
-                                }
+                                            holder.userName.setText(profileName);
+                                            holder.userStatus.setText(profileAddress);
+                                            Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                                        } else {
+                                            profileName = "unknown";
+                                            if (dataSnapshot.hasChild("name"))
+                                                profileName = (String)dataSnapshot.child("name").getValue();
+
+                                            profileAddress = "no address";
+                                            if (dataSnapshot.hasChild("name"))
+                                                profileAddress = (String)dataSnapshot.child("address").getValue();
+
+                                            holder.userName.setText(profileName);
+                                            holder.userStatus.setText(profileAddress);
+                                        }
+
+                                        final String finalImage = userImage;
+                                        final String finalName = profileName;
+                                        String finalAdresse = profileAddress;
+
+
+                                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent otherProfile = new Intent(getContext(), ProfileActivity.class);
+                                                otherProfile.putExtra("visit_user_id", userIDs);
+                                                otherProfile.putExtra("visit_user_name", finalName);
+                                                otherProfile.putExtra("visit_user_image", finalImage);
+                                                startActivity(otherProfile);
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
+
                             }
 
                             @Override
@@ -117,11 +161,12 @@ public class ContactsFragment extends Fragment {
                     }
 
                 };
+        adapter.setHasStableIds(true);
         myContactsList.setAdapter(adapter);
         adapter.startListening();
     }
 
-    public static class ContactsViewHolder extends RecyclerView.ViewHolder{
+    public static class ContactsViewHolder extends RecyclerView.ViewHolder {
 
         TextView userName, userStatus;
         CircleImageView profileImage;

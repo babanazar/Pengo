@@ -9,18 +9,12 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
     private String userId;
-    private String username;
-    private String imageURL;
+    private String name;
+    private String image;
     private String userInterest;
+    private String address;
 
     public User(){
-    }
-
-    public User(String userId, String userName, String userInterest, String imageURL) {
-        this.userId = userId;
-        this.username = userName;
-        this.userInterest = userInterest;
-        this.imageURL = imageURL;
     }
 
     public String getUserId() {
@@ -31,20 +25,20 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getUserInterest() {
@@ -55,4 +49,13 @@ public class User {
         this.userInterest = userInterest;
     }
 
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

@@ -11,10 +11,9 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/results"
+            android:id="@+id/user_results"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/search_field"
             android:scrollbars="vertical"
             android:layout_marginTop="10dp">
 

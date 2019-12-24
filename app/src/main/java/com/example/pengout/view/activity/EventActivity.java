@@ -85,14 +85,14 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        eventId = getIntent().getExtras().get("event_id").toString();
-        eventName = getIntent().getExtras().get("event_name").toString();
-        eventUrl = getIntent().getExtras().get("event_image_url").toString();
-        eventPlace = getIntent().getExtras().get("event_place").toString();
-        eventDate = getIntent().getExtras().get("event_date").toString();
-        eventDesc = getIntent().getExtras().get("event_desc").toString();
+        eventId = (String) getIntent().getExtras().get("event_id");
+        eventName = (String)getIntent().getExtras().get("event_name");
+        eventUrl =(String) getIntent().getExtras().get("event_image_url");
+        eventPlace = (String)getIntent().getExtras().get("event_place");
+        eventDate = (String)getIntent().getExtras().get("event_date");
+        eventDesc = (String)getIntent().getExtras().get("event_desc");
         eventLoc = (ArrayList<String>) getIntent().getExtras().get("event_loc");
-        Toast.makeText(this, eventLoc.toString(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, (String)eventLoc.toString(), Toast.LENGTH_SHORT).show();
         imageView = findViewById(R.id.eventIm);
         date = findViewById(R.id.date);
         date.setText(eventDate);
