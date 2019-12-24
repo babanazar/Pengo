@@ -73,6 +73,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent postedTabIntent = new Intent(MyProfileActivity.this, PostedAndJoinedActivity.class);
                 postedTabIntent.putExtra("position", 1);
+                postedTabIntent.putExtra("profile_id", currentUserId);
                 startActivity(postedTabIntent);
             }
         });
@@ -86,6 +87,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent joinedTabIntent = new Intent(MyProfileActivity.this, PostedAndJoinedActivity.class);
                 joinedTabIntent.putExtra("position", 0);
+                joinedTabIntent.putExtra("profile_id", currentUserId);
                 startActivity(joinedTabIntent);
             }
         });
@@ -192,8 +194,6 @@ public class MyProfileActivity extends AppCompatActivity {
             // do something here
             Intent settingsIntent = new Intent(MyProfileActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
-
-            Toast.makeText(mContext, "Wanna edit?", Toast.LENGTH_SHORT).show();
 
         }
         return super.onOptionsItemSelected(item);

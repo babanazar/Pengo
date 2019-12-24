@@ -39,8 +39,6 @@ public class StalkActivity extends AppCompatActivity {
             Intent chatIntent = new Intent(StalkActivity.this, ChatActivity.class);
             startActivity(chatIntent );
 
-            Toast.makeText(this, "Wanna edit?", Toast.LENGTH_SHORT).show();
-
         }
         return super.onOptionsItemSelected(item);
     }

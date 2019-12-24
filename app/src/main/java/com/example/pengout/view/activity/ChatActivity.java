@@ -37,16 +37,11 @@ public class ChatActivity extends AppCompatActivity {
     private ChatTabsAccessorAdapter myChatTabsAccessorAdapter;
     private DatabaseReference rootRef;
     private Context mContext = ChatActivity.this;
-//    FirebaseUser currentUser;
-//
-//    CircleImageView profile_image;
-//    TextView username;
 
     LinearLayout layout;
     ImageView sendButton;
     EditText messageArea;
     ScrollView scrollView;
-//    Firebase reference1, reference2;
 
     private static final int ACTIVITY_NUM = 2;
 
@@ -56,18 +51,12 @@ public class ChatActivity extends AppCompatActivity {
         Log.d("inHomeActivity", "success");
         setContentView(R.layout.activity_chat);
 
-
-
-//        mToolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(mToolbar);
-//        mToolbar.setTitle("Chats");
-
-
         rootRef = FirebaseDatabase.getInstance().getReference();
-        mToolbar = findViewById(R.id.main_page_toolbar);
+        mToolbar = findViewById(R.id.chat_app_bar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Pengout");
+        getSupportActionBar().setTitle("Chat");
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myViewPager = findViewById(R.id.main_tabs_pager);
         myChatTabsAccessorAdapter = new ChatTabsAccessorAdapter(getSupportFragmentManager());
@@ -82,91 +71,28 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
-    private void SendUserToRegisterActivity() {
-        Intent registerIntent = new Intent(ChatActivity.this, RegisterActivity.class);
-        startActivity(registerIntent);
-    }
-
-
-
-    private void requestNewGroup() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this, R.style.AlertDialog);
-        builder.setTitle("Enter Group Name : ");
-
-        final EditText groupNameField = new EditText(ChatActivity.this);
-        groupNameField.setHint("e.g. Yesterday's Concert");
-        builder.setView(groupNameField);
-
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String groupName = groupNameField.getText().toString();
-
-                if(TextUtils.isEmpty(groupName)){
-                    Toast.makeText(ChatActivity.this, "Please Write Group Name...", Toast.LENGTH_SHORT).show();
-                }
-
-                else{
-                    createNewGroup(groupName);
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
-
-    private void createNewGroup(final String groupName) {
-        rootRef.child("groups").child(groupName).setValue("")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(ChatActivity.this, groupName + " group is created successfully...", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void sendUserToSettingsActivity() {
-        Intent settingsIntent = new Intent(ChatActivity.this, SettingsActivity.class);
-        startActivity(settingsIntent);
-    }
-
-    private void sendUserToFindFriendsActivity() {
-        Intent findFriendsIntent = new Intent(ChatActivity.this, FindFriendsActivity.class);
-        startActivity(findFriendsIntent);
-//        finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
-        // If you don't have res/menu, just create a directory named "menu" inside res
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+//        // If you don't have res/menu, just create a directory named "menu" inside res
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     // handle button activities
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.go_to_chat_button) {
-            // do something here
-            Intent chatIntent = new Intent(ChatActivity.this, ChatActivity.class);
-            startActivity(chatIntent );
-
-            Toast.makeText(mContext, "Wanna edit?", Toast.LENGTH_SHORT).show();
-
-        }
+//        int id = item.getItemId();
+//
+//        if (id == R.id.go_to_chat_button) {
+//            // do something here
+//            Intent chatIntent = new Intent(ChatActivity.this, ChatActivity.class);
+//            startActivity(chatIntent );
+//
+//
+//        }
+        super.onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 

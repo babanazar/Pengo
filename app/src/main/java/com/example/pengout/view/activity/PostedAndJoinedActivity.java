@@ -24,6 +24,8 @@ public class PostedAndJoinedActivity extends AppCompatActivity {
     private ViewPager myViewPager;
     private TabLayout myTablayout;
 
+    private String profileId;
+
     private PostedAndJoinedTabsAccessorAdapter postedAndJoinedTabsAccessorAdapter;
 
 
@@ -35,12 +37,18 @@ public class PostedAndJoinedActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.posted_joined_toolbar);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Joined & Posted Events");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int position = Integer.parseInt(String.valueOf(getIntent().getExtras().get("position")));
+        profileId = String.valueOf(getIntent().getExtras().get("profile_id"));
 
         myViewPager = findViewById(R.id.post_join_tabs_pager);
         postedAndJoinedTabsAccessorAdapter = new PostedAndJoinedTabsAccessorAdapter(getSupportFragmentManager());
+
+        Bundle bundle = new Bundle();
+        bundle.putString("profile_id", profileId);
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.post_join_tabs_pager, new PostedFragment()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.post_join_tabs_pager,new JoinedFragment()).commit();
@@ -52,5 +60,14 @@ public class PostedAndJoinedActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
+
+    public String getProfileId(){
+        return profileId;
+    }
 
 }

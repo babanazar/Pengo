@@ -15,6 +15,7 @@ public class PostedAndJoinedTabsAccessorAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+
         switch (i){
             case 0:
                 JoinedFragment joinedFragment = new JoinedFragment();

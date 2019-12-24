@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.pengout.R;
 import com.example.pengout.model.Event;
 import com.example.pengout.view.activity.EventActivity;
+import com.example.pengout.view.activity.PostedAndJoinedActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +65,8 @@ public class JoinedFragment extends Fragment {
         myJoinedEventsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserId = mAuth.getCurrentUser().getUid();
+//        currentUserId = mAuth.getCurrentUser().getUid();
+        currentUserId = ((PostedAndJoinedActivity)getActivity()).getProfileId();
 
         joinedEventsRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("joined");
         eventsRef = FirebaseDatabase.getInstance().getReference().child("eventWithDesc");

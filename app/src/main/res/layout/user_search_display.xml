@@ -51,15 +51,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Button
-                    android:id="@+id/follow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Follow"
-                    android:textSize="16sp"
-                    android:textAllCaps="false"
-                    android:visibility="visible"
-                    android:background="@android:color/holo_green_light"/>
+
+                <!--<Button-->
+                    <!--android:id="@+id/follow"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:background="@android:color/holo_green_light"-->
+                    <!--android:text="Follow"-->
+                    <!--android:textAllCaps="false"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:visibility="invisible" />-->
             </LinearLayout>
 
         </LinearLayout>

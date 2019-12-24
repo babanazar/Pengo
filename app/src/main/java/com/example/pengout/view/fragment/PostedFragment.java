@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.example.pengout.R;
 import com.example.pengout.model.Event;
 import com.example.pengout.view.activity.EventActivity;
+import com.example.pengout.view.activity.PostedAndJoinedActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,7 +68,9 @@ public class PostedFragment extends Fragment {
         myPostedEventsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserId = mAuth.getCurrentUser().getUid();
+//        currentUserId = mAuth.getCurrentUser().getUid();
+
+        currentUserId = ((PostedAndJoinedActivity)getActivity()).getProfileId();
 
         postedEventsRef = FirebaseDatabase.getInstance().getReference().child("createdEvents").child(currentUserId);
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -214,5 +218,9 @@ public class PostedFragment extends Fragment {
         myPostedEventsList.smoothScrollToPosition(pos);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+    }
 }

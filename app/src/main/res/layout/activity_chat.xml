@@ -8,12 +8,6 @@
     android:orientation="vertical"
     tools:context=".view.activity.ChatActivity">
 
-    <!--android:paddingBottom="@dimen/acitivity_vertical_margin"-->
-    <!--android:paddingLeft="@dimen/acitivity_horizontal_margin"-->
-    <!--android:paddingRight="@dimen/acitivity_horizontal_margin"-->
-    <!--android:paddingTop="@dimen/acitivity_vertical_margin"-->
-
-
 
 
 
@@ -23,10 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/main_page_toolbar"
-            layout="@layout/app_bar_layout">
-        </include>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/chat_app_bar"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
 
         <android.support.design.widget.TabLayout

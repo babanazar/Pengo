@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,10 +33,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -49,7 +45,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
-    private static final int ACTIVITY_NUM = 2;
 
     private static final int GALLERYPICK = 1;
     private StorageReference eventImageRef;
@@ -141,7 +136,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         setSupportActionBar(settingsToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setTitle("Create Event");
 
     }
@@ -309,26 +303,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
-        // If you don't have res/menu, just create a directory named "menu" inside res
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // handle button activities
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.go_to_chat_button) {
-            // do something here
-            Intent chatIntent = new Intent(CreateEventActivity.this, ChatActivity.class);
-            startActivity(chatIntent);
-
-            Toast.makeText(this, "Wanna chat?", Toast.LENGTH_SHORT).show();
-
-        }
+        super.onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 
