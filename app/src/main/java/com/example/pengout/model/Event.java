@@ -1,7 +1,10 @@
 package com.example.pengout.model;
 
+import android.util.Log;
+
 import com.google.firebase.database.core.utilities.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -87,18 +90,20 @@ public class Event {
         this.desc = desc;
     }
 
-    public ArrayList<String> getLocation() {
-        ArrayList<String> a = new ArrayList<>();
-        a.add(location.getLat());
-        a.add(location.getLon());
-        return a;
-    }
+//    public ArrayList<String> getLocation() {
+////        Log.d(TAG, "getLocation: ");
+//        ArrayList<String> a = new ArrayList<>();
+//        a.add(location.getLat());
+//        a.add(location.getLon());
+//        return a;
+//    }
+//
+//    public void setLocation(Location location) {
+//        this.location = location;
+//    }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 
-    class Location{
+    public class Location implements Serializable {
 
 
         private String lat;

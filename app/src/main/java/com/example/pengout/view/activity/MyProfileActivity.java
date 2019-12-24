@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +32,15 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private TextView name;
     private TextView address;
-    private TextView joinCount;
-    private TextView postCount;
+    public TextView joinCountTextView;
+    public TextView postCountTextView;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference rootRef, userRef;
+    private DatabaseReference rootRef, userRef, createdEventsRef, registeredEventsRef;
+
+    private RelativeLayout postedCount, joinedCount;
+
+//    public final int postedNumber, joinedNumber;
 
     private String currentUserId;
 
@@ -57,8 +63,35 @@ public class MyProfileActivity extends AppCompatActivity {
         myProfileImage = findViewById(R.id.my_profile_image);
         name = findViewById(R.id.tv_name);
         address = findViewById(R.id.tv_address);
-        joinCount = findViewById(R.id.join_count);
-        postCount = findViewById(R.id.post_count);
+        joinCountTextView = findViewById(R.id.join_count);
+        postCountTextView = findViewById(R.id.post_count);
+
+        postedCount = findViewById(R.id.postedCount);
+
+        postedCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent postedTabIntent = new Intent(MyProfileActivity.this, PostedAndJoinedActivity.class);
+                postedTabIntent.putExtra("position", 1);
+                postedTabIntent.putExtra("profile_id", currentUserId);
+                startActivity(postedTabIntent);
+            }
+        });
+
+
+        joinedCount = findViewById(R.id.joinedCount);
+
+
+        joinedCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent joinedTabIntent = new Intent(MyProfileActivity.this, PostedAndJoinedActivity.class);
+                joinedTabIntent.putExtra("position", 0);
+                joinedTabIntent.putExtra("profile_id", currentUserId);
+                startActivity(joinedTabIntent);
+            }
+        });
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -66,8 +99,38 @@ public class MyProfileActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
 
         currentUserId = mAuth.getCurrentUser().getUid();
+        createdEventsRef = FirebaseDatabase.getInstance().getReference().child("createdEvents").child(currentUserId);
+        registeredEventsRef = userRef.child(currentUserId).child("joined");
+
+        Toast.makeText(mContext, currentUserId, Toast.LENGTH_SHORT).show();
 
         retreiveUserInfo();
+        createdEventsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postCountTextView.setText(String.valueOf((int) dataSnapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        registeredEventsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                joinCountTextView.setText(String.valueOf((int) dataSnapshot.getChildrenCount()));
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
     }
 
@@ -79,7 +142,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 if (dataSnapshot.exists() && (dataSnapshot.hasChild("image"))) {
                     String userImage = (String) dataSnapshot.child("image").getValue();
-                    String nameFromDb = (String)dataSnapshot.child("name").getValue();
+                    String nameFromDb = (String) dataSnapshot.child("name").getValue();
                     String addressFromDb = (String) dataSnapshot.child("address").getValue();
 
                     name.setText(nameFromDb);
@@ -88,8 +151,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
                 } else {
-                    String nameFromDb = (String)dataSnapshot.child("name").getValue();
-                    String addressFromDb = (String)dataSnapshot.child("address").getValue();
+                    String nameFromDb = (String) dataSnapshot.child("name").getValue();
+                    String addressFromDb = (String) dataSnapshot.child("address").getValue();
 
                     name.setText(nameFromDb);
                     address.setText(addressFromDb);
@@ -131,8 +194,6 @@ public class MyProfileActivity extends AppCompatActivity {
             // do something here
             Intent settingsIntent = new Intent(MyProfileActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
-
-            Toast.makeText(mContext, "Wanna edit?", Toast.LENGTH_SHORT).show();
 
         }
         return super.onOptionsItemSelected(item);

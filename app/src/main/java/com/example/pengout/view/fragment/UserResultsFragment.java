@@ -17,6 +17,7 @@ import com.example.pengout.R;
 import com.example.pengout.model.Event;
 import com.example.pengout.model.User;
 import com.example.pengout.view.activity.EventActivity;
+import com.example.pengout.view.activity.ProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +51,12 @@ public class UserResultsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseUserSearch("");
+    }
+
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
 
         TextView n,c;
@@ -63,11 +70,6 @@ public class UserResultsFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        firebaseUserSearch("");
-    }
 
     public void firebaseUserSearch(final String searchText){
         firebaseSearchQuery = mEventDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
@@ -104,10 +106,16 @@ public class UserResultsFragment extends Fragment {
                     }
                 });
 
-                holder.imageView.setOnClickListener(new View.OnClickListener() {
+
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         Toast.makeText(getContext(),userIDs[0],Toast.LENGTH_SHORT).show();
+                        Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                        profileIntent.putExtra("visit_user_id", userIDs[0]);
+                        startActivity(profileIntent);
                     }
                 });
             }

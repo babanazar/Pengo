@@ -154,14 +154,6 @@ public class GelecekEtkinlikFragment extends Fragment {
                             }
                         });
 
-                        //if(joined[0])
-                        //    holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton2));
-                        //else
-                        //    holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton));
-                        //if(saved[0])
-                        //    holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_black_24dp));
-                        //else
-                        //    holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
                         final ArrayList<String> loc = new ArrayList<>();
                         if (dataSnapshot.hasChild("url")) {
                             imageUrl = dataSnapshot.child("url").getValue().toString();
@@ -211,6 +203,12 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     Map<String,Object> eventuser = new HashMap<>();
                                     tableRef.child(eventIDs).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
                                     gelecekEtkinlikRef.child(eventIDs).child("count").setValue(count+1);
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).child("timestamp").setValue(System.currentTimeMillis());
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).child("url").setValue(finalImageUrl);
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).child("name").setValue(finalName);
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).child("date").setValue(finalDate);
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).child("desc").setValue(finalDesc);
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).child("place").setValue(finalPlace);
                                 }
                                 else{
                                     holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton));
@@ -218,6 +216,7 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     Toast.makeText(getContext(),"Removed from your events",Toast.LENGTH_SHORT).show();
                                     tableRef.child(eventIDs).child(currentUserID).removeValue();
                                     gelecekEtkinlikRef.child(eventIDs).child("count").setValue(count-1);
+                                    usersRef.child(currentUserID).child("joined").child(eventIDs).removeValue();
                                 }
                             }
                         });
@@ -230,12 +229,19 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     saved[0] =true;
                                     Toast.makeText(getContext(),"Added to bookmarks",Toast.LENGTH_SHORT).show();
                                     usersRef.child(currentUserID).child("saved").child(eventIDs).child("timestamp").setValue(System.currentTimeMillis());
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).child("url").setValue(finalImageUrl);
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).child("name").setValue(finalName);
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).child("date").setValue(finalDate);
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).child("desc").setValue(finalDesc);
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).child("place").setValue(finalPlace);
                                 }
                                 else{
                                     holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
                                     saved[0] =false;
                                     Toast.makeText(getContext(),"Removed from bookmarks",Toast.LENGTH_SHORT).show();
                                     usersRef.child(currentUserID).child("saved").child(eventIDs).removeValue();
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).removeValue();
+
                                 }
                             }
                         });

@@ -87,6 +87,19 @@ public class StalkActivity extends AppCompatActivity {
 
     // handle button activities
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_to_chat_button) {
+            // do something here
+            Intent chatIntent = new Intent(StalkActivity.this, ChatActivity.class);
+            startActivity(chatIntent );
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setupBottomNavigationView(){
         final BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
         BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
@@ -202,7 +215,7 @@ public class StalkActivity extends AppCompatActivity {
                         return viewHolder;
                     }
 
-        };
+                };
 
         stalks.setAdapter(adapter);
         adapter.startListening();

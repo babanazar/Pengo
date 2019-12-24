@@ -86,12 +86,12 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        eventId = getIntent().getExtras().get("event_id").toString();
-        eventName = getIntent().getExtras().get("event_name").toString();
-        eventUrl = getIntent().getExtras().get("event_image_url").toString();
-        eventPlace = getIntent().getExtras().get("event_place").toString();
-        eventDate = getIntent().getExtras().get("event_date").toString();
-        eventDesc = getIntent().getExtras().get("event_desc").toString();
+        eventId = (String) getIntent().getExtras().get("event_id");
+        eventName = (String)getIntent().getExtras().get("event_name");
+        eventUrl =(String) getIntent().getExtras().get("event_image_url");
+        eventPlace = (String)getIntent().getExtras().get("event_place");
+        eventDate = (String)getIntent().getExtras().get("event_date");
+        eventDesc = (String)getIntent().getExtras().get("event_desc");
         eventLoc = (ArrayList<String>) getIntent().getExtras().get("event_loc");
         eventCnt = (Long) getIntent().getExtras().get("event_count");
         imageView = findViewById(R.id.eventIm);
@@ -103,6 +103,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         description = findViewById(R.id.description);
         description.setText(eventDesc);
         Picasso.get().load(eventUrl).into(imageView);
+        Log.d(TAG, "onCreate: ");
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);

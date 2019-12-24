@@ -1,11 +1,18 @@
 package com.example.pengout.view.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pengout.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,39 +31,157 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private String receiverUserID, currentState, senderUserID;
+    private String receiverUserID, currentState, senderOrCurrentUserID, profileName, profileImage;
 
     private CircleImageView userProfileImage;
-    private TextView userProfileName, userProfileStatus;
-    private Button sendMessageRequestButton, declineRequestButton;
+    private TextView userProfileName, userAddress;
+    private Button sendFollowRequestButton;
 
-    private DatabaseReference userRef, chatRequestRef, contactsRef, notificationRef;
+    private DatabaseReference userRef,  notificationRef;
     private FirebaseAuth mAuth;
+
+    private Toolbar mToolbar;
+
+    private String currentTimestamp;
+
+    private RelativeLayout profileJoinedRel, profilePostedRel;
+
+
+    private TextView otherJoinedCount, otherPostedCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        mToolbar = findViewById(R.id.other_profile_app_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        currentTimestamp = String.valueOf(System.currentTimeMillis());
+
         mAuth = FirebaseAuth.getInstance();
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
-        chatRequestRef = FirebaseDatabase.getInstance().getReference().child("chat requests");
-        contactsRef = FirebaseDatabase.getInstance().getReference().child("contacts");
         notificationRef = FirebaseDatabase.getInstance().getReference().child("notifications");
 
+        profileJoinedRel = findViewById(R.id.other_joinedCount);
+        profilePostedRel = findViewById(R.id.other_postedCount);
 
-        receiverUserID = getIntent().getExtras().get("visit_user_id").toString();
-        senderUserID = mAuth.getCurrentUser().getUid();
+        receiverUserID = (String)getIntent().getExtras().get("visit_user_id");
+        profileName = (String)getIntent().getExtras().get("visit_user_name");
+        profileImage = (String)getIntent().getExtras().get("visit_user_image");
 
-        userProfileImage = findViewById(R.id.visit_profile_image);
-        userProfileName = findViewById(R.id.visit_user_name);
-        userProfileStatus = findViewById(R.id.visit_profile_status);
-        sendMessageRequestButton = findViewById(R.id.send_message_request_button);
-        declineRequestButton = findViewById(R.id.decline_message_request_button);
+        senderOrCurrentUserID = mAuth.getCurrentUser().getUid();
+
+
+
+        userProfileImage = findViewById(R.id.other_profile_image);
+        userProfileName = findViewById(R.id.other_tv_name);
+        userAddress = findViewById(R.id.other_tv_address);
+        sendFollowRequestButton = findViewById(R.id.other_follow);
+
+        otherJoinedCount = findViewById(R.id.other_join_count);
+        otherPostedCount = findViewById(R.id.other_post_count);
 
         retreiveUserInfo();
 
+
+        userRef.child(receiverUserID).child("joined").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                otherJoinedCount.setText(String.valueOf((int) dataSnapshot.getChildrenCount()));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        userRef.child(receiverUserID).child("posted").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                otherPostedCount.setText(String.valueOf((int) dataSnapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        userRef.child(senderOrCurrentUserID).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(receiverUserID)) {
+                    otherPostedCount.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
+                            Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
+                            otherProfileEvents.putExtra("position", 1);
+                            otherProfileEvents.putExtra("profile_id", receiverUserID);
+                        }
+                    });
+
+                    otherJoinedCount.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
+                            Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
+                            otherProfileEvents.putExtra("position", 0);
+                            otherProfileEvents.putExtra("profile_id", receiverUserID);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
+
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_to_chat_button){
+            // do something here
+//            Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+//            startActivity(chatIntent );
+            Intent privateChatIntent = new Intent(ProfileActivity.this, PrivateChatActivity.class);
+
+            privateChatIntent.putExtra("visit_user_id", receiverUserID);
+            privateChatIntent.putExtra("visit_user_name", profileName);
+            privateChatIntent.putExtra("visit_image", profileImage);
+
+            startActivity(privateChatIntent);
+
+        }
+        super.onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void retreiveUserInfo() {
         userRef.child(receiverUserID).addValueEventListener(new ValueEventListener() {
@@ -66,23 +191,24 @@ public class ProfileActivity extends AppCompatActivity {
                 if (dataSnapshot.exists() && (dataSnapshot.hasChild("image"))) {
                     String userImage = (String) dataSnapshot.child("image").getValue();
                     String userName = (String) dataSnapshot.child("name").getValue();
-                    String userStatus = (String) dataSnapshot.child("status").getValue();
-
+                    String userStatus = (String) dataSnapshot.child("address").getValue();
                     Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(userProfileImage);
+
                     userProfileName.setText(userName);
-                    userProfileStatus.setText(userStatus);
+                    userAddress.setText(userStatus);
                     currentState = "new";
-
-                    manageChatRequests();
-
                 } else {
                     String userName = (String) dataSnapshot.child("name").getValue();
-                    String userStatus = (String) dataSnapshot.child("status").getValue();
+                    String userAddressString = (String) dataSnapshot.child("address").getValue();
+
+                    currentState = "new";
 
                     userProfileName.setText(userName);
-                    userProfileStatus.setText(userStatus);
+                    userAddress.setText(userAddressString);
 
                 }
+                manageFollowRequests();
+
             }
 
             @Override
@@ -93,99 +219,83 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    private void manageChatRequests() {
-        chatRequestRef.child(senderUserID)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+    private void manageFollowRequests() {
+        userRef.child(senderOrCurrentUserID).child("received follow requests").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        if (dataSnapshot.hasChild(receiverUserID)){
-                            String requestType = dataSnapshot.child(receiverUserID).child("request_type").getValue().toString();
+                if (dataSnapshot.hasChild(receiverUserID)) {
+                    sendFollowRequestButton.setText("Accept Follow Request");
+                    currentState = "request_received";
+                }
 
-                            if (requestType.equals("sent")){
-                                currentState = "request_sent";
-                                sendMessageRequestButton.setText("Cancel Chat Request");
-                            }else if(requestType.equals("received")){
-                                currentState = "request_received";
-                                sendMessageRequestButton.setText("Accept Chat Request");
-
-                                declineRequestButton.setVisibility(View.VISIBLE);
-                                declineRequestButton.setEnabled(true);
-                                declineRequestButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        cancelChatRequest();
-                                    }
-                                });
+                else {
+                    userRef.child(senderOrCurrentUserID).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild(receiverUserID)) {
+                                currentState = "friends";
+                                sendFollowRequestButton.setText("Unfollow");
                             }
-                        }else{
-                            contactsRef.child(senderUserID)
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.hasChild(receiverUserID)){
-                                                currentState = "friends";
-                                                sendMessageRequestButton.setText("Remove Contact");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+            }
 
-        if (!senderUserID.equals(receiverUserID)){
-            sendMessageRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        if (!senderOrCurrentUserID.equals(receiverUserID)) {
+            sendFollowRequestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendMessageRequestButton.setEnabled(false);
-                    if(currentState.equals("new")){
-                        sendChatRequest();
+                    sendFollowRequestButton.setEnabled(false);
+                    if (currentState.equals("new")) {
+                        sendFollowRequest();
                     }
-                    if(currentState.equals("request_sent")){
-                        cancelChatRequest();
+                    if (currentState.equals("request_sent")) {
+                        cancelFollowRequest();
                     }
-                    if(currentState.equals("request_received")){
-                        acceptChatRequest();
+                    if (currentState.equals("request_received")) {
+                        acceptFollowRequest();
                     }
-                    if(currentState.equals("friends")){
+                    if (currentState.equals("friends")) {
                         removeSpecificContact();
                     }
                 }
             });
-        }else {
-            sendMessageRequestButton.setVisibility(View.INVISIBLE);
+        } else {
+            sendFollowRequestButton.setVisibility(View.INVISIBLE);
         }
+
     }
 
+
     private void removeSpecificContact() {
-        contactsRef.child(senderUserID).child(receiverUserID)
+        userRef.child(senderOrCurrentUserID).child("friends").child(receiverUserID)
                 .removeValue()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            contactsRef.child(receiverUserID).child(senderUserID)
+                        if (task.isSuccessful()) {
+                            userRef.child(receiverUserID).child("friends").child(senderOrCurrentUserID)
                                     .removeValue()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
 
-                                            if (task.isSuccessful()){
-                                                sendMessageRequestButton.setEnabled(true);
+                                            if (task.isSuccessful()) {
+                                                sendFollowRequestButton.setEnabled(true);
                                                 currentState = "new";
-                                                sendMessageRequestButton.setText("Send Message");
-                                                declineRequestButton.setVisibility(View.INVISIBLE);
-                                                declineRequestButton.setEnabled(false);
+                                                sendFollowRequestButton.setText("Follow");
                                             }
                                         }
                                     });
@@ -194,41 +304,40 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void acceptChatRequest() {
-        contactsRef.child(senderUserID).child(receiverUserID)
-                .child("contacts").setValue("Saved")
+    private void acceptFollowRequest() {
+        userRef.child(senderOrCurrentUserID).child("friends").child(receiverUserID).child("timestamp")
+                .setValue(currentTimestamp)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            contactsRef.child(receiverUserID).child(senderUserID)
-                                    .child("contacts").setValue("Saved")
+                        if (task.isSuccessful()) {
+
+                            userRef.child(receiverUserID).child("friends").child(senderOrCurrentUserID).child("timestamp")
+                                .setValue(currentTimestamp)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()){
+                                            if (task.isSuccessful()) {
 
-                                                chatRequestRef.child(senderUserID).child(receiverUserID)
+                                                userRef.child(senderOrCurrentUserID).child("received follow requests").child(receiverUserID)
                                                         .removeValue()
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                  if (task.isSuccessful()){
-                                                                      chatRequestRef.child(receiverUserID).child(senderUserID)
-                                                                              .removeValue()
-                                                                              .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                  @Override
-                                                                                  public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    userRef.child(receiverUserID).child("sent follow requests").child(senderOrCurrentUserID)
+                                                                            .removeValue()
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
 
-                                                                                      sendMessageRequestButton.setEnabled(true);
-                                                                                      currentState = "friends";
-                                                                                      sendMessageRequestButton.setText("Remove Contact");
+                                                                                    sendFollowRequestButton.setEnabled(true);
+                                                                                    currentState = "friends";
+                                                                                    sendFollowRequestButton.setText("Remove Contact");
 
-                                                                                      declineRequestButton.setVisibility(View.INVISIBLE);
-                                                                                      declineRequestButton.setEnabled(false);
-                                                                                  }
-                                                                              });
-                                                                  }
+                                                                                }
+                                                                            });
+                                                                }
                                                             }
                                                         });
                                             }
@@ -239,25 +348,23 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void cancelChatRequest() {
-        chatRequestRef.child(senderUserID).child(receiverUserID)
+    private void cancelFollowRequest() {
+        userRef.child(senderOrCurrentUserID).child("sent follow requests").child(receiverUserID)
                 .removeValue()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            chatRequestRef.child(receiverUserID).child(senderUserID)
+                        if (task.isSuccessful()) {
+                            userRef.child(receiverUserID).child("received follow requests").child(senderOrCurrentUserID)
                                     .removeValue()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
 
-                                            if (task.isSuccessful()){
-                                                sendMessageRequestButton.setEnabled(true);
+                                            if (task.isSuccessful()) {
+                                                sendFollowRequestButton.setEnabled(true);
                                                 currentState = "new";
-                                                sendMessageRequestButton.setText("Send Message");
-                                                declineRequestButton.setVisibility(View.INVISIBLE);
-                                                declineRequestButton.setEnabled(false);
+                                                sendFollowRequestButton.setText("Follow");
                                             }
                                         }
                                     });
@@ -266,22 +373,22 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void sendChatRequest() {
-        chatRequestRef.child(senderUserID).child(receiverUserID)
-                .child("request_type").setValue("sent")
+    private void sendFollowRequest() {
+        userRef.child(senderOrCurrentUserID).child("sent follow requests").child(receiverUserID).child("timestamp")
+                .setValue(currentTimestamp)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            chatRequestRef.child(receiverUserID).child(senderUserID)
-                                    .child("request_type").setValue("received")
+                        if (task.isSuccessful()) {
+                            userRef.child(receiverUserID).child("received follow requests").child(senderOrCurrentUserID).child("timestamp")
+                                    .setValue(currentTimestamp)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()){
+                                            if (task.isSuccessful()) {
 
                                                 HashMap<String, String> chatNotificationMap = new HashMap<>();
-                                                chatNotificationMap.put("from", senderUserID);
+                                                chatNotificationMap.put("from", senderOrCurrentUserID);
                                                 chatNotificationMap.put("type", "request");
 
                                                 notificationRef.child(receiverUserID).push()
@@ -289,10 +396,10 @@ public class ProfileActivity extends AppCompatActivity {
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()){
-                                                                    sendMessageRequestButton.setEnabled(true);
+                                                                if (task.isSuccessful()) {
+                                                                    sendFollowRequestButton.setEnabled(true);
                                                                     currentState = "request_sent";
-                                                                    sendMessageRequestButton.setText("Cancel Chat Request");
+                                                                    sendFollowRequestButton.setText("Cancel Follow Request");
                                                                 }
                                                             }
                                                         });
@@ -305,4 +412,5 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
