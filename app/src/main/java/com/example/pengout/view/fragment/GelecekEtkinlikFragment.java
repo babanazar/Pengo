@@ -83,7 +83,7 @@ public class GelecekEtkinlikFragment extends Fragment {
 
 
 
-        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("eventWithDesc"); // just add .child(currentUserID);
+        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("newEvents"); // just add .child(currentUserID);
 
         return gelecekEtkinlikView;
     }
