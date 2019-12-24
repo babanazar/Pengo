@@ -66,9 +66,9 @@ public class PrivateChatActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
 
 
-        messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
-        messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
-        messageReceiverImage = getIntent().getExtras().get("visit_image").toString();
+        messageReceiverID = (String) getIntent().getExtras().get("visit_user_id");
+        messageReceiverName = (String) getIntent().getExtras().get("visit_user_name");
+        messageReceiverImage = (String)getIntent().getExtras().get("visit_image");
 
 
         initializeControllers();

@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +83,7 @@ public class GelecekEtkinlikFragment extends Fragment {
 
 
 
-        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("eventWithDesc"); // just add .child(currentUserID);
+        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("newEvents"); // just add .child(currentUserID);
 
         return gelecekEtkinlikView;
     }
@@ -98,7 +105,19 @@ public class GelecekEtkinlikFragment extends Fragment {
                 final String eventIDs = getRef(position).getKey();
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        Date d = new Date();
+                        String [] s = d.toString().split(" ");
+                        String [] strings = dataSnapshot.child("date").getValue().toString().split(" ");
+                        if(!(s[1].equals(strings[2]) && s[2].equals(strings[3]))){
+                            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+                            params.height = 0;
+                            holder.itemView.setLayoutParams(params);
+                            return;
+                        }
+
                         String imageUrl = "";
                         String name="";
                         String place = "";
@@ -173,7 +192,7 @@ public class GelecekEtkinlikFragment extends Fragment {
                         final String finalDate = date;
                         final String finalPlace = place;
                         final String finalDesc = desc;
-
+                        final long count = (Long) dataSnapshot.child("count").getValue();
                         holder.join.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -183,6 +202,7 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     Toast.makeText(getContext()," Added to your events",Toast.LENGTH_SHORT).show();
                                     Map<String,Object> eventuser = new HashMap<>();
                                     tableRef.child(eventIDs).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
+                                    gelecekEtkinlikRef.child(eventIDs).child("count").setValue(count+1);
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).child("timestamp").setValue(System.currentTimeMillis());
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).child("url").setValue(finalImageUrl);
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).child("name").setValue(finalName);
@@ -195,6 +215,7 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     joined[0] =false;
                                     Toast.makeText(getContext(),"Removed from your events",Toast.LENGTH_SHORT).show();
                                     tableRef.child(eventIDs).child(currentUserID).removeValue();
+                                    gelecekEtkinlikRef.child(eventIDs).child("count").setValue(count-1);
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).removeValue();
                                 }
                             }
@@ -236,6 +257,7 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     eventActivityIntent.putExtra("event_desc", finalDesc);
                                     eventActivityIntent.putExtra("event_loc", loc);
                                     eventActivityIntent.putExtra("event_image_url", finalImageUrl);
+                                    eventActivityIntent.putExtra("event_count",count);
                                     startActivity(eventActivityIntent,
                                             ActivityOptions.makeSceneTransitionAnimation((Activity)getContext(),holder.image,"shareView").toBundle());
 

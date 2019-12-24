@@ -81,6 +81,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     private FirebaseAuth mAuth;
     private String currentUserID;
     private Menu menu;
+    long eventCnt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +93,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         eventDate = (String)getIntent().getExtras().get("event_date");
         eventDesc = (String)getIntent().getExtras().get("event_desc");
         eventLoc = (ArrayList<String>) getIntent().getExtras().get("event_loc");
-//        Toast.makeText(this, (String)eventLoc.toString(), Toast.LENGTH_SHORT).show();
+        eventCnt = (Long) getIntent().getExtras().get("event_count");
         imageView = findViewById(R.id.eventIm);
         date = findViewById(R.id.date);
         date.setText(eventDate);
@@ -156,9 +157,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
-
-
-
     }
 
     @Override
@@ -173,12 +171,14 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 tableRef.child(eventId).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
                 //Map<String,Object> reg = new HashMap<>();
                 //reg.put(eventId+"/" +currentUserID,"registered");
+                tableRef.child(eventId).child("count").setValue(eventCnt+1);
             }
             else{
                 menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.eventbutton));
                 clicked=false;
                 Toast.makeText(this,"Removed from your events",Toast.LENGTH_SHORT).show();
                 tableRef.child(eventId).child(currentUserID).removeValue();
+                tableRef.child(eventId).child("count").setValue(eventCnt-1);
             }
 
         }

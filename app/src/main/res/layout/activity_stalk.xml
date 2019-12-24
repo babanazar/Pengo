@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.StalkActivity">
+    android:orientation="vertical"
+    tools:context="com.example.pengout.view.activity.RegisterActivity">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/main_page_toolbar"
+            layout="@layout/app_bar_layout">
+        </include>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <include
+        android:id="@+id/stalk_scroll"
+        android:layout_below="@id/appBarLayout"
+        layout="@layout/stalk"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+    </include>
+
 
     <include
         android:id="@+id/bottom_nav_view_ex"
         layout="@layout/layout_bottom_navigation_view">
     </include>
 
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/main_page_toolbar"
+            layout="@layout/app_bar_layout">
+        </include>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/searchbutton"
+        android:layout_marginTop="100dp"
+        android:text="Search for events and users"
+        android:layout_below="@id/appBarLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        />
+
+    <TableLayout
+        android:layout_below="@id/searchbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true">
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFF">
+
+            <Button
+                android:id="@+id/art2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/art2"
+                />
+            <Button
+                android:id="@+id/business2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/business2"
+                />
+            <Button
+                android:id="@+id/education2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/searchbutton"
+                android:layout_toEndOf="@id/business2"
+                android:background="@drawable/education2" />
+        </TableRow>
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFF">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Art"
+                />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Business"
+                />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Education"
+                />
+
+        </TableRow>
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFF">
+
+
+
+            <Button
+                android:id="@+id/entertainment2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/business2"
+                android:background="@drawable/entertainment2" />
+
+            <Button
+                android:id="@+id/health2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/business2"
+                android:layout_toEndOf="@id/entertainment2"
+                android:background="@drawable/health2"
+                />
+
+            <Button
+                android:id="@+id/sport2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/business2"
+                android:layout_toEndOf="@id/health2"
+                android:background="@drawable/sport2"
+                />
+
+        </TableRow>
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFF">
+
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entertainment"
+                />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Health"
+                />
+
+            <TextView
+                android:id="@+id/sportYazisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Sport"
+                />
+
+        </TableRow>
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFF">
+
+            <Button
+                android:id="@+id/trip2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/trip2"
+                />
+
+            <Button
+                android:id="@+id/workshop2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/workshop2" />
+
+            <Button
+                android:id="@+id/other"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/penguin"
+                />
+        </TableRow>
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFF">
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Trip"
+                />
+
+            <TextView
+                android:id="@+id/workshopText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Workshop" />
+
+            <TextView
+                android:id="@+id/otherText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Other" />
+
+        </TableRow>
+
+
+    </TableLayout>
+
+    <include
+        android:id="@+id/bottom_nav_view_ex"
+        layout="@layout/layout_bottom_navigation_view">
+    </include>
+
+</RelativeLayout>
