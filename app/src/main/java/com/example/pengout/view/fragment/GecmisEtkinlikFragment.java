@@ -76,7 +76,7 @@ public class GecmisEtkinlikFragment extends Fragment {
 
 
 
-        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("pastEventWithDesc"); // just add .child(currentUserID);
+        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("eventWithDesc"); // just add .child(currentUserID);
 
         return gelecekEtkinlikView;
     }
@@ -98,7 +98,14 @@ public class GecmisEtkinlikFragment extends Fragment {
                 final String eventIDs = getRef(position).getKey();
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+
+                        if(Integer.valueOf(dataSnapshot.child("count").getValue().toString()) == 0){
+                            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+                            params.height = 0;
+                            holder.itemView.setLayoutParams(params);
+                            return;
+                        }
                         String imageUrl = "";
                         String name="";
                         String place = "";
@@ -181,6 +188,7 @@ public class GecmisEtkinlikFragment extends Fragment {
                         final String finalDate = date;
                         final String finalPlace = place;
                         final String finalDesc = desc;
+                        final long cnt = (Long) dataSnapshot.child("count").getValue();
 
                         holder.join.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -191,12 +199,14 @@ public class GecmisEtkinlikFragment extends Fragment {
                                     Toast.makeText(getContext()," Added to your events",Toast.LENGTH_SHORT).show();
                                     Map<String,Object> eventuser = new HashMap<>();
                                     tableRef.child(eventIDs).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
+                                    gelecekEtkinlikRef.child(eventIDs).child("count").setValue(cnt+1);
                                 }
                                 else{
                                     holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton));
                                     joined[0] =false;
                                     Toast.makeText(getContext(),"Removed from your events",Toast.LENGTH_SHORT).show();
                                     tableRef.child(eventIDs).child(currentUserID).removeValue();
+                                    gelecekEtkinlikRef.child(eventIDs).child("count").setValue(cnt-1);
                                 }
                             }
                         });
@@ -231,6 +241,7 @@ public class GecmisEtkinlikFragment extends Fragment {
                                 eventActivityIntent.putExtra("event_desc", finalDesc);
                                 eventActivityIntent.putExtra("event_loc", loc);
                                 eventActivityIntent.putExtra("event_image_url", finalImageUrl);
+                                eventActivityIntent.putExtra("event_count",cnt);
                                 startActivity(eventActivityIntent,
                                         ActivityOptions.makeSceneTransitionAnimation((Activity)getContext(),holder.image,"shareView").toBundle());
 

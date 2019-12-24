@@ -72,6 +72,8 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".view.activity.CalendarActivity" />
+        <activity android:name=".view.activity.BrowseActivity" />
+        <activity android:name=".view.activity.CategoryActivity" />
     </application>
 
 </manifest>

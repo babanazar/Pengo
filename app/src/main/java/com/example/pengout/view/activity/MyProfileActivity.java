@@ -38,7 +38,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private String currentUserId;
 
-    private static final int ACTIVITY_NUM = 3;
+    private static final int ACTIVITY_NUM = 4;
     private Context mContext = MyProfileActivity.this;
     private Toolbar mToolbar;
 

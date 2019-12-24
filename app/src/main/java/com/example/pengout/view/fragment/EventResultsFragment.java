@@ -81,6 +81,10 @@ public class EventResultsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     public void firebaseEventSearch(final String searchText){
         firebaseSearchQuery = mEventDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");

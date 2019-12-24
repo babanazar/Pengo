@@ -3,6 +3,8 @@ package com.example.pengout.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -80,11 +82,15 @@ public class HomeActivity extends AppCompatActivity {
     private void setupBottomNavigationView(){
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_nav_view_ex);
         BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
+        final int id = menuItem.getItemId();
+
+        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
+
+
     }
 
 
