@@ -37,7 +37,7 @@ public class EtkinlikTabsAccessorAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Nullable
@@ -45,10 +45,12 @@ public class EtkinlikTabsAccessorAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "Upcomings";
+                return "Today";
 
             case 1:
-                return " ";
+                return "Popular";
+            case 2:
+                return "Discover";
 
             default:
                 return null;

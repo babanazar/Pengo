@@ -77,11 +77,12 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     CollapsingToolbarLayout ctl;
     ArrayList<String> eventLoc;
 
-    private DatabaseReference tableRef,usersRef;
+    private DatabaseReference tableRef,usersRef,stalksRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
     private Menu menu;
     long eventCnt;
+    String userName,userPhoto ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,12 +128,16 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
         tableRef = FirebaseDatabase.getInstance().getReference().child("registered");
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        stalksRef = FirebaseDatabase.getInstance().getReference().child("stalk");
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
+
 
         usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userName = (String) dataSnapshot.child("name").getValue();
+                userPhoto = (String) dataSnapshot.child("image").getValue();
                 if(dataSnapshot.child("saved").hasChild(eventId))
                     saved = true;
             }
@@ -172,6 +177,10 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 //Map<String,Object> reg = new HashMap<>();
                 //reg.put(eventId+"/" +currentUserID,"registered");
                 tableRef.child(eventId).child("count").setValue(eventCnt+1);
+                DatabaseReference reference = stalksRef.push();
+                reference.child("stalkBody").setValue(userName + " has registered to " + eventName);
+                reference.child("stalkImage").setValue(userPhoto);
+                reference.child("stalkId").setValue(currentUserID);
             }
             else{
                 menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.eventbutton));

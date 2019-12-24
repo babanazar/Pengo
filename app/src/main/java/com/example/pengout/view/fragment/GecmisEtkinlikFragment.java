@@ -44,7 +44,7 @@ public class GecmisEtkinlikFragment extends Fragment {
     private View gelecekEtkinlikView;
     private RecyclerView myGelecekEtkinlikList;
 
-    private DatabaseReference gelecekEtkinlikRef,tableRef,usersRef;
+    private DatabaseReference gelecekEtkinlikRef,tableRef,usersRef,stalksRef;
     private int pos;
 
     private FirebaseAuth mAuth;
@@ -52,6 +52,7 @@ public class GecmisEtkinlikFragment extends Fragment {
 
     FirebaseRecyclerAdapter<Event, GelecekEtkinlikViewHolder> adapter;
 
+    String userName,userPhoto ;
 
     public GecmisEtkinlikFragment() {
     }
@@ -72,6 +73,7 @@ public class GecmisEtkinlikFragment extends Fragment {
 
         tableRef = FirebaseDatabase.getInstance().getReference().child("registered");
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        stalksRef = FirebaseDatabase.getInstance().getReference().child("stalks");
 
 
 
@@ -117,6 +119,8 @@ public class GecmisEtkinlikFragment extends Fragment {
                         usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                userName = (String) dataSnapshot.child("name").getValue();
+                                userPhoto = (String) dataSnapshot.child("image").getValue();
                                 if(dataSnapshot.child("saved").hasChild(eventIDs)){
                                     holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_black_24dp));
                                     saved[0] = true;
@@ -200,6 +204,10 @@ public class GecmisEtkinlikFragment extends Fragment {
                                     Map<String,Object> eventuser = new HashMap<>();
                                     tableRef.child(eventIDs).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
                                     gelecekEtkinlikRef.child(eventIDs).child("count").setValue(cnt+1);
+                                    DatabaseReference reference = stalksRef.push();
+                                    reference.child("stalkBody").setValue(userName + " has registered to " + finalName);
+                                    reference.child("stalkImage").setValue(userPhoto);
+                                    reference.child("stalkId").setValue(currentUserID);
                                 }
                                 else{
                                     holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton));

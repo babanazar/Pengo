@@ -33,22 +33,7 @@
                 android:text="friend X "
                 android:textStyle="bold"
                 />
-            <TextView
-                android:id="@+id/stalk_text3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text=" has followed "
-                android:textStyle="normal"
-                />
-            <TextView
-                android:id="@+id/stalk_text2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text=" event Y"
-                android:textStyle="bold"
-                />
+
             <TextView
                 android:id="@+id/stalk_time"
                 android:layout_width="wrap_content"
