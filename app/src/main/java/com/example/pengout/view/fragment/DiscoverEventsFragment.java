@@ -54,6 +54,7 @@ public class DiscoverEventsFragment extends Fragment {
 
     String userName,userPhoto ;
 
+    ArrayList<String> interestList = new ArrayList<>();
     public DiscoverEventsFragment() {
     }
 
@@ -76,9 +77,23 @@ public class DiscoverEventsFragment extends Fragment {
         stalksRef = FirebaseDatabase.getInstance().getReference().child("stalks");
 
 
+        usersRef.child(currentUserID).child("interests").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data: dataSnapshot.getChildren()){
+                    interestList.add(data.getKey().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
-        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("eventWithDesc"); // just add .child(currentUserID);
+
+        gelecekEtkinlikRef = FirebaseDatabase.getInstance().getReference().child("newEvents"); // just add .child(currentUserID);
 
         return gelecekEtkinlikView;
     }
@@ -101,8 +116,8 @@ public class DiscoverEventsFragment extends Fragment {
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
-                        if(Integer.valueOf(dataSnapshot.child("count").getValue().toString()) == 0){
+                        String cat = dataSnapshot.child("category").getValue().toString();
+                        if(!isInterest(cat)){
                             ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
                             params.height = 0;
                             holder.itemView.setLayoutParams(params);
@@ -146,14 +161,7 @@ public class DiscoverEventsFragment extends Fragment {
                             }
                         });
 
-                        //if(joined[0])
-                        //    holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton2));
-                        //else
-                        //    holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton));
-                        //if(saved[0])
-                        //    holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_black_24dp));
-                        //else
-                        //    holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
+
                         final ArrayList<String> loc = new ArrayList<>();
                         if (dataSnapshot.hasChild("url")) {
                             imageUrl = (String) dataSnapshot.child("url").getValue();
@@ -313,6 +321,14 @@ public class DiscoverEventsFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
         myGelecekEtkinlikList.smoothScrollToPosition(pos);
+    }
+
+    boolean isInterest(String cat){
+        for (String i : interestList){
+            if(i.equals(cat))
+                return true;
+        }
+        return false;
     }
 
 }
