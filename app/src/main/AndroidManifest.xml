@@ -67,8 +67,6 @@
         <activity android:name=".view.activity.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -77,6 +75,14 @@
         <activity android:name=".view.activity.CalendarActivity" />
         <activity android:name=".view.activity.BrowseActivity" />
         <activity android:name=".view.activity.CategoryActivity" />
+
+        <activity android:name=".view.activity.SplashScreenActivity2"
+            android:theme="@style/AppFullScreenTheme.SplashScreenActivity2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
