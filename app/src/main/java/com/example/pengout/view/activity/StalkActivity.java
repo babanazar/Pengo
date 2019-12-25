@@ -163,16 +163,11 @@ public class StalkActivity extends AppCompatActivity {
                                 String im = (String) dataSnapshot.child("stalkImage").getValue();
                                 Picasso.get().load(im).placeholder(R.drawable.profile_image).into(holder.imageView);
                                 holder.stalkBody.setText(s);
-
-
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
                             }
                         });
-
                     }
 
                     @NonNull

@@ -83,6 +83,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     private Menu menu;
     long eventCnt;
     String userName,userPhoto ;
+    TextView eventCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,9 +103,10 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         place.setText(eventPlace);
         ctl = findViewById(R.id.collapsing_toolbar_layout);
         description = findViewById(R.id.description);
+        eventCount = findViewById(R.id.count);
+        eventCount.setText(Long.toString(eventCnt));
         description.setText(eventDesc);
         Picasso.get().load(eventUrl).into(imageView);
-        Log.d(TAG, "onCreate: ");
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -177,6 +179,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 //Map<String,Object> reg = new HashMap<>();
                 //reg.put(eventId+"/" +currentUserID,"registered");
                 tableRef.child(eventId).child("count").setValue(eventCnt+1);
+                eventCount.setText(Long.toString(eventCnt+1));
                 DatabaseReference reference = stalksRef.push();
                 reference.child("stalkBody").setValue(userName + " has registered to " + eventName);
                 reference.child("stalkImage").setValue(userPhoto);
@@ -188,6 +191,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 Toast.makeText(this,"Removed from your events",Toast.LENGTH_SHORT).show();
                 tableRef.child(eventId).child(currentUserID).removeValue();
                 tableRef.child(eventId).child("count").setValue(eventCnt-1);
+                eventCount.setText(Long.toString(eventCnt-1));
             }
 
         }

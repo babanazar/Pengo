@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.PostedAndJoinedActivity"></activity>
+        <activity android:name=".view.activity.SavedEventsActivity"></activity>
+        <activity android:name=".view.activity.PostedAndJoinedActivity" />
         <activity android:name=".view.activity.StalkActivity" />
         <activity android:name=".view.activity.EditProfileActivity" />
         <activity android:name=".view.activity.MyProfileActivity" />

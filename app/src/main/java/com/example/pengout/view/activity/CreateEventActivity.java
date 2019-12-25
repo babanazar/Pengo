@@ -35,11 +35,12 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private Button createEventButton;
-    private EditText eventTitle, eventCategory, eventLocation;
+    private EditText eventTitle, eventDesc, eventCategory, eventLocation;
     private TextView eventTime;
     ImageView eventImage;
 
@@ -61,7 +62,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     Calendar now = Calendar.getInstance();
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
-    private String currentEventId;
+    private String currentEventId, imageDownloadUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +133,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         createEventButton = findViewById(R.id.create_event_button);
 
         eventTitle = findViewById(R.id.event_title);
+        eventDesc = findViewById(R.id.event_desc);
         eventCategory = findViewById(R.id.event_category);
         eventTime = findViewById(R.id.event_time);
         eventLocation = findViewById(R.id.event_location);
@@ -178,6 +180,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     final String downloadUri = uri.toString();
+                                    imageDownloadUrl = downloadUri;
                                     rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("url")
                                             .setValue(downloadUri)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -213,6 +216,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         final String setEventCategory = eventCategory.getText().toString();
         final String setEventTime = eventTime.getText().toString();
         final String setEventLocation = eventLocation.getText().toString();
+        final String setEventDesc = eventDesc.getText().toString();
 
         if (TextUtils.isEmpty(setEventTitle)) {
             Toast.makeText(this, "Please, enter title of the event", Toast.LENGTH_SHORT).show();
@@ -228,8 +232,38 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         if (TextUtils.isEmpty(setEventLocation)) {
             Toast.makeText(this, "Please, enter location of the event", Toast.LENGTH_SHORT).show();
-        } else {
+        }
 
+        if (TextUtils.isEmpty(setEventDesc)) {
+            Toast.makeText(this, "Please, enter description of the event", Toast.LENGTH_SHORT).show();
+        }
+
+        else {
+
+
+            if (!isPrivate.isChecked()){
+                HashMap<String, Object> myEvent = new HashMap();
+
+                myEvent.put("category", setEventCategory);
+                myEvent.put("count", 0);
+                myEvent.put("date", " " + setEventTime);
+                myEvent.put("desc", setEventDesc);
+                myEvent.put("link", "");
+                myEvent.put("place", setEventLocation);
+                myEvent.put("name", setEventTitle);
+                myEvent.put("time", "");
+                myEvent.put("url", imageDownloadUrl);
+
+                rootRef.child("newEvents").push().updateChildren(myEvent).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(CreateEventActivity.this, "Added to new events", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
 
             rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("name")
                     .setValue(setEventTitle)
@@ -243,7 +277,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-
 
                                                     rootRef.child("createdEvents").child(currentUserID).child(currentEventId).child("time")
                                                             .setValue(setEventTime)
