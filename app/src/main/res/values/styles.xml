@@ -24,5 +24,11 @@
     <style name="AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
 
     </style>
+    <style parent="Theme.AppCompat.Light.NoActionBar" name="AppFullScreenTheme.SplashScreenActivity2">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
 </resources>
