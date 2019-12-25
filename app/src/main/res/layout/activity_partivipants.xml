@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.SavedEventsActivity">
+    tools:context=".view.activity.PartivipantsActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/saved_events_toolbar"
+        android:id="@+id/count_events_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -16,8 +16,9 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/saved_events_list"
-        android:layout_below="@id/saved_events_toolbar"
+        android:id="@+id/count_events_list"
+        android:layout_below="@id/count_events_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </RelativeLayout>

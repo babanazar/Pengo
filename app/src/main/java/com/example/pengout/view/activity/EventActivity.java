@@ -105,6 +105,17 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         description = findViewById(R.id.description);
         eventCount = findViewById(R.id.count);
         eventCount.setText(Long.toString(eventCnt));
+
+        eventCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent countIntent = new Intent(EventActivity.this, PartivipantsActivity.class);
+                countIntent.putExtra("event_id", eventId);
+                startActivity(countIntent);
+
+            }
+        });
+
         description.setText(eventDesc);
         Picasso.get().load(eventUrl).into(imageView);
 

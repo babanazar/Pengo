@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,14 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/users_search_image"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:src="@drawable/profile_image"/>
+            android:src="@drawable/profile_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,8 +32,7 @@
                     android:text="user name"
                     android:textAlignment="textStart"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -45,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="user status"
                 android:textAlignment="textStart"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,14 +50,14 @@
                 android:orientation="horizontal">
 
                 <!--<Button-->
-                    <!--android:id="@+id/follow"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="30dp"-->
-                    <!--android:background="@android:color/holo_green_light"-->
-                    <!--android:text="Follow"-->
-                    <!--android:textAllCaps="false"-->
-                    <!--android:textSize="16sp"-->
-                    <!--android:visibility="invisible" />-->
+                <!--android:id="@+id/follow"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:background="@android:color/holo_green_light"-->
+                <!--android:text="Follow"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textSize="16sp"-->
+                <!--android:visibility="invisible" />-->
             </LinearLayout>
 
         </LinearLayout>
