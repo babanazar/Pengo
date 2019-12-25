@@ -91,6 +91,7 @@ public class SavedEventsActivity extends AppCompatActivity {
                         String date = "";
                         String desc = "";
 
+                        final long count = (Long) dataSnapshot.child("count").getValue();
                         final ArrayList<String> loc = new ArrayList<>();
 
                         if (dataSnapshot.hasChild("url")) {
@@ -149,6 +150,7 @@ public class SavedEventsActivity extends AppCompatActivity {
                                 eventActivityIntent.putExtra("event_desc", finalDesc);
                                 eventActivityIntent.putExtra("event_loc",  loc);
                                 eventActivityIntent.putExtra("event_image_url", finalImageUrl);
+                                eventActivityIntent.putExtra("event_count", count);
                                 startActivity(eventActivityIntent,
                                         ActivityOptions.makeSceneTransitionAnimation(SavedEventsActivity.this,holder.image,"shareView").toBundle());
 

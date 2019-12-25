@@ -18,6 +18,7 @@ import com.example.pengout.R;
 import com.example.pengout.model.Match;
 import com.example.pengout.view.activity.ChatActivity;
 import com.example.pengout.view.activity.HomeActivity;
+import com.example.pengout.view.activity.PrivateChatActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,16 +77,30 @@ public class GroupsFragment extends Fragment {
                         if(matchUserId == null){
                             return;
                         }
+                        final String imageUrl = (String) dataSnapshot.child(matchUserId).child("image").getValue();
+                        String eventName = (String) dataSnapshot.child(matchUserId).child("eventName").getValue();
+                        final String userName = (String) dataSnapshot.child(matchUserId).child("userName").getValue();
                         if(!(dataSnapshot.child(matchUserId).hasChild("status")))
                             return;
                         if(dataSnapshot.child(matchUserId).child("status").getValue().equals("accepted")){
-                            holder.itemView.findViewById(R.id.match_cancel_btn).setVisibility(View.GONE);
+                            holder.eventName.setText(eventName);
+                            holder.userName.setText(userName);
+                            holder.itemView.findViewById(R.id.match_accept_btn).setVisibility(View.VISIBLE);
+                            holder.itemView.findViewById(R.id.match_cancel_btn).setVisibility(View.VISIBLE);
+                            if(!imageUrl.equals(""))
+                                Picasso.get().load(imageUrl).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                            holder.cancelButton.setText("Delete");
                             holder.acceptButton.setText("WAITING");
                             holder.acceptButton.setBackgroundColor(Color.BLUE);
                             holder.acceptButton.setClickable(false);
                             return;
                         }
+
                         if( dataSnapshot.child(matchUserId).child("status").getValue().equals("matched")){
+                            holder.eventName.setText(eventName);
+                            holder.userName.setText(userName);
+                            if(!imageUrl.equals(""))
+                                Picasso.get().load(imageUrl).placeholder(R.drawable.profile_image).into(holder.profileImage);
                             holder.itemView.findViewById(R.id.match_cancel_btn).setVisibility(View.GONE);
                             holder.itemView.findViewById(R.id.match_accept_btn).setVisibility(View.VISIBLE);
                             holder.acceptButton.setText("MATCHED");
@@ -94,15 +109,16 @@ public class GroupsFragment extends Fragment {
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                                    startActivity(intent);
+                                    Intent privateChatIntent = new Intent(getContext(), PrivateChatActivity.class);
+                                    privateChatIntent.putExtra("visit_user_id", matchUserId);
+                                    privateChatIntent.putExtra("visit_user_name", userName);
+                                    privateChatIntent.putExtra("visit_image", imageUrl);
+                                    startActivity(privateChatIntent);
                                 }
                             });
                             return;
                         }
-                        String imageUrl = (String) dataSnapshot.child(matchUserId).child("image").getValue();
-                        String eventName = (String) dataSnapshot.child(matchUserId).child("eventName").getValue();
-                        String userName = (String) dataSnapshot.child(matchUserId).child("userName").getValue();
+
 
                         holder.eventName.setText(eventName);
                         holder.userName.setText(userName);
@@ -123,6 +139,9 @@ public class GroupsFragment extends Fragment {
                                             if( dataSnapshot.child(currentUserId).child("status").getValue().equals("accepted")){
                                                 matchRef.child(currentUserId).child(matchUserId).child("status").setValue("matched");
                                                 matchRef.child(matchUserId).child(currentUserId).child("status").setValue("matched");
+                                                //usersRef.child(currentUserId).child("friends").child(matchUserId).setValue(System.currentTimeMillis());
+                                                //usersRef.child(currentUserId).child("friends").child(matchUserId).setValue(System.currentTimeMillis());
+
                                             }
                                         }
                                     }

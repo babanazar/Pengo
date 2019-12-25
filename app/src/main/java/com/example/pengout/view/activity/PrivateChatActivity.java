@@ -1,6 +1,7 @@
 package com.example.pengout.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -110,6 +111,17 @@ public class PrivateChatActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messageAdapter);
+
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent otherProfile = new Intent(PrivateChatActivity.this, ProfileActivity.class);
+                otherProfile.putExtra("visit_user_id", messageReceiverID);
+                otherProfile.putExtra("visit_user_name", messageReceiverName);
+                otherProfile.putExtra("visit_user_image", messageReceiverImage);
+                startActivity(otherProfile);
+            }
+        });
     }
 
     @Override

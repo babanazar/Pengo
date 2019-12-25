@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +38,9 @@ public class EventResultsFragment extends Fragment {
 
     private RecyclerView results;
     private DatabaseReference mEventDatabase;
-    private Button searchButton;
+    private ImageButton searchButton;
     private EditText searchText;
+    long cnt;
 
     View root;
     @Override
@@ -48,12 +50,12 @@ public class EventResultsFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_eventres, container, false);
         results = root.findViewById(R.id.event_results);
         results.setLayoutManager(new LinearLayoutManager(getContext()));
-        mEventDatabase = FirebaseDatabase.getInstance().getReference("eventWithDesc");
+        mEventDatabase = FirebaseDatabase.getInstance().getReference("newEvents");
 
         searchButton = root.findViewById(R.id.search_btn);
         searchText = root.findViewById(R.id.search_field);
 
-/*
+
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -61,7 +63,7 @@ public class EventResultsFragment extends Fragment {
                     firebaseEventSearch(st);
             }
         });
-        */
+
 
         return root;
     }
@@ -84,6 +86,7 @@ public class EventResultsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        firebaseEventSearch("");
     }
 
     public void firebaseEventSearch(final String searchText){
@@ -110,6 +113,7 @@ public class EventResultsFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot data:dataSnapshot.getChildren()){
+                            cnt = (Long) data.child("count").getValue();
                             ArrayList<String> loc = new ArrayList<>();
                             if(data.child("name").getValue().equals(model.getName())){
                                 eventIDs[0] = data.getKey();
@@ -145,6 +149,7 @@ public class EventResultsFragment extends Fragment {
                         eventActivityIntent.putExtra("event_desc", model.getDesc());
                         eventActivityIntent.putExtra("event_loc", location);
                         eventActivityIntent.putExtra("event_image_url", model.getUrl());
+                        eventActivityIntent.putExtra("event_count",cnt);
                         startActivity(eventActivityIntent);
                     }
                 });

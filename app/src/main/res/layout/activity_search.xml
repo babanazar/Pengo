@@ -11,32 +11,16 @@
         android:id="@+id/tabbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/search"
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/search_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/search_field"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_marginLeft="10dp"
-                android:hint="Search here"
-                android:inputType="textPersonName"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                />
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-            <ImageButton
-                android:id="@+id/search_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:background="@android:color/background_light"
-                app:srcCompat="@drawable/search_button" />
-        </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"

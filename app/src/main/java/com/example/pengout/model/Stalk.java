@@ -5,8 +5,8 @@ public class Stalk {
     public Stalk(){
 
     }
-    String stalkBody;
-    String stalkImage;
+    private String stalkBody;
+    private String stalkImage;
 
     public String getStalkBody() {
         return stalkBody;

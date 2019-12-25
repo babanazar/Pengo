@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,8 @@ public class UserResultsFragment extends Fragment {
     Query firebaseSearchQuery;
 
     private RecyclerView results;
+    private ImageButton searchButton;
+    private EditText searchText;
     private DatabaseReference mEventDatabase;
 
     View root;
@@ -47,6 +51,17 @@ public class UserResultsFragment extends Fragment {
         results = root.findViewById(R.id.user_results);
         results.setLayoutManager(new LinearLayoutManager(getContext()));
         mEventDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        searchButton = root.findViewById(R.id.search_btn);
+        searchText = root.findViewById(R.id.search_field);
+
+        searchButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String st = searchText.getText().toString();
+                firebaseUserSearch(st);
+            }
+        });
         return root;
     }
 

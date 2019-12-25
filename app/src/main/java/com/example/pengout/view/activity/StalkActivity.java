@@ -43,16 +43,16 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class StalkActivity extends AppCompatActivity {
-    private static final int ACTIVITY_NUM = 2;
+    private static final int ACTIVITY_NUM = 3;
     Toolbar mToolbar;
     RecyclerView stalks;
     Query firebaseSearchQuery;
-    private DatabaseReference friendsRef;
+    private DatabaseReference friendsRef,stalksRef;
     DatabaseReference usersRef;
     RecyclerView.Adapter<StalksViewHolder> adapter;
     String currentUserId;
     FirebaseAuth mAuth;
-
+    ArrayList<String> friendList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,8 @@ public class StalkActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getUid();
         friendsRef = usersRef.child(currentUserId).child("friends");
+        stalksRef = FirebaseDatabase.getInstance().getReference().child("stalks");
+
 
 
         setupBottomNavigationView();
@@ -113,14 +115,12 @@ public class StalkActivity extends AppCompatActivity {
 
     public static class StalksViewHolder extends RecyclerView.ViewHolder{
 
-        TextView friendName, eventName,word,time;
+        TextView stalkBody,time;
         ImageView imageView;
         public StalksViewHolder(View itemView){
             super(itemView);
-            friendName = itemView.findViewById(R.id.stalk_text);
-            eventName = itemView.findViewById(R.id.stalk_text2);
             imageView = itemView.findViewById(R.id.stalk_image);
-            word = itemView.findViewById(R.id.stalk_text3);
+            stalkBody = itemView.findViewById(R.id.stalk_text);
             time = itemView.findViewById(R.id.stalk_time);
 
         }
@@ -130,19 +130,73 @@ public class StalkActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<String>()
-                .setQuery(friendsRef, String.class)
+        friendsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                for (DataSnapshot data : dataSnapshot1.getChildren()){
+                        friendList.add(data.getKey());
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Stalk>()
+                .setQuery(stalksRef, Stalk.class)
                 .build();
 
-        FirebaseRecyclerAdapter<String, StalksViewHolder> adapter =
-                new FirebaseRecyclerAdapter<String, StalksViewHolder>(options){
-
-
-
+        FirebaseRecyclerAdapter<Stalk, StalksViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Stalk, StalksViewHolder>(options){
                     @Override
-                    protected void onBindViewHolder(@NonNull final StalksViewHolder holder, int position, @NonNull String model) {
-                        final String userIds = getRef(position).getKey();
-                        friendsRef.child(userIds).addValueEventListener(new ValueEventListener() {
+                    protected void onBindViewHolder(@NonNull final StalksViewHolder holder, int position, @NonNull Stalk model) {
+                        String stalkIds = getRef(position).getKey();
+                        stalksRef.child(stalkIds).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                String id = (String) dataSnapshot.child("stalkId").getValue();
+                                if(!isFriend(id)){
+                                    holder.itemView.setVisibility(View.GONE);
+                                    return;
+                                }
+                                String s =(String)dataSnapshot.child("stalkBody").getValue();
+                                String im = (String) dataSnapshot.child("stalkImage").getValue();
+                                Picasso.get().load(im).placeholder(R.drawable.profile_image).into(holder.imageView);
+                                holder.stalkBody.setText(s);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    }
+
+                    @NonNull
+                    @Override
+                    public StalksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.stalk_display, viewGroup, false);
+                        StalksViewHolder viewHolder = new StalksViewHolder(view);
+                        return viewHolder;
+                    }
+
+                };
+
+        stalks.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+    boolean isFriend(String id){
+        for(String i : friendList){
+            if(id.equals(i))
+                return true;
+        }
+        return false;
+    }
+
+}
+
+
+/*
+friendsRef.child(userIds).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 usersRef.child(userIds).addValueEventListener(new ValueEventListener() {
@@ -206,18 +260,4 @@ public class StalkActivity extends AppCompatActivity {
                             }
                         });
                     }
-
-                    @NonNull
-                    @Override
-                    public StalksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.stalk_display, viewGroup, false);
-                        StalksViewHolder viewHolder = new StalksViewHolder(view);
-                        return viewHolder;
-                    }
-
-                };
-
-        stalks.setAdapter(adapter);
-        adapter.startListening();
-    }
-}
+ */

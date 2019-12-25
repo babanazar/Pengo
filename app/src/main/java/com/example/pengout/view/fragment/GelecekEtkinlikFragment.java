@@ -51,7 +51,7 @@ public class GelecekEtkinlikFragment extends Fragment {
     private View gelecekEtkinlikView;
     private RecyclerView myGelecekEtkinlikList;
 
-    private DatabaseReference gelecekEtkinlikRef,tableRef,usersRef;
+    private DatabaseReference gelecekEtkinlikRef,tableRef,usersRef,stalksRef;
     private int pos;
 
     private FirebaseAuth mAuth;
@@ -59,6 +59,7 @@ public class GelecekEtkinlikFragment extends Fragment {
 
     FirebaseRecyclerAdapter<Event, GelecekEtkinlikViewHolder> adapter;
 
+    String userName,userPhoto;
 
     public GelecekEtkinlikFragment() {
     }
@@ -79,6 +80,7 @@ public class GelecekEtkinlikFragment extends Fragment {
 
         tableRef = FirebaseDatabase.getInstance().getReference().child("registered");
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        stalksRef = FirebaseDatabase.getInstance().getReference().child("stalks");
 
 
 
@@ -129,6 +131,8 @@ public class GelecekEtkinlikFragment extends Fragment {
                         usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                userName = (String) dataSnapshot.child("name").getValue();
+                                userPhoto = (String) dataSnapshot.child("image").getValue();
                                 if(dataSnapshot.child("saved").hasChild(eventIDs)){
                                     holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_black_24dp));
                                     saved[0] = true;
@@ -200,9 +204,12 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     holder.join.setBackground(getResources().getDrawable(R.drawable.eventbutton2));
                                     joined[0] =true;
                                     Toast.makeText(getContext()," Added to your events",Toast.LENGTH_SHORT).show();
-                                    Map<String,Object> eventuser = new HashMap<>();
                                     tableRef.child(eventIDs).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
                                     gelecekEtkinlikRef.child(eventIDs).child("count").setValue(count+1);
+                                    DatabaseReference reference = stalksRef.push();
+                                    reference.child("stalkBody").setValue(userName + " has registered to " + finalName);
+                                    reference.child("stalkImage").setValue(userPhoto);
+                                    reference.child("stalkId").setValue(currentUserID);
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).child("timestamp").setValue(System.currentTimeMillis());
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).child("url").setValue(finalImageUrl);
                                     usersRef.child(currentUserID).child("joined").child(eventIDs).child("name").setValue(finalName);
@@ -234,6 +241,8 @@ public class GelecekEtkinlikFragment extends Fragment {
                                     usersRef.child(currentUserID).child("saved").child(eventIDs).child("date").setValue(finalDate);
                                     usersRef.child(currentUserID).child("saved").child(eventIDs).child("desc").setValue(finalDesc);
                                     usersRef.child(currentUserID).child("saved").child(eventIDs).child("place").setValue(finalPlace);
+                                    usersRef.child(currentUserID).child("saved").child(eventIDs).child("count").setValue(count);
+
                                 }
                                 else{
                                     holder.save.setBackground(getResources().getDrawable(R.drawable.ic_bookmark_border_black_24dp));

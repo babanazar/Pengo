@@ -77,11 +77,13 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     CollapsingToolbarLayout ctl;
     ArrayList<String> eventLoc;
 
-    private DatabaseReference tableRef,usersRef;
+    private DatabaseReference tableRef,usersRef,stalksRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
     private Menu menu;
     long eventCnt;
+    String userName,userPhoto ;
+    TextView eventCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +103,8 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         place.setText(eventPlace);
         ctl = findViewById(R.id.collapsing_toolbar_layout);
         description = findViewById(R.id.description);
+        eventCount = findViewById(R.id.count);
+        eventCount.setText(Long.toString(eventCnt));
         description.setText(eventDesc);
         Picasso.get().load(eventUrl).into(imageView);
 
@@ -126,12 +130,16 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
         tableRef = FirebaseDatabase.getInstance().getReference().child("registered");
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        stalksRef = FirebaseDatabase.getInstance().getReference().child("stalk");
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
+
 
         usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userName = (String) dataSnapshot.child("name").getValue();
+                userPhoto = (String) dataSnapshot.child("image").getValue();
                 if(dataSnapshot.child("saved").hasChild(eventId))
                     saved = true;
             }
@@ -165,12 +173,17 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             if(!clicked){
                 menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.eventbutton2));
                 clicked =true;
-                Toast.makeText(this,eventId + " Added to your events",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this," Added to your events",Toast.LENGTH_SHORT).show();
                 Map<String,Object> eventuser = new HashMap<>();
                 tableRef.child(eventId).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
                 //Map<String,Object> reg = new HashMap<>();
                 //reg.put(eventId+"/" +currentUserID,"registered");
                 tableRef.child(eventId).child("count").setValue(eventCnt+1);
+                eventCount.setText(Long.toString(eventCnt+1));
+                DatabaseReference reference = stalksRef.push();
+                reference.child("stalkBody").setValue(userName + " has registered to " + eventName);
+                reference.child("stalkImage").setValue(userPhoto);
+                reference.child("stalkId").setValue(currentUserID);
             }
             else{
                 menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.eventbutton));
@@ -178,6 +191,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 Toast.makeText(this,"Removed from your events",Toast.LENGTH_SHORT).show();
                 tableRef.child(eventId).child(currentUserID).removeValue();
                 tableRef.child(eventId).child("count").setValue(eventCnt-1);
+                eventCount.setText(Long.toString(eventCnt-1));
             }
 
         }
