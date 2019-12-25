@@ -15,4 +15,13 @@
     <color name="gradStart">#FFC107</color>
     <color name="followersBg">#D5FF5722</color>
     <color name="followingBg">#FA6839</color>
+    <color name="colorBackground">#333C46</color>
+
+    <color name="colorBackground2">#EB7D46</color>
+
+    <color name="colorSplashText">#F0F0F0</color>
+
+    <color name="colorProgressBar">#FFCE511C</color>
+
+    <color name="colorTextView">#83898E</color>
 </resources>

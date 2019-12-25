@@ -81,7 +81,7 @@ public class DiscoverEventsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
-                    interestList.add(data.getKey().toString());
+                    interestList.add(data.getKey().toString().toLowerCase());
                 }
             }
 
@@ -116,7 +116,7 @@ public class DiscoverEventsFragment extends Fragment {
                 gelecekEtkinlikRef.child(eventIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                        String cat = dataSnapshot.child("category").getValue().toString();
+                        String cat = dataSnapshot.child("category").getValue().toString().toLowerCase();
                         if(!isInterest(cat)){
                             ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
                             params.height = 0;
