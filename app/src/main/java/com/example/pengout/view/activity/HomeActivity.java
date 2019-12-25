@@ -60,8 +60,6 @@ public class HomeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GelecekEtkinlikFragment()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GecmisEtkinlikFragment()).commit();
         myViewPager.setAdapter(myEtkinlikTabsAccessorAdapter);
-//        myTabsAccessorAdapter = new HomeTabsAccessorAdapter(getSupportFragmentManager());
-//        myViewPager.setAdapter(myTabsAccessorAdapter);
 
 
         myTabLayout = findViewById(R.id.home_tabs);
@@ -70,7 +68,6 @@ public class HomeActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         email = firebaseUser.getEmail();
-        Log.d("emeyil", email);
 
 
         //getting the reference of artists node

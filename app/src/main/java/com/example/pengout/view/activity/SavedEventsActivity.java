@@ -1,15 +1,16 @@
-package com.example.pengout.view.fragment;
+package com.example.pengout.view.activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,8 +19,7 @@ import android.widget.TextView;
 
 import com.example.pengout.R;
 import com.example.pengout.model.Event;
-import com.example.pengout.view.activity.EventActivity;
-import com.example.pengout.view.activity.PostedAndJoinedActivity;
+import com.example.pengout.view.fragment.JoinedFragment;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,64 +32,57 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class JoinedFragment extends Fragment {
+public class SavedEventsActivity extends AppCompatActivity {
 
-    private View joinedView;
-    private RecyclerView myJoinedEventsList;
-
-    private DatabaseReference joinedEventsRef, usersRef, eventsRef;
-    private int pos;
+    private RecyclerView savedEventsList;
+    private Toolbar savedEventsToolbar;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference userRef, savedEventsRef;
+
     private String currentUserId;
 
-    FirebaseRecyclerAdapter<Event, JoinedEventViewHolder> adapter;
+    private int pos;
 
-
-    public JoinedFragment() {
-        // Required empty public constructor
-    }
-
-
+    FirebaseRecyclerAdapter<Event, SavedEventViewHolder> adapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        joinedView = inflater.inflate(R.layout.fragment_joined, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_saved_events);
 
-        myJoinedEventsList = joinedView.findViewById(R.id.joined_events_list);
-        myJoinedEventsList.setLayoutManager(new LinearLayoutManager(getContext()));
+        savedEventsList = findViewById(R.id.saved_events_list);
+        savedEventsList.setLayoutManager(new LinearLayoutManager(this));
 
         mAuth = FirebaseAuth.getInstance();
-//        currentUserId = mAuth.getCurrentUser().getUid();
-        currentUserId = ((PostedAndJoinedActivity)getActivity()).getProfileId();
 
-        joinedEventsRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("joined");
-        eventsRef = FirebaseDatabase.getInstance().getReference().child("eventWithDesc");
+        currentUserId = (String) getIntent().getExtras().get("current_user_id");
 
+        savedEventsToolbar = findViewById(R.id.saved_events_toolbar);
+        setSupportActionBar(savedEventsToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Saved Events");
 
-        return joinedView;
+        userRef = FirebaseDatabase.getInstance().getReference().child("users");
     }
 
     @Override
-    public void onStart(){
+    protected void onStart() {
         super.onStart();
 
         FirebaseRecyclerOptions options =
                 new FirebaseRecyclerOptions.Builder<Event>()
-                        .setQuery(joinedEventsRef, Event.class)
-                        .build();
+                .setQuery(userRef.child(currentUserId).child("saved"), Event.class)
+                .build();
 
-        adapter = new FirebaseRecyclerAdapter<Event, JoinedEventViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<Event, SavedEventViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final JoinedEventViewHolder holder, int position, @NonNull final Event model) {
+            protected void onBindViewHolder(@NonNull final SavedEventViewHolder holder, int position, @NonNull Event model) {
+
                 final String eventId = getRef(position).getKey();
 
-                joinedEventsRef.child(eventId).addValueEventListener(new ValueEventListener() {
+                userRef.child(currentUserId).child("saved").child(eventId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String imageUrl = "";
@@ -98,22 +91,18 @@ public class JoinedFragment extends Fragment {
                         String date = "";
                         String desc = "";
 
-//                        Event.Location loc ;
                         final ArrayList<String> loc = new ArrayList<>();
 
                         if (dataSnapshot.hasChild("url")) {
-                            imageUrl = (String)dataSnapshot.child("url").getValue();
-                            name = (String)dataSnapshot.child("name").getValue();
-                            place = (String)dataSnapshot.child("place").getValue();
-                            String time = (String)dataSnapshot.child("time").getValue();
-                            date = (String)dataSnapshot.child("date").getValue();
-                            desc = (String)dataSnapshot.child("desc").getValue();
-//                            loc = dataSnapshot.child("loc").getValue(Event.Location.class);
+                            imageUrl = (String) dataSnapshot.child("url").getValue();
+                            name = (String) dataSnapshot.child("name").getValue();
+                            place = (String) dataSnapshot.child("place").getValue();
+                            String time = (String) dataSnapshot.child("time").getValue();
+                            date = (String) dataSnapshot.child("date").getValue();
+                            desc = (String) dataSnapshot.child("desc").getValue();
 
-
-
-                            for(DataSnapshot child : dataSnapshot.child("loc").getChildren()){
-                                loc.add((String)child.getValue());
+                            for (DataSnapshot child : dataSnapshot.child("loc").getChildren()) {
+                                loc.add((String) child.getValue());
                             }
 
                             holder.name.setText(name);
@@ -121,7 +110,6 @@ public class JoinedFragment extends Fragment {
                             holder.time.setText(time);
                             holder.date.setText(date);
                             Picasso.get().load(imageUrl).placeholder(R.drawable.profile_image).into(holder.image);
-
                         }
                         else {
                             name = (String)dataSnapshot.child("name").getValue();
@@ -153,7 +141,7 @@ public class JoinedFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 pos = holder.getAdapterPosition();
-                                Intent eventActivityIntent = new Intent(getContext(), EventActivity.class);
+                                Intent eventActivityIntent = new Intent(SavedEventsActivity.this, EventActivity.class);
                                 eventActivityIntent.putExtra("event_id",eventId);
                                 eventActivityIntent.putExtra("event_name", finalName);
                                 eventActivityIntent.putExtra("event_date", finalDate);
@@ -162,7 +150,7 @@ public class JoinedFragment extends Fragment {
                                 eventActivityIntent.putExtra("event_loc",  loc);
                                 eventActivityIntent.putExtra("event_image_url", finalImageUrl);
                                 startActivity(eventActivityIntent,
-                                        ActivityOptions.makeSceneTransitionAnimation((Activity)getContext(),holder.image,"shareView").toBundle());
+                                        ActivityOptions.makeSceneTransitionAnimation(SavedEventsActivity.this,holder.image,"shareView").toBundle());
 
                             }
                         });
@@ -173,13 +161,14 @@ public class JoinedFragment extends Fragment {
 
                     }
                 });
+
             }
 
             @NonNull
             @Override
-            public JoinedEventViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            public SavedEventViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.event_display_layout, viewGroup, false);
-                JoinedEventViewHolder viewHolder = new JoinedEventViewHolder(view);
+                SavedEventViewHolder viewHolder = new SavedEventViewHolder(view);
                 return viewHolder;
             }
 
@@ -192,21 +181,25 @@ public class JoinedFragment extends Fragment {
                 return position;
             }
         };
+
         adapter.setHasStableIds(true);
-        myJoinedEventsList.setAdapter(adapter);
+        savedEventsList.setAdapter(adapter);
         adapter.startListening();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
 
-
-
-    public static class JoinedEventViewHolder extends RecyclerView.ViewHolder{
-
+    public static class  SavedEventViewHolder extends RecyclerView.ViewHolder{
         TextView name, place, time, date;
         ImageView image;
 
         Button join, save;
-        public JoinedEventViewHolder(@NonNull View itemView) {
+
+        public SavedEventViewHolder(@NonNull View itemView){
             super(itemView);
 
             name = itemView.findViewById(R.id.event_name);
@@ -221,20 +214,12 @@ public class JoinedFragment extends Fragment {
             join.setVisibility(View.INVISIBLE);
             save.setVisibility(View.INVISIBLE);
         }
-
-
-
     }
 
     @Override
-    public void onResume(){
+    protected void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
-        myJoinedEventsList.smoothScrollToPosition(pos);
+        savedEventsList.smoothScrollToPosition(pos);
     }
-
-
-
-
-
 }
