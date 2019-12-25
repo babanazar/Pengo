@@ -171,7 +171,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             if(!clicked){
                 menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.eventbutton2));
                 clicked =true;
-                Toast.makeText(this,eventId + " Added to your events",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this," Added to your events",Toast.LENGTH_SHORT).show();
                 Map<String,Object> eventuser = new HashMap<>();
                 tableRef.child(eventId).child(currentUserID).child("timestamp").setValue(System.currentTimeMillis());
                 //Map<String,Object> reg = new HashMap<>();

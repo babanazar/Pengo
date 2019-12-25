@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -66,6 +67,13 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        settingsToolbar = findViewById(R.id.create_toolbar);
+        setSupportActionBar(settingsToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Create Event");
+
         currentEventId = String.valueOf(System.currentTimeMillis());
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
@@ -132,11 +140,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
 
         loadingBar = new ProgressDialog(this);
-        settingsToolbar = findViewById(R.id.settings_toolbar);
 
-        setSupportActionBar(settingsToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Create Event");
 
     }
 
@@ -305,7 +309,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onBackPressed();
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
 

@@ -54,7 +54,6 @@
         <activity
             android:name=".view.activity.FindFriendsActivity"
             android:parentActivityName=".view.activity.ChatActivity" />
-        <activity android:name=".view.activity.GroupChatActivity" />
         <activity
             android:name=".view.activity.SettingsActivity"
             android:parentActivityName=".view.activity.ChatActivity" />

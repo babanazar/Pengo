@@ -18,6 +18,7 @@ import com.example.pengout.R;
 import com.example.pengout.model.User;
 import com.example.pengout.utils.BottomNavigationViewHelper;
 import com.example.pengout.view.adapter.EtkinlikTabsAccessorAdapter;
+import com.example.pengout.view.fragment.DiscoverEventsFragment;
 import com.example.pengout.view.fragment.GecmisEtkinlikFragment;
 import com.example.pengout.view.fragment.GelecekEtkinlikFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
         myEtkinlikTabsAccessorAdapter = new EtkinlikTabsAccessorAdapter(getSupportFragmentManager());
         getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GelecekEtkinlikFragment()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new GecmisEtkinlikFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_tabs_pager,new DiscoverEventsFragment()).commit();
         myViewPager.setAdapter(myEtkinlikTabsAccessorAdapter);
 //        myTabsAccessorAdapter = new HomeTabsAccessorAdapter(getSupportFragmentManager());
 //        myViewPager.setAdapter(myTabsAccessorAdapter);
@@ -86,8 +88,6 @@ public class HomeActivity extends AppCompatActivity {
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
-        final int id = menuItem.getItemId();
-
         BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
 
 

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.pengout.R;
+import com.example.pengout.view.fragment.DiscoverEventsFragment;
 import com.example.pengout.view.fragment.GecmisEtkinlikFragment;
 import com.example.pengout.view.fragment.GelecekEtkinlikFragment;
 
@@ -29,7 +30,9 @@ public class EtkinlikTabsAccessorAdapter extends FragmentPagerAdapter {
                 //        .replace(R.id.home_tabs_pager, gecmisEtkinlikFragment)
                 //        .commit();
                 return gecmisEtkinlikFragment;
-
+            case 2:
+                DiscoverEventsFragment discoverEventsFragment = new DiscoverEventsFragment();
+                return discoverEventsFragment;
             default:
                 return null;
         }
@@ -46,12 +49,10 @@ public class EtkinlikTabsAccessorAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 return "Today";
-
             case 1:
                 return "Popular";
             case 2:
                 return "Discover";
-
             default:
                 return null;
         }

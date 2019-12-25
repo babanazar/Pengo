@@ -43,8 +43,6 @@ public class ChatActivity extends AppCompatActivity {
     EditText messageArea;
     ScrollView scrollView;
 
-    private static final int ACTIVITY_NUM = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,8 +99,5 @@ public class ChatActivity extends AppCompatActivity {
         BottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
 
-        Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
-        menuItem.setChecked(true);
     }
 }
