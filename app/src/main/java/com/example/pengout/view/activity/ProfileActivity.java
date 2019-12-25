@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private RelativeLayout profileJoinedRel, profilePostedRel;
 
+    ArrayList<String> friendList = new ArrayList<>();
 
     private TextView otherJoinedCount, otherPostedCount;
 
@@ -80,10 +82,84 @@ public class ProfileActivity extends AppCompatActivity {
         userAddress = findViewById(R.id.other_tv_address);
         sendFollowRequestButton = findViewById(R.id.other_follow);
 
-        otherJoinedCount = findViewById(R.id.other_join_count);
+        profileJoinedRel = findViewById(R.id.other_joinedCount);
+        profilePostedRel = findViewById(R.id.other_postedCount);
+
         otherPostedCount = findViewById(R.id.other_post_count);
+        otherJoinedCount = findViewById(R.id.other_join_count);
+
+        userRef.child(senderOrCurrentUserID).child("friends").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                for (DataSnapshot data : dataSnapshot1.getChildren()){
+                    friendList.add(data.getKey());
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+//        retreiveUserInfo();
+
+
+
+
+
+
+
+
+//        userRef.child(senderOrCurrentUserID).child("friends").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.hasChild(receiverUserID)) {
+//                    profilePostedRel.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
+//                            Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
+//                            otherProfileEvents.putExtra("position", 1);
+//                            otherProfileEvents.putExtra("profile_id", receiverUserID);
+//                        }
+//                    });
+//
+//                    profileJoinedRel.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
+//                            Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
+//                            otherProfileEvents.putExtra("position", 0);
+//                            otherProfileEvents.putExtra("profile_id", receiverUserID);
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
+    }
+
+    boolean isFriend(String id){
+        for(String i : friendList){
+            if(id.equals(i))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         retreiveUserInfo();
+
+
+
 
 
         userRef.child(receiverUserID).child("joined").addValueEventListener(new ValueEventListener() {
@@ -111,45 +187,28 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-        userRef.child(senderOrCurrentUserID).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(receiverUserID)) {
-                    otherPostedCount.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
-                            Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
-                            otherProfileEvents.putExtra("position", 1);
-                            otherProfileEvents.putExtra("profile_id", receiverUserID);
-                        }
-                    });
-
-                    otherJoinedCount.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
-                            Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
-                            otherProfileEvents.putExtra("position", 0);
-                            otherProfileEvents.putExtra("profile_id", receiverUserID);
-                        }
-                    });
+        if(isFriend(receiverUserID)){
+            profilePostedRel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
+                    otherProfileEvents.putExtra("position", 1);
+                    otherProfileEvents.putExtra("profile_id", receiverUserID);
                 }
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+            profileJoinedRel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ProfileActivity.this, "Receiver Id " + receiverUserID, Toast.LENGTH_SHORT).show();
+                    Intent otherProfileEvents = new Intent(ProfileActivity.this, PostedAndJoinedActivity.class);
+                    otherProfileEvents.putExtra("position", 0);
+                    otherProfileEvents.putExtra("profile_id", receiverUserID);
+                }
+            });
+        }
 
     }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

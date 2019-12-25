@@ -102,7 +102,6 @@ public class MyProfileActivity extends AppCompatActivity {
         createdEventsRef = FirebaseDatabase.getInstance().getReference().child("createdEvents").child(currentUserId);
         registeredEventsRef = userRef.child(currentUserId).child("joined");
 
-        Toast.makeText(mContext, currentUserId, Toast.LENGTH_SHORT).show();
 
         retreiveUserInfo();
         createdEventsRef.addValueEventListener(new ValueEventListener() {
@@ -195,6 +194,12 @@ public class MyProfileActivity extends AppCompatActivity {
             Intent settingsIntent = new Intent(MyProfileActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
 
+        }
+
+        else if(id == R.id.saved_events_button){
+            Intent savedEvents = new Intent(MyProfileActivity.this, SavedEventsActivity.class);
+            savedEvents.putExtra("current_user_id", currentUserId);
+            startActivity(savedEvents);
         }
         return super.onOptionsItemSelected(item);
     }

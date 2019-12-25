@@ -103,7 +103,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         description = findViewById(R.id.description);
         description.setText(eventDesc);
         Picasso.get().load(eventUrl).into(imageView);
-        Log.d(TAG, "onCreate: ");
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);

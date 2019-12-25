@@ -52,10 +52,28 @@
                 android:paddingBottom="10dp" />
 
             <TextView
-                android:id="@+id/event_category_label"
+                android:id="@+id/event_desc_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/event_title"
+                android:text="Description:" />
+
+            <EditText
+                android:id="@+id/event_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_desc_label"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="Please be precise and descriptive"
+                android:inputType="textPersonName"
+                android:paddingBottom="10dp" />
+
+            <TextView
+                android:id="@+id/event_category_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/event_desc"
                 android:text="Category:" />
 
             <EditText
